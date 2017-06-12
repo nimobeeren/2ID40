@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/index.css">
+    <script src="/index.js"></script>
 </head>
 <body>
     <nav>
@@ -21,11 +22,12 @@
                 <div class="timeline__caption">22:00</div>
             </div>
         </div>
-        <div class="slider">
+        <div class="radial-slider" id="temp-slider">
+            <div class="radial-slider__knob" id="temp-knob"></div>
             <a class="temp-button">
                 <img src="/icons/ic_arrow_drop_up_white_24px.svg">
             </a>
-            <div class="current-temp">21.3°</div>
+            <div class="current-temp">21.3&deg;</div>
             <a class="temp-button">
                 <img src="/icons/ic_arrow_drop_down_white_24px.svg">
             </a>
