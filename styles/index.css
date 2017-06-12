@@ -2,31 +2,28 @@
     display: flex;
     margin: 48px 0;
     width: 100%;
-    height: 48px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-}
-
-.timeline__captions {
-    display: flex;
-    position: absolute;
-    top: 0;
-    left: -20px;
-    width: 100%;
 }
 
 .timeline__part {
     display: inline-block;
-    height: inherit;
+    height: 48px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
-.timeline--day {
+.part--day {
     background-color: #ffee58;
     flex: 75 auto;
 }
 
-.timeline--night {
+.part--night {
     background-color: #0d47a1;
     flex: 25 auto;
+}
+
+.timeline__caption {
+    width: 0;
+    margin-left: -16px;
+    margin-top: -20px;
 }
 
 .slider {

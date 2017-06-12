@@ -9,12 +9,17 @@
     <link rel="stylesheet" href="styles/index.css">
 </head>
 <body>
-    <nav>Thermostat</nav>
+    <nav>
+        <img class="nav__button" src="/icons/ic_menu_white_24px.svg">
+        <div class="nav__title">Thermostat</div>
+        <img class="nav__button" src="/icons/ic_settings_white_24px.svg">
+    </nav>
     <main>
         <div class="timeline">
-            <div class="timeline__captions"></div>
-            <div class="timeline__part timeline--day"></div>
-            <div class="timeline__part timeline--night"></div>
+            <div class="timeline__part part--day"></div>
+            <div class="timeline__part part--night">
+                <div class="timeline__caption">22:00</div>
+            </div>
         </div>
         <div class="slider">
             <a class="temp-button">
