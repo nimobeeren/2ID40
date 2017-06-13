@@ -1,14 +1,14 @@
-var centerX, centerY;
-var knob;
-var lastDeg = 45;
+var knob, centerX, centerY;
+var minTemp = 5;
+var maxTemp = 30;
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
-
     centerX = knob.offsetLeft;
     centerY = knob.offsetTop;
 
-    setKnob(lastDeg);
+    var lastAng = 45;
+    setKnob(lastAng);
 
     var mdown = false;
     knob.addEventListener('mousedown', function (e) {
@@ -22,21 +22,22 @@ window.onload = function () {
         if (mdown) {
             // TODO: Fix slightly wrong angle
             var a = Math.atan2(centerX - e.clientX, centerY - e.clientY);
-            var deg = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+            var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
 
             // Make sure the knob stays on the slider
-            if (deg < 45) {
-                deg = 45;
-            } else if (deg > 315) {
-                deg = 315;
+            if (ang < 45) {
+                ang = 45;
+            } else if (ang > 315) {
+                ang = 315;
             }
 
             // Make the knob move in increments of 5 degrees
-            deg = Math.round(deg / 5) * 5;
+            ang = Math.round(ang / 5) * 5;
 
             // Move knob to correct position
-            setKnob(deg);
-            lastDeg = deg;
+            setKnob(ang);
+            setTemperature(angleToTemperature(ang));
+            lastAng = ang;
         }
     });
 
@@ -54,37 +55,51 @@ window.onload = function () {
             e.preventDefault();
             // TODO: Fix slightly wrong angle
             var a = Math.atan2(centerX - e.touches[0].clientX, centerY - e.touches[0].clientY);
-            var deg = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+            var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
 
             // Make sure the knob stays on the slider
-            if (deg < 45) {
-                deg = 45;
-            } else if (deg > 315) {
-                deg = 315;
+            if (ang < 45) {
+                ang = 45;
+            } else if (ang > 315) {
+                ang = 315;
             }
 
             // Make the knob move in increments of 5 degrees
-            deg = Math.round(deg / 5) * 5;
+            ang = Math.round(ang / 5) * 5;
 
             // Move knob to correct position
-            setKnob(deg);
-            lastDeg = deg;
+            setKnob(ang);
+            setTemperature(angleToTemperature(ang));
+            lastAng = ang;
         }
     });
     document.addEventListener('touchcancel', function(e) {
         tdown = false;
-        setKnob(lastDeg);
+        setKnob(lastAng);
+        setTemperature(angleToTemperature(lastAng));
     })
 };
 
-function setKnob(deg) {
+function setKnob(ang) {
     var sliderWidth = 295; // width + half border
     var sliderHeight = 295; // height + half border
     var radius = sliderWidth / 2;
 
-    var X = Math.round(radius * -Math.sin(deg * Math.PI / 180));
-    var Y = Math.round(radius * Math.cos(deg * Math.PI / 180));
+    // Calculate knob position relative to center
+    var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
+    var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
 
+    // Apply absolute knob position
     knob.style.left = centerX + X + 'px';
     knob.style.top = centerY + Y + 'px';
+}
+
+function angleToTemperature(ang) {
+    return (ang - 45) / 270 * (maxTemp - minTemp) + minTemp;
+}
+
+function setTemperature(temp) {
+    var setTemp = document.getElementById('set-temp-value');
+    temp = Math.round(temp * 10) / 10;
+    setTemp.innerHTML = temp + "&deg;";
 }
