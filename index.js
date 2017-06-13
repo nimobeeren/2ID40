@@ -41,6 +41,8 @@ window.onload = function () {
 };
 
 function setKnob(deg) {
+    console.log(Math.round(deg));
+
     var sliderWidth = 295; // width + half border
     var sliderHeight = 295; // height + half border
     var radius = sliderWidth / 2;
