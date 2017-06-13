@@ -1,5 +1,6 @@
 var centerX, centerY;
 var knob;
+var lastDeg = 45;
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
@@ -7,20 +8,19 @@ window.onload = function () {
     centerX = knob.offsetLeft;
     centerY = knob.offsetTop;
 
-    setKnob(45);
+    setKnob(lastDeg);
 
     var mdown = false;
-    knob.onmousedown = function (e) {
+    knob.addEventListener('mousedown', function (e) {
         mdown = true;
         e.preventDefault();
-    };
-    window.onmouseup = function (e) {
+    });
+    document.addEventListener('mouseup', function (e) {
         mdown = false;
-    };
-    window.onmousemove = function (e) {
+    });
+    document.addEventListener('mousemove', function (e) {
         if (mdown) {
             // TODO: Fix slightly wrong angle
-            // TODO: Fix swiping on mobile
             var a = Math.atan2(centerX - e.clientX, centerY - e.clientY);
             var deg = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
 
@@ -36,13 +36,48 @@ window.onload = function () {
 
             // Move knob to correct position
             setKnob(deg);
+            lastDeg = deg;
         }
-    };
+    });
+
+    var tdown = false;
+    knob.addEventListener('touchstart', function(e) {
+        tdown = true;
+        e.preventDefault();
+    });
+    document.addEventListener('touchend', function(e) {
+        tdown = false;
+    });
+    // TODO: Reuse code from mouse event listener
+    document.addEventListener('touchmove', function(e) {
+        if (tdown) {
+            e.preventDefault();
+            // TODO: Fix slightly wrong angle
+            var a = Math.atan2(centerX - e.touches[0].clientX, centerY - e.touches[0].clientY);
+            var deg = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+
+            // Make sure the knob stays on the slider
+            if (deg < 45) {
+                deg = 45;
+            } else if (deg > 315) {
+                deg = 315;
+            }
+
+            // Make the knob move in increments of 5 degrees
+            deg = Math.round(deg / 5) * 5;
+
+            // Move knob to correct position
+            setKnob(deg);
+            lastDeg = deg;
+        }
+    });
+    document.addEventListener('touchcancel', function(e) {
+        tdown = false;
+        setKnob(lastDeg);
+    })
 };
 
 function setKnob(deg) {
-    console.log(Math.round(deg));
-
     var sliderWidth = 295; // width + half border
     var sliderHeight = 295; // height + half border
     var radius = sliderWidth / 2;
