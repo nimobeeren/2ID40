@@ -1,14 +1,43 @@
 var centerX, centerY;
-var slider, knob;
+var knob;
 
-window.onload = function() {
-    slider = document.getElementById('temp-slider');
+window.onload = function () {
     knob = document.getElementById('temp-knob');
 
     centerX = knob.offsetLeft;
     centerY = knob.offsetTop;
 
-    setKnob(270);
+    setKnob(45);
+
+    var mdown = false;
+    knob.onmousedown = function (e) {
+        mdown = true;
+        e.preventDefault();
+    };
+    window.onmouseup = function (e) {
+        mdown = false;
+    };
+    window.onmousemove = function (e) {
+        if (mdown) {
+            // TODO: Fix slightly wrong angle
+            // TODO: Fix swiping on mobile
+            var a = Math.atan2(centerX - e.clientX, centerY - e.clientY);
+            var deg = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+
+            // Make sure the knob stays on the slider
+            if (deg < 45) {
+                deg = 45;
+            } else if (deg > 315) {
+                deg = 315;
+            }
+
+            // Make the knob move in increments of 5 degrees
+            deg = Math.round(deg / 5) * 5;
+
+            // Move knob to correct position
+            setKnob(deg);
+        }
+    };
 };
 
 function setKnob(deg) {
@@ -18,7 +47,6 @@ function setKnob(deg) {
 
     var X = Math.round(radius * -Math.sin(deg * Math.PI / 180));
     var Y = Math.round(radius * Math.cos(deg * Math.PI / 180));
-    console.log(X, Y);
 
     knob.style.left = centerX + X + 'px';
     knob.style.top = centerY + Y + 'px';
