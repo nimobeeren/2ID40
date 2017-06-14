@@ -1,6 +1,8 @@
 var knob, centerX, centerY;
 var minTemp = 5;
 var maxTemp = 30;
+var sliderTempIncrement = 0.5;
+var buttonTempIncrement = 0.1;
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
@@ -31,8 +33,9 @@ window.onload = function () {
                 ang = 315;
             }
 
-            // Make the knob move in increments of 5 degrees
-            ang = Math.round(ang / 5) * 5;
+            // Make the knob move in increments of 0.5 temperature degrees
+            var angIncrement = 270 / (maxTemp - minTemp) * sliderTempIncrement;
+            ang = 45 + Math.round((ang - 45) / angIncrement) * angIncrement;
 
             // Move knob to correct position
             setKnob(ang);
@@ -64,8 +67,9 @@ window.onload = function () {
                 ang = 315;
             }
 
-            // Make the knob move in increments of 5 degrees
-            ang = Math.round(ang / 5) * 5;
+            // Make the knob move in increments of 0.5 temperature degrees
+            var angIncrement = 270 / (maxTemp - minTemp) * sliderTempIncrement;
+            ang = 45 + Math.round((ang - 45) / angIncrement) * angIncrement;
 
             // Move knob to correct position
             setKnob(ang);
@@ -98,8 +102,36 @@ function angleToTemperature(ang) {
     return (ang - 45) / 270 * (maxTemp - minTemp) + minTemp;
 }
 
+function temperatureToAngle(temp) {
+    return (temp - minTemp) / (maxTemp - minTemp) * 270 + 45;
+}
+
+function getTemperature() {
+    var setTemp = document.getElementById('set-temp-value');
+    return parseFloat(setTemp.innerHTML);
+}
+
 function setTemperature(temp) {
     var setTemp = document.getElementById('set-temp-value');
     temp = Math.round(temp * 10) / 10;
+    if (temp === Math.round(temp)) {
+        temp = temp + '.0';
+    }
     setTemp.innerHTML = temp + "&deg;";
+}
+
+function smallIncreaseTemp() {
+    var temp = getTemperature();
+    temp += buttonTempIncrement;
+    if (temp > maxTemp) { temp = maxTemp }
+    setTemperature(temp);
+    setKnob(temperatureToAngle(temp));
+}
+
+function smallDecreaseTemp() {
+    var temp = getTemperature();
+    temp -= buttonTempIncrement;
+    if (temp < minTemp) { temp = minTemp }
+    setTemperature(temp);
+    setKnob(temperatureToAngle(temp));
 }
