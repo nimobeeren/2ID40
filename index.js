@@ -1,4 +1,6 @@
 var knob, buttonUp, buttonDown, centerX, centerY;
+var mdown = false;
+var lastAng = 45;
 var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
@@ -11,10 +13,10 @@ window.onload = function () {
     centerX = knob.offsetLeft;
     centerY = knob.offsetTop;
 
-    var lastAng = 45;
+    // Set knob to initial position
     setKnob(lastAng);
 
-    var mdown = false;
+    // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
         mdown = true;
         e.preventDefault();
@@ -22,72 +24,62 @@ window.onload = function () {
     document.addEventListener('mouseup', function (e) {
         mdown = false;
     });
-    document.addEventListener('mousemove', function (e) {
-        if (mdown) {
-            // TODO: Fix slightly wrong angle
-            var a = Math.atan2(centerX - e.clientX, centerY - e.clientY);
-            var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+    document.addEventListener('mousemove', dragOrSwipe);
 
-            // Make sure the knob stays on the slider
-            if (ang < 45) {
-                ang = 45;
-            } else if (ang > 315) {
-                ang = 315;
-            }
-
-            // Make the knob move in increments of 0.5 temperature degrees
-            var angIncrement = 270 / (maxTemp - minTemp) * sliderTempIncrement;
-            ang = 45 + Math.round((ang - 45) / angIncrement) * angIncrement;
-
-            // Move knob to correct position
-            setKnob(ang);
-            setTemperature(angleToTemperature(ang));
-            lastAng = ang;
-        }
-    });
-
-    var tdown = false;
+    // Wire up touch events for slider
     knob.addEventListener('touchstart', function(e) {
-        tdown = true;
+        mdown = true;
         e.preventDefault();
     });
     document.addEventListener('touchend', function(e) {
-        tdown = false;
+        mdown = false;
     });
-    // TODO: Reuse code from mouse event listener
-    document.addEventListener('touchmove', function(e) {
-        if (tdown) {
-            e.preventDefault();
-            // TODO: Fix slightly wrong angle
-            var a = Math.atan2(centerX - e.touches[0].clientX, centerY - e.touches[0].clientY);
-            var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
-
-            // Make sure the knob stays on the slider
-            if (ang < 45) {
-                ang = 45;
-            } else if (ang > 315) {
-                ang = 315;
-            }
-
-            // Make the knob move in increments of 0.5 temperature degrees
-            var angIncrement = 270 / (maxTemp - minTemp) * sliderTempIncrement;
-            ang = 45 + Math.round((ang - 45) / angIncrement) * angIncrement;
-
-            // Move knob to correct position
-            setKnob(ang);
-            setTemperature(angleToTemperature(ang));
-            lastAng = ang;
-        }
-    });
+    document.addEventListener('touchmove', dragOrSwipe);
     document.addEventListener('touchcancel', function(e) {
-        tdown = false;
+        mdown = false;
         setKnob(lastAng);
         setTemperature(angleToTemperature(lastAng));
     });
 
+    // Wire up buttons
     buttonUp.addEventListener('click', smallIncreaseTemp);
     buttonDown.addEventListener('click', smallDecreaseTemp);
 };
+
+/**
+ * Moves knob and sets temperature when knob is moved by user
+ * @param event {MouseEvent/TouchEvent}
+ */
+function dragOrSwipe(event) {
+    if (mdown) {
+        event.preventDefault();
+        // TODO: Fix slightly wrong angle
+        var a;
+        if (event.touches) {
+            a = Math.atan2(centerX - event.touches[0].clientX, centerY - event.touches[0].clientY);
+        } else {
+            a = Math.atan2(centerX - event.clientX, centerY - event.clientY);
+        }
+
+        var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+
+        // Make sure the knob stays on the slider
+        if (ang < 45) {
+            ang = 45;
+        } else if (ang > 315) {
+            ang = 315;
+        }
+
+        // Make the knob move in increments of 0.5 temperature degrees
+        var angIncrement = 270 / (maxTemp - minTemp) * sliderTempIncrement;
+        ang = 45 + Math.round((ang - 45) / angIncrement) * angIncrement;
+
+        // Move knob to correct position
+        setKnob(ang);
+        setTemperature(angleToTemperature(ang));
+        lastAng = ang;
+    }
+}
 
 /**
  * Places the knob in a position on the slider, determined by an angle
@@ -153,7 +145,7 @@ function setTemperature(temp) {
 /**
  * Increases the set temperature by the amount buttonTempIncrement, making sure the knob
  * is in the correct position
- * @param event {MouseEvent/TouchEvent} parameters for the clicking/touching eveent
+ * @param event {MouseEvent/TouchEvent} (optional) parameters for the clicking/touching event
  */
 function smallIncreaseTemp(event) {
     event && event.preventDefault();
@@ -167,7 +159,7 @@ function smallIncreaseTemp(event) {
 /**
  * Decreases the set temperature by the amount buttonTempIncrement, making sure the knob
  * is in the correct position
- * @param event {MouseEvent/TouchEvent} parameters for the clicking/touching eveent
+ * @param event {MouseEvent/TouchEvent} (optional) parameters for the clicking/touching event
  */
 function smallDecreaseTemp(event) {
     event && event.preventDefault();
