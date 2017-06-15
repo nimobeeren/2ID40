@@ -10,28 +10,29 @@
     <script src="/index.js"></script>
 </head>
 <body>
-    <nav>
-        <img class="nav__button" src="/icons/ic_menu_white_24px.svg">
-        <div class="nav__title">Thermostat</div>
-        <img class="nav__button" src="/icons/ic_settings_white_24px.svg">
-    </nav>
-    <main>
-        <div class="timeline">
-            <div class="timeline__part part--day"></div>
-            <div class="timeline__part part--night">
-                <div class="timeline__caption">22:00</div>
-            </div>
+<nav>
+    <img class="nav__button" src="/icons/ic_menu_white_24px.svg">
+    <div class="nav__title">Thermostat</div>
+    <img class="nav__button" src="/icons/ic_settings_white_24px.svg">
+</nav>
+<main>
+    <div class="timeline">
+        <div class="timeline__part part--day"></div>
+        <div class="timeline__part part--night">
+            <div class="timeline__caption">22:00</div>
         </div>
-        <div class="radial-slider" id="temp-slider">
-            <div class="radial-slider__knob" id="temp-knob"></div>
-            <a class="temp-button" id="temp-up">
-                <img src="/icons/ic_arrow_drop_up_white_24px.svg">
-            </a>
-            <div class="temp-value" id="set-temp-value">5.0&deg;</div>
-            <a class="temp-button" id="temp-down">
-                <img src="/icons/ic_arrow_drop_down_white_24px.svg">
-            </a>
-        </div>
-    </main>
+        <div class="timeline__part part--day"></div>
+    </div>
+    <div id="temp-slider" class="radial-slider">
+        <div id="temp-knob" class="radial-slider__knob"></div>
+        <a id="temp-up" class="temp-button">
+            <img src="/icons/ic_arrow_drop_up_white_24px.svg">
+        </a>
+        <div id="set-temp-value" class="temp-value">5.0&deg;</div>
+        <a id="temp-down" class="temp-button">
+            <img src="/icons/ic_arrow_drop_down_white_24px.svg">
+        </a>
+    </div>
+</main>
 </body>
 </html>

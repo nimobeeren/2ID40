@@ -18,11 +18,12 @@ window.onload = function () {
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
-        mdown = true;
         e.preventDefault();
+        mdown = true;
     });
     document.addEventListener('mouseup', function (e) {
         mdown = false;
+        document.documentElement.style.cursor = 'auto';
     });
     document.addEventListener('mousemove', dragOrSwipe);
 
@@ -33,6 +34,7 @@ window.onload = function () {
     });
     document.addEventListener('touchend', function(e) {
         mdown = false;
+        document.documentElement.style.cursor = 'auto';
     });
     document.addEventListener('touchmove', dragOrSwipe);
     document.addEventListener('touchcancel', function(e) {
@@ -53,6 +55,8 @@ window.onload = function () {
 function dragOrSwipe(event) {
     if (mdown) {
         event.preventDefault();
+        document.documentElement.style.cursor = 'pointer';
+
         // TODO: Fix slightly wrong angle
         var a;
         if (event.touches) {
