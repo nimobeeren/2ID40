@@ -12,15 +12,20 @@
 
 .part--day {
     background-color: #bbdefb;
-    flex-grow: 50;
 }
 
 .part--night {
     background-color: #0d47a1;
-    flex-grow: 50;
 }
 
-.timeline__caption {
+.part--disabled {
+    background: #bdbdbd url('/icons/ic_lock_grey_24px.svg') center no-repeat;
+    background-size: 32px;
+    box-shadow: none;
+    flex-grow: 1;
+}
+
+.timeline__label {
     width: 0;
     text-align: center;
     margin-left: -16px;
@@ -68,8 +73,7 @@
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Non-prefixed version, currently
-                                  supported by Chrome and Opera */
+    user-select: none; /* Chrome/Opera */
 }
 
 .temp-button img {

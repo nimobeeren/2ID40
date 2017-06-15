@@ -28,16 +28,16 @@ window.onload = function () {
     document.addEventListener('mousemove', dragOrSwipe);
 
     // Wire up touch events for slider
-    knob.addEventListener('touchstart', function(e) {
+    knob.addEventListener('touchstart', function (e) {
         mdown = true;
         e.preventDefault();
     });
-    document.addEventListener('touchend', function(e) {
+    document.addEventListener('touchend', function (e) {
         mdown = false;
         document.documentElement.style.cursor = 'auto';
     });
     document.addEventListener('touchmove', dragOrSwipe);
-    document.addEventListener('touchcancel', function(e) {
+    document.addEventListener('touchcancel', function (e) {
         mdown = false;
         setKnob(lastAng);
         setTemperature(angleToTemperature(lastAng));
@@ -155,7 +155,9 @@ function smallIncreaseTemp(event) {
     event && event.preventDefault();
     var temp = getTemperature();
     temp += buttonTempIncrement;
-    if (temp > maxTemp) { temp = maxTemp }
+    if (temp > maxTemp) {
+        temp = maxTemp
+    }
     setTemperature(temp);
     setKnob(temperatureToAngle(temp));
 }
@@ -169,7 +171,96 @@ function smallDecreaseTemp(event) {
     event && event.preventDefault();
     var temp = getTemperature();
     temp -= buttonTempIncrement;
-    if (temp < minTemp) { temp = minTemp }
+    if (temp < minTemp) {
+        temp = minTemp
+    }
     setTemperature(temp);
     setKnob(temperatureToAngle(temp));
+}
+
+function setDayProgram(program) {
+    /*
+     var exampleProgram = {
+         "switches": [
+             {
+                 "type": "day|night",
+                 "state": "on|off",
+                 "time": "HH:MM"
+             }
+         ]
+     }
+     */
+
+    var switches = program["switches"];
+    var timeline = document.getElementById('timeline');
+
+    // Remove all switches which are turned off
+    switches = switches.filter(function (s) {
+        return s["state"] === "on";
+    });
+
+    // If all switches are off, indicate vacation mode
+    if (switches.length === 0) {
+        // TODO: Show grey overlay on timeline and hide labels
+        alert('Vacation mode active');
+        return;
+    }
+
+    // Sort switches by ascending time
+    switches.sort(function (a, b) {
+        if (a["time"].substr(0, 2) === b["time"].substr(0, 2)) {
+            return a["time"].substr(3, 2) > b["time"].substr(3, 2);
+        } else {
+            return a["time"].substr(0, 2) > b["time"].substr(0, 2);
+        }
+    });
+
+    // Add two extra switches to night mode at midnight, if not already present
+    if (!switches.some(function(s) { return s["time"] === "00:00" })) {
+        switches.unshift({
+            "type": "night",
+            "state": "on",
+            "time": "00:00"
+        });
+    }
+    if (!switches.some(function(s) { return s["time"] === "24:00"})) {
+        switches.push({
+            "type": "night",
+            "state": "on",
+            "time": "24:00"
+        })
+    }
+
+    // Remove all timeline parts
+    timeline.innerHTML = '';
+
+    var part;
+    for (var i = 0; i < switches.length - 1; i++) {
+        // Make a part that has the same type as the beginning switch
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        if (switches[i]["type"] === "day") {
+            part.classList.add('part--day');
+        } else {
+            part.classList.add('part--night');
+        }
+
+        // Make the part last until the next switch
+        var startTime = switches[i]["time"];
+        var endTime = switches[i + 1]["time"];
+        var startTimeMins = startTime.substr(0, 2) * 60 + startTime.substr(3, 2);
+        var endTimeMins = endTime.substr(0, 2) * 60 + endTime.substr(3, 2);
+        part.style.flexGrow = endTimeMins - startTimeMins;
+
+        // For all but the first part, add a label with the starting time
+        if (i !== 0) {
+            var label = document.createElement('div');
+            label.classList.add('timeline__label');
+            label.innerHTML = startTime;
+            part.appendChild(label);
+        }
+
+        // Add the part to the timeline
+        timeline.appendChild(part);
+    }
 }
