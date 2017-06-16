@@ -1,3 +1,4 @@
+// Global variables
 var knob, slider, buttonUp, buttonDown;
 var centerX, centerY;
 var mdown = false;
@@ -6,7 +7,7 @@ var maxTemp = 30;
 var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 
-// Get day and night temperature
+// Get data from server
 var day = 'Sunday';             // TODO: Get from server
 var time = '09:00';             // TODO: Get from server
 var currentTemperature =  21.5; // TODO: Get from server
@@ -49,7 +50,7 @@ window.onload = function () {
 
     // Set UI elements to their corresponding values
     setKnob(temperatureToAngle(dayTemperature));
-    setTargetTemperature(dayTemperature);
+    setTargetTemperature(targetTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
     setDayProgram(dayProgram);
@@ -167,6 +168,7 @@ function setTargetTemperature(temp) {
         temp = temp + '.0';
     }
     setTemp.innerHTML = temp + "&deg;";
+    // TODO: reflect change on server
 }
 
 /**
