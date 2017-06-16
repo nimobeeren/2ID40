@@ -1,6 +1,5 @@
 var knob, slider, buttonUp, buttonDown, centerX, centerY;
 var mdown = false;
-var lastAng = 45;
 var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
@@ -15,7 +14,7 @@ window.onload = function () {
     centerY = knob.offsetTop + knob.offsetHeight / 2;
 
     // Set knob to initial position
-    setKnob(lastAng);
+    setKnob(45);
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
@@ -38,11 +37,6 @@ window.onload = function () {
         document.documentElement.style.cursor = 'auto';
     });
     document.addEventListener('touchmove', dragOrSwipe);
-    document.addEventListener('touchcancel', function (e) {
-        mdown = false;
-        setKnob(lastAng);
-        setTemperature(angleToTemperature(lastAng));
-    });
 
     // Wire up buttons
     buttonUp.addEventListener('click', smallIncreaseTemp);
@@ -81,7 +75,6 @@ function dragOrSwipe(event) {
         // Move knob to correct position
         setKnob(ang);
         setTemperature(angleToTemperature(ang));
-        lastAng = ang;
     }
 }
 
@@ -177,27 +170,28 @@ function smallDecreaseTemp(event) {
     setKnob(temperatureToAngle(temp));
 }
 
+/**
+ * Creates a timeline
+ * @param program {object} containing a set of switches in the following form:
+ * {
+ *       "switches": [
+ *           {
+ *               "type": "day|night",
+ *               "state": "on|off",
+ *               "time": "HH:MM"
+ *           }
+ *       ]
+ *   }
+ */
 function setDayProgram(program) {
-    /*
-     var exampleProgram = {
-         "switches": [
-             {
-                 "type": "day|night",
-                 "state": "on|off",
-                 "time": "HH:MM"
-             }
-         ]
-     }
-     */
-
     var switches = program && program["switches"];
     var timeline = document.getElementById('timeline');
     var part;
 
     // Remove all switches which are turned off
     switches = switches && switches.filter(function (s) {
-        return s["state"] === "on";
-    });
+            return s["state"] === "on";
+        });
 
     // If all switches are off, indicate vacation mode
     if (!switches || switches.length === 0) {
@@ -222,14 +216,18 @@ function setDayProgram(program) {
     });
 
     // Add two extra switches to night mode at midnight, if not already present
-    if (!switches.some(function(s) { return s["time"] === "00:00" })) {
+    if (!switches.some(function (s) {
+            return s["time"] === "00:00"
+        })) {
         switches.unshift({
             "type": "night",
             "state": "on",
             "time": "00:00"
         });
     }
-    if (!switches.some(function(s) { return s["time"] === "24:00"})) {
+    if (!switches.some(function (s) {
+            return s["time"] === "24:00"
+        })) {
         switches.push({
             "type": "night",
             "state": "on",
