@@ -225,7 +225,6 @@ function setNightTemperature(temp) {
     icon.style.transform = 'rotate(-' + ang + 'deg)';
 }
 
-// TODO: Fix issues when time has a minute other than 00
 /**
  * Creates a timeline
  * @param program {object} contains a set of switches in the following form:
@@ -308,8 +307,8 @@ function setDayProgram(program) {
         // Make the part last until the next switch
         var startTime = switches[i]["time"];
         var endTime = switches[i + 1]["time"];
-        var startTimeMins = startTime.substr(0, 2) * 60 + startTime.substr(3, 2);
-        var endTimeMins = endTime.substr(0, 2) * 60 + endTime.substr(3, 2);
+        var startTimeMins = parseInt(startTime.substr(0, 2)) * 60 + parseInt(startTime.substr(3, 2));
+        var endTimeMins = parseInt(endTime.substr(0, 2)) * 60 + parseInt(endTime.substr(3, 2));
         part.style.flexGrow = endTimeMins - startTimeMins;
 
         // For all but the first part, add a label with the starting time
