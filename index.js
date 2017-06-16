@@ -7,9 +7,14 @@ var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 
 // Get day and night temperature
-var dayTemperature = 21.5; // TODO: Get from server
-var nightTemperature = 18; // TODO: Get from server
-var dayProgram = {         // TODO: Get from server
+var day = 'Sunday';             // TODO: Get from server
+var time = '09:00';             // TODO: Get from server
+var currentTemperature =  21.5; // TODO: Get from server
+var targetTemperature = 21.5;   // TODO: Get from server
+var dayTemperature = 21.5;      // TODO: Get from server
+var nightTemperature = 18;      // TODO: Get from server
+var weekProgramState = 'on';    // TODO: Get from server
+var dayProgram = {              // TODO: Get from server
     "switches": [
         {
             "type": "day",
@@ -44,7 +49,7 @@ window.onload = function () {
 
     // Set UI elements to their corresponding values
     setKnob(temperatureToAngle(dayTemperature));
-    setTemperature(dayTemperature);
+    setTargetTemperature(dayTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
     setDayProgram(dayProgram);
@@ -72,8 +77,8 @@ window.onload = function () {
     document.addEventListener('touchmove', dragOrSwipe);
 
     // Wire up buttons
-    buttonUp.addEventListener('click', smallIncreaseTemp);
-    buttonDown.addEventListener('click', smallDecreaseTemp);
+    buttonUp.addEventListener('click', bumpUpTargetTemperature);
+    buttonDown.addEventListener('click', bumpDownTargetTemperature);
 };
 
 /**
@@ -107,7 +112,7 @@ function dragOrSwipe(event) {
 
         // Move knob to correct position
         setKnob(ang);
-        setTemperature(angleToTemperature(ang));
+        setTargetTemperature(angleToTemperature(ang));
     }
 }
 
@@ -150,20 +155,13 @@ function setKnob(ang) {
 }
 
 /**
- * Gets the temperature which the thermostst is supposed to keep
- * @returns {number}
- */
-function getTemperature() {
-    var setTemp = document.getElementById('set-temp-value');
-    return parseFloat(setTemp.innerHTML);
-}
-
-/**
  * Sets the temperature which the thermostst is supposed to keep
- * @param temp
+ * @param temp {number} target temperature
  */
-function setTemperature(temp) {
+function setTargetTemperature(temp) {
     var setTemp = document.getElementById('set-temp-value');
+    temp = parseFloat(temp);
+    targetTemperature = temp;
     temp = Math.round(temp * 10) / 10;
     if (temp === Math.round(temp)) {
         temp = temp + '.0';
@@ -176,14 +174,14 @@ function setTemperature(temp) {
  * is in the correct position
  * @param event {MouseEvent/TouchEvent} (optional) parameters for the clicking/touching event
  */
-function smallIncreaseTemp(event) {
+function bumpUpTargetTemperature(event) {
     event && event.preventDefault();
-    var temp = getTemperature();
+    var temp = getTargetTemperature();
     temp += buttonTempIncrement;
     if (temp > maxTemp) {
         temp = maxTemp
     }
-    setTemperature(temp);
+    setTargetTemperature(temp);
     setKnob(temperatureToAngle(temp));
 }
 
@@ -192,33 +190,49 @@ function smallIncreaseTemp(event) {
  * is in the correct position
  * @param event {MouseEvent/TouchEvent} (optional) parameters for the clicking/touching event
  */
-function smallDecreaseTemp(event) {
+function bumpDownTargetTemperature(event) {
     event && event.preventDefault();
-    var temp = getTemperature();
+    var temp = getTargetTemperature();
     temp -= buttonTempIncrement;
     if (temp < minTemp) {
         temp = minTemp
     }
-    setTemperature(temp);
+    setTargetTemperature(temp);
     setKnob(temperatureToAngle(temp));
 }
 
+/**
+ * Sets the temperature the thermostat is supposed to keep during a day period, when not overridden
+ * Places the day indicator line in the right position on the radial slider
+ * @param temp {number} day temperature
+ */
 function setDayTemperature(temp) {
     var line = document.getElementById('temp-line-day');
     var icon = line.getElementsByTagName('img')[0];
     var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
     var radius = (slider.offsetWidth - borderWidth) / 2;
 
+    temp = parseFloat(temp);
+    dayTemperature = temp;
+
     var ang = temperatureToAngle(temp);
     line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
     icon.style.transform = 'rotate(-' + ang + 'deg)';
 }
 
+/**
+ * Sets the temperature the thermostat is supposed to keep during a night period, when not overridden
+ * Places the night indicator line in the right position on the radial slider
+ * @param temp {number} day temperature
+ */
 function setNightTemperature(temp) {
     var line = document.getElementById('temp-line-night');
     var icon = line.getElementsByTagName('img')[0];
     var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
     var radius = (slider.offsetWidth - borderWidth) / 2;
+
+    temp = parseFloat(temp);
+    nightTemperature = temp;
 
     var ang = temperatureToAngle(temp);
     line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
@@ -250,7 +264,7 @@ function setDayProgram(program) {
         });
 
     // If all switches are off, indicate vacation mode
-    if (!switches || switches.length === 0) {
+    if (!switches || switches.length === 0 || weekProgramState !== 'on') {
         // Remove all timeline parts
         timeline.innerHTML = '';
 
