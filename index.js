@@ -191,18 +191,25 @@ function setDayProgram(program) {
      }
      */
 
-    var switches = program["switches"];
+    var switches = program && program["switches"];
     var timeline = document.getElementById('timeline');
+    var part;
 
     // Remove all switches which are turned off
-    switches = switches.filter(function (s) {
+    switches = switches && switches.filter(function (s) {
         return s["state"] === "on";
     });
 
     // If all switches are off, indicate vacation mode
-    if (switches.length === 0) {
-        // TODO: Show grey overlay on timeline and hide labels
-        alert('Vacation mode active');
+    if (!switches || switches.length === 0) {
+        // Remove all timeline parts
+        timeline.innerHTML = '';
+
+        // Add a disabled timeline part
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        part.classList.add('part--disabled');
+        timeline.appendChild(part);
         return;
     }
 
@@ -234,7 +241,6 @@ function setDayProgram(program) {
     // Remove all timeline parts
     timeline.innerHTML = '';
 
-    var part;
     for (var i = 0; i < switches.length - 1; i++) {
         // Make a part that has the same type as the beginning switch
         part = document.createElement('div');
