@@ -1,9 +1,38 @@
-var knob, slider, buttonUp, buttonDown, centerX, centerY;
+var knob, slider, buttonUp, buttonDown;
+var centerX, centerY;
 var mdown = false;
 var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
+
+// Get day and night temperature
+var dayTemperature = 21.5; // TODO: Get from server
+var nightTemperature = 18; // TODO: Get from server
+var dayProgram = {         // TODO: Get from server
+    "switches": [
+        {
+            "type": "day",
+            "state": "on",
+            "time": "07:00"
+        },
+        {
+            "type": "night",
+            "state": "on",
+            "time": "10:00"
+        },
+        {
+            "type": "day",
+            "state": "on",
+            "time": "16:00"
+        },
+        {
+            "type": "night",
+            "state": "on",
+            "time": "22:00"
+        }
+    ]
+};
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
@@ -13,8 +42,12 @@ window.onload = function () {
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
 
-    // Set knob to initial position
-    setKnob(45);
+    // Set UI elements to their corresponding values
+    setKnob(temperatureToAngle(dayTemperature));
+    setTemperature(dayTemperature);
+    setDayTemperature(dayTemperature);
+    setNightTemperature(nightTemperature);
+    setDayProgram(dayProgram);
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
@@ -79,24 +112,6 @@ function dragOrSwipe(event) {
 }
 
 /**
- * Places the knob in a position on the slider, determined by an angle
- * @param ang {number} angle between 45 and 315 degrees, where 45 is the bottom-left
- * 315 is the bottom-right of the slider
- */
-function setKnob(ang) {
-    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
-    var radius = (slider.offsetWidth - borderWidth) / 2;
-
-    // Calculate knob position relative to center
-    var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
-    var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
-
-    // Apply absolute knob position
-    knob.style.left = centerX - knob.offsetWidth / 2 + X + 'px';
-    knob.style.top = centerY - knob.offsetHeight / 2 + Y + 'px';
-}
-
-/**
  * Maps an angle representing the position of the knob on the radial slider, to a
  * temperature in the allowed range
  * @param ang {number} an angle between 45 and 315 degrees
@@ -114,6 +129,24 @@ function angleToTemperature(ang) {
  */
 function temperatureToAngle(temp) {
     return (temp - minTemp) / (maxTemp - minTemp) * 270 + 45;
+}
+
+/**
+ * Places the knob in a position on the slider, determined by an angle
+ * @param ang {number} angle between 45 and 315 degrees, where 45 is the bottom-left
+ * 315 is the bottom-right of the slider
+ */
+function setKnob(ang) {
+    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
+    var radius = (slider.offsetWidth - borderWidth) / 2;
+
+    // Calculate knob position relative to center
+    var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
+    var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
+
+    // Apply absolute knob position
+    knob.style.left = centerX - knob.offsetWidth / 2 + X + 'px';
+    knob.style.top = centerY - knob.offsetHeight / 2 + Y + 'px';
 }
 
 /**
@@ -170,9 +203,32 @@ function smallDecreaseTemp(event) {
     setKnob(temperatureToAngle(temp));
 }
 
+function setDayTemperature(temp) {
+    var line = document.getElementById('temp-line-day');
+    var icon = line.getElementsByTagName('img')[0];
+    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
+    var radius = (slider.offsetWidth - borderWidth) / 2;
+
+    var ang = temperatureToAngle(temp);
+    line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
+    icon.style.transform = 'rotate(-' + ang + 'deg)';
+}
+
+function setNightTemperature(temp) {
+    var line = document.getElementById('temp-line-night');
+    var icon = line.getElementsByTagName('img')[0];
+    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
+    var radius = (slider.offsetWidth - borderWidth) / 2;
+
+    var ang = temperatureToAngle(temp);
+    line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
+    icon.style.transform = 'rotate(-' + ang + 'deg)';
+}
+
+// TODO: Fix issues when time has a minute other than 00
 /**
  * Creates a timeline
- * @param program {object} containing a set of switches in the following form:
+ * @param program {object} contains a set of switches in the following form:
  * {
  *       "switches": [
  *           {
@@ -189,7 +245,8 @@ function setDayProgram(program) {
     var part;
 
     // Remove all switches which are turned off
-    switches = switches && switches.filter(function (s) {
+    switches =
+        switches && switches.filter(function (s) {
             return s["state"] === "on";
         });
 

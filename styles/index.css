@@ -1,6 +1,6 @@
 .timeline {
     display: flex;
-    margin: 48px 0;
+    margin: 48px 0 64px 0;
     width: 100%;
 }
 
@@ -46,13 +46,36 @@
 }
 
 .radial-slider__knob {
+    z-index: 2;
     position: absolute;
     height: 40px;
     width: 40px;
     background: #1976d2;
     border-radius: 50%;
     cursor: pointer;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+.radial-slider__line {
+    z-index: 1;
+    position: absolute;
+    width: 2px;
+    height: 48px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.line--day {
+    background-color: #bbdefb;
+}
+
+.line--night {
+    background-color: #0d47a1;
+}
+
+.radial-slider__line img {
+    width: 24px;
+    margin-left: -12px;
+    margin-top: 55px;
 }
 
 .temp-value {
