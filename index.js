@@ -91,7 +91,7 @@ function dragOrSwipe(event) {
  * 315 is the bottom-right of the slider
  */
 function setKnob(ang) {
-    var borderWidth = window.getComputedStyle(slider).borderWidth.slice(0, -2);
+    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
     var radius = (slider.offsetWidth - borderWidth) / 2;
 
     // Calculate knob position relative to center
