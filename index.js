@@ -1,4 +1,4 @@
-var knob, buttonUp, buttonDown, centerX, centerY;
+var knob, slider, buttonUp, buttonDown, centerX, centerY;
 var mdown = false;
 var lastAng = 45;
 var minTemp = 5;
@@ -8,10 +8,11 @@ var buttonTempIncrement = 0.1;
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
+    slider = document.getElementById('temp-slider');
     buttonUp = document.getElementById('temp-up');
     buttonDown = document.getElementById('temp-down');
-    centerX = knob.offsetLeft;
-    centerY = knob.offsetTop;
+    centerX = knob.offsetLeft + knob.offsetWidth / 2;
+    centerY = knob.offsetTop + knob.offsetHeight / 2;
 
     // Set knob to initial position
     setKnob(lastAng);
@@ -57,7 +58,6 @@ function dragOrSwipe(event) {
         event.preventDefault();
         document.documentElement.style.cursor = 'pointer';
 
-        // TODO: Fix slightly wrong angle
         var a;
         if (event.touches) {
             a = Math.atan2(centerX - event.touches[0].clientX, centerY - event.touches[0].clientY);
@@ -65,7 +65,7 @@ function dragOrSwipe(event) {
             a = Math.atan2(centerX - event.clientX, centerY - event.clientY);
         }
 
-        var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from
+        var ang = -a / (Math.PI / 180) + 180; // final (0-360 positive) degrees from straight down
 
         // Make sure the knob stays on the slider
         if (ang < 45) {
@@ -91,17 +91,16 @@ function dragOrSwipe(event) {
  * 315 is the bottom-right of the slider
  */
 function setKnob(ang) {
-    var sliderWidth = 295; // width + half border
-    var sliderHeight = 295; // height + half border
-    var radius = sliderWidth / 2;
+    var borderWidth = window.getComputedStyle(slider).borderWidth.slice(0, -2);
+    var radius = (slider.offsetWidth - borderWidth) / 2;
 
     // Calculate knob position relative to center
     var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
     var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
 
     // Apply absolute knob position
-    knob.style.left = centerX + X + 'px';
-    knob.style.top = centerY + Y + 'px';
+    knob.style.left = centerX - knob.offsetWidth / 2 + X + 'px';
+    knob.style.top = centerY - knob.offsetHeight / 2 + Y + 'px';
 }
 
 /**
