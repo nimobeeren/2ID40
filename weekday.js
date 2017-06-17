@@ -1,67 +1,212 @@
-window.addEventListener("load", doFirst, false);
-var presses = 0
-var adding = false;
-
-function doFirst() {
+window.onload = function () {
+    setDayProgram(dayProgram);
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
 }
 
-function display() {
-    var addbox = document.getElementById('addbox');
-    presses += 1;
-    if (presses>5 || adding == true) {
-        document.getElementById('add__button').style="disabled";
-        var removebutton = document.getElementByID('add__switch');
-        removebutton.innerHTML = "";
+var day = 'Monday';             // TODO: Get from server
+var time = '09:00';             // TODO: Get from server
+var weekProgramState = 'on';    // TODO: Get from server
+var dayProgram = {              // TODO: Get from server
+    "switches": [
+        {
+            "type": "day",
+            "state": "on",
+            "time": "07:00"
+        },
+        {
+            "type": "night",
+            "state": "on",
+            "time": "10:00"
+        },
+        {
+            "type": "day",
+            "state": "on",
+            "time": "16:00"
+        },
+        {
+            "type": "night",
+            "state": "on",
+            "time": "22:00"
+        }
+    ]
+};
+var switches;
+var adding = false;
+var existing = document.getElementById('existing_switches');
+var addBox = document.getElementById('addbox');
+var timeline = document.getElementById('timeline');
+var hideButton = document.getElementById('add__switch');
+
+function setDayProgram(program) {
+    switches = program && program["switches"];
+
+
+    updateSwitches();
+}
+
+function updateSwitches() {
+
+    var part;
+
+    // Add two extra switches to night mode at midnight, if not already present
+    if (!switches.some(function (s) {
+            return s["time"] === "00:00"
+        })) {
+        switches.unshift({
+            "type": "night",
+            "state": "on",
+            "time": "00:00"
+        });
     }
-    else if (presses<=5) {
+    if (!switches.some(function (s) {
+            return s["time"] === "24:00"
+        })) {
+        switches.push({
+            "type": "night",
+            "state": "on",
+            "time": "24:00"
+        })
+    }
+
+    // Remove all switches which are turned off
+    switches =
+        switches && switches.filter(function (s) {
+            return s["state"] === "on";
+        });
+
+    // If all switches are off, indicate vacation mode
+    if (!switches || switches.length === 0 || weekProgramState !== 'on') {
+        // Remove all timeline parts
+        timeline.innerHTML = '';
+
+        // Add a disabled timeline part
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        part.classList.add('part--disabled');
+        timeline.appendChild(part);
+        return;
+    }
+
+    // Sort switches by ascending time
+    switches.sort(function (a, b) {
+        if (a["time"].substr(0, 2) === b["time"].substr(0, 2)) {
+            return a["time"].substr(3, 2) > b["time"].substr(3, 2);
+        } else {
+            return a["time"].substr(0, 2) > b["time"].substr(0, 2);
+        }
+    });
+
+    // Remove all timeline parts
+    timeline.innerHTML = '';
+
+    for (var i = 0; i < switches.length - 1; i++) {
+        // Make a part that has the same type as the beginning switch
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        if (switches[i]["type"] === "day") {
+            part.classList.add('part--day');
+        } else {
+            part.classList.add('part--night');
+        }
+
+        // Make the part last until the next switch
+        var startTime = switches[i]["time"];
+        var endTime = switches[i + 1]["time"];
+        var startTimeMins = parseInt(startTime.substr(0, 2)) * 60 + parseInt(startTime.substr(3, 2));
+        var endTimeMins = parseInt(endTime.substr(0, 2)) * 60 + parseInt(endTime.substr(3, 2));
+        part.style.flexGrow = endTimeMins - startTimeMins;
+
+        // For all but the first part, add a label with the starting time
+        if (i !== 0) {
+            var label = document.createElement('div');
+            label.classList.add('timeline__label');
+            label.innerHTML = startTime;
+            part.appendChild(label);
+        }
+
+        // Add the part to the timeline
+        timeline.appendChild(part);
+    }
+
+    existing.innerHTML = "";
+    for (var i = 0; i < switches.length - 1; i+=2) {
+        var startTime = switches[i]["time"];
+        var endTime = switches[i + 1]["time"];
+        var switchType = switches[i]["type"];
+
+        if (startTime == "00:00" && endTime == "24:00") {
+            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" + startTime + "<img id='switch__icons' src='/icons/moon_white.svg'>" + endTime;
+        } else if (startTime ==  "00:00" && switchType == "Night") {
+            existing.innerHTML +="<div id='switch__info'><img id='switch__icons' src='/icons/moon_white.svg'>" + startTime +
+                "<input id='delete__switch' type='submit' value=''></div>";
+            i += 1;
+            var deleteSwitch = document.getElementById('delete__switch');
+            deleteSwitch.addEventListener("click", delSwitch, false);
+        } else {
+            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" + startTime + "<img id='switch__icons' src='/icons/moon_white.svg'>" + endTime +
+                "<input id='delete__switch' type='submit' value=''></div>";
+            var deleteSwitch = document.getElementById('delete__switch');
+            deleteSwitch.addEventListener("click", delSwitch, false);
+        }
+
+    }
+}
+
+/**stuff added made by Jari: */
+
+function display() {
+    hideButton.innerHTML = "";
+    if (switches.length >= 10 || adding == true) {
+        document.getElementById('add__button').style="disabled";
+
+    }
+    else if (switches.length < 10){
         adding = true;
-        addbox.innerHTML += "<form><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" +
-            "<input pattern='[0-9]{2}:[0-9]{2}' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
+        addBox.innerHTML += "<form><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" +
+            "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
             "<img id='switch__icons' src='/icons/moon_white.svg'>" +
-            "<input pattern='[0-9]{2}[ap]{1}m' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
+            "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
             "<input id='checkmark__button'  type='submit'  value=''></form>";
         var addSwitch = document.getElementById('checkmark__button');
         addSwitch.addEventListener("click", save, false);
     }
 }
 
-function save(){
+function save() {
     var one = document.getElementById('one').value;
     var two = document.getElementById('two').value;
     adding = false;
     /*add various types of checks here*/
-    if (one != "" && two != "") {
-        sessionStorage.setItem(one,two);
-        displaySwitch();
-        document.getElementById('one').value="";
-        document.getElementById('two').value="";
-    } else {
-        adding = true;
-    }
-}
-
-function displaySwitch() {
-    var existing = document.getElementById('existing_switches');
-    existing.innerHTML = "";
-    if (sessionStorage.length==5) {
-        document.getElementById('checkmark__button').style="disabled";
-    }
-    for (var x=0;x<sessionStorage.length;x++) {
-        var a = sessionStorage.key(x);
-        var b = sessionStorage.getItem(a);
-        /*add sorting here*/
-        existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>"+a+"<img id='switch__icons' src='/icons/moon_white.svg'>"+b+
-        "<input id='delete__switch' type='submit' value=''></div>";
-        addbox.innerHTML = "";
-        var deleteswitch = document.getElementById('delete__switch');
-        deleteswitch.addEventListener("click", delSwitch, false);
+    if (one != "" && two != "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(one) && /([0-9]|2[0-3]):[0-5][0-9]/.test(two)) {
+        switches.push({
+            "type": "day",
+            "state": "on",
+            "time": one
+        });
+        switches.push({
+            "type": "night",
+            "state": "on",
+            "time": two
+        });
+        existing.innerHTML = "";
+        updateSwitches();
+        addBox.innerHTML = "";
+        if (switches.length < 10) {
+            hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>"
+            var button = document.getElementById('add__button');
+            button.addEventListener("click", display, false);
+        }
     }
 }
 
 function delSwitch()
 {
-    existing_switches.innerHTML = "";
-
+    switches = [ ];
+    updateSwitches();
+    if (switches.length < 10) {
+        hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>"
+        var button = document.getElementById('add__button');
+        button.addEventListener("click", display, false);
+    }
 }

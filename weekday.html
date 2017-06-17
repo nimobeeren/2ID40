@@ -12,11 +12,25 @@
 </head>
 <body>
 <nav>
-    <img class="nav__button" src="/icons/ic_menu_white_24px.svg">
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)"></a>
+        <a href="/index.html">Today</a>
+        <div id="currentPage">Monday</div>
+        <a href="#">Tuesday</a>
+        <a href="#">Wednesday</a>
+        <a href="#">Thursday</a>
+        <a href="#">Friday</a>
+        <a href="#">Saturday</a>
+        <a href="#">Sunday</a>
+    </div>
+
+    <!-- Use any element to open the sidenav -->
+    <img class="nav__button" src="/icons/ic_menu_white_24px.svg" onclick="openNav()">
     <div class="nav__title">Monday</div>
     <img class="nav__button" src="/icons/ic_settings_white_24px.svg">
 </nav>
 <main>
+    <div class="swipe-area"></div>
     <div id="timeline" class="timeline">
     <div class="timeline__part part--disabled"></div>
 </div>
@@ -26,9 +40,10 @@
     <div id="add__switch">
         <input id="add__button"  type="submit"  value="ADD SWITCH">
     </div>
+
 </main>
 <script src="/api.js"></script>
-<script src="/index.js"></script>
 <script src="/weekday.js"></script>
+<script src="/navigation.js"></script>
 </body>
 </html>
