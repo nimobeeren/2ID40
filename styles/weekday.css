@@ -1,0 +1,74 @@
+#add__switch {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+#add__button {
+    background: url('/icons/ic_switch_add_40px.png') no-repeat left;
+    font-size: 26px;
+    padding-top: 3px;
+    padding-left: 50px;
+    padding-right: 15px;
+    font-family: "Source Code Pro", "Courier New";
+    border: 1px solid white;
+    height: 42px;
+    background-color: #1976d2;
+}
+
+input[type="submit"]{
+    border: none;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    -webkit-appearance:none;
+    outline: none;
+    color: #ffffff;
+}
+
+#switch__icons {
+    width: 30px;
+    height: 30px;
+    margin-right:10px;
+    margin-left:15px;
+}
+
+form {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 2px solid #aad9ff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#checkmark__button {
+    background: url('/icons/ic_checkmark_40px.png') no-repeat;
+    background-size:35px;
+    width:35px;
+    height:35px;
+    margin-left: 25px;
+}
+
+#delete__switch {
+    background: url('/icons/ic_delete_switch_40px.png') no-repeat;
+    background-size:35px;
+    width:35px;
+    height:35px;
+    margin-left: 25px;
+}
+
+#switch__info {
+    border-bottom: 2px solid #aad9ff;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    font-size: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#topBorder {
+    border-top: 2px solid #aad9ff;
+}
