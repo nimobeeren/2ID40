@@ -56,6 +56,10 @@ nav {
     border-top: 1px solid #aad9ff;
 }
 
+.sidenav a:last-child {
+    border-bottom: 1px solid #aad9ff;
+}
+
 /* When you mouse over the navigation links, change their color */
 .sidenav a:hover, .offcanvas a:focus{
     color: #64b5f6;
