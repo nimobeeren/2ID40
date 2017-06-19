@@ -66,9 +66,11 @@ function refresh() {
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             weekProgramXML = response;
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
-            day = $(weekProgramXML).find('day').attr('name');
+            // day = $(weekProgramXML).find('day').attr('name');
             weekProgramXMLToJSON(weekProgramXML);
             dayProgram = getSpecificDayProgram(day);
+            console.log(day);
+            console.log(dayProgram);
         }
     });
 }
@@ -107,15 +109,18 @@ function weekProgramXMLToJSON(xml) {
         var currentDay = $(weekSchedule[i]).attr('name');
         var switches = $(weekSchedule[i]).find('switch');
         weekProgramJSON[currentDay].switches = [];
-
         for (var j = 0; j < switches.length; j++) {
             weekProgramJSON[currentDay].switches.push({
                 type: $(switches[j]).attr('type'),
                 state: $(switches[j]).attr('state'),
                 time: $(switches[j])[0].innerHTML
             });
-            weekProgramJSON[currentDay].switches.sort(sortByTime);
         }
+        //Not sure if works
+        // weekProgramJSON[currentDay].switches.sort(sortByTime);
     }
+    // console.log(weekProgramJSON)
 }
+
+
 
