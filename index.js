@@ -7,37 +7,15 @@ var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 
 // Get day and night temperature
-var day = 'Sunday';             // TODO: Get from server
-var time = '09:00';             // TODO: Get from server
-var currentTemperature =  21.5; // TODO: Get from server
-var targetTemperature = 21.5;   // TODO: Get from server
-var dayTemperature = 21.5;      // TODO: Get from server
-var nightTemperature = 18;      // TODO: Get from server
-var weekProgramState = 'on';    // TODO: Get from server
-var dayProgram = {              // TODO: Get from server
-    "switches": [
-        {
-            "type": "day",
-            "state": "on",
-            "time": "07:00"
-        },
-        {
-            "type": "night",
-            "state": "on",
-            "time": "10:00"
-        },
-        {
-            "type": "day",
-            "state": "on",
-            "time": "16:00"
-        },
-        {
-            "type": "night",
-            "state": "on",
-            "time": "22:00"
-        }
-    ]
-};
+var day ;
+var time;
+var currentTemperature;
+var targetTemperature;
+var dayTemperature;
+var nightTemperature
+var weekProgramState
+var dayProgram;
+// console.log(dayProgram);
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');

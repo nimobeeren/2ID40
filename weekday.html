@@ -8,13 +8,15 @@
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="styles/weekday.css">
-    <script src="/index.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="index.js"></script>
 </head>
 <body>
 <nav>
     <div id="mySidenav" class="sidenav">
         <a href="javascript:void(0)"></a>
-        <a href="/index.html">Today</a>
+        <a href="index.html">Today</a>
         <div id="currentPage">Monday</div>
         <a href="#">Tuesday</a>
         <a href="#">Wednesday</a>
@@ -25,9 +27,9 @@
     </div>
 
     <!-- Use any element to open the sidenav -->
-    <img class="nav__button" src="/icons/ic_menu_white_24px.svg" onclick="openNav()">
+    <img class="nav__button" src="icons/ic_menu_white_24px.svg" onclick="openNav()">
     <div class="nav__title">Monday</div>
-    <img class="nav__button" src="/icons/ic_settings_white_24px.svg">
+    <img class="nav__button" src="icons/ic_settings_white_24px.svg">
 </nav>
 <main>
     <div class="swipe-area"></div>
@@ -42,8 +44,8 @@
     </div>
 
 </main>
-<script src="/api.js"></script>
-<script src="/weekday.js"></script>
-<script src="/navigation.js"></script>
+<script src="api.js"></script>
+<script src="weekday.js"></script>
+<script src="navigation.js"></script>
 </body>
 </html>
