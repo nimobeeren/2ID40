@@ -12,8 +12,8 @@ var time;
 var currentTemperature;
 var targetTemperature;
 var dayTemperature;
-var nightTemperature
-var weekProgramState
+var nightTemperature;
+var weekProgramState;
 var dayProgram;
 // console.log(dayProgram);
 

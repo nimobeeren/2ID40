@@ -3,34 +3,13 @@ window.onload = function () {
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
 }
+// Get day and night temperature
+var day ;
+var time;
+var weekProgramState;
+var dayProgram;
+// console.log(dayProgram);
 
-var day = 'Monday';             // TODO: Get from server
-var time = '09:00';             // TODO: Get from server
-var weekProgramState = 'on';    // TODO: Get from server
-var dayProgram = {              // TODO: Get from server
-    "switches": [
-        {
-            "type": "day",
-            "state": "on",
-            "time": "07:00"
-        },
-        {
-            "type": "night",
-            "state": "on",
-            "time": "10:00"
-        },
-        {
-            "type": "day",
-            "state": "on",
-            "time": "16:00"
-        },
-        {
-            "type": "night",
-            "state": "on",
-            "time": "22:00"
-        }
-    ]
-};
 var switches;
 var adding = false;
 var existing = document.getElementById('existing_switches');
@@ -38,15 +17,14 @@ var addBox = document.getElementById('addbox');
 var timeline = document.getElementById('timeline');
 var hideButton = document.getElementById('add__switch');
 
+
+
 function setDayProgram(program) {
     switches = program && program["switches"];
-
-
     updateSwitches();
 }
 
 function updateSwitches() {
-
     var part;
 
     // Add two extra switches to night mode at midnight, if not already present
