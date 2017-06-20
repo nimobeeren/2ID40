@@ -1,6 +1,6 @@
 var shown = false;
-addEventListener("click", getClickPosition, false)
-addEventListener("touch", getClickPosition, false)
+addEventListener("click", getClickPosition, false);
+addEventListener("touch", getClickPosition, false);
 
 /* Set the width of the side navigation to 250px */
 function openNav() {
@@ -19,7 +19,7 @@ function closeNav() {
 function getClickPosition(e) {
     var xPosition = e.clientX;
     //window.alert(xPosition);
-    if (shown = true) {
+    if (shown == true) {
         if (xPosition > 252) {
             closeNav();
         }
