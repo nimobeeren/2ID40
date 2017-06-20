@@ -57,8 +57,8 @@ window.onload = function () {
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
-        e.preventDefault();
         mdown = true;
+        e.preventDefault();
     });
     document.addEventListener('mouseup', function (e) {
         mdown = false;
@@ -179,7 +179,7 @@ function setTargetTemperature(temp) {
 function bumpUpTargetTemperature(event) {
     event && event.preventDefault();
     var temp = targetTemperature;
-    targetTemperature += buttonTempIncrement;
+    temp += buttonTempIncrement;
     if (temp > maxTemp) {
         temp = maxTemp
     }
@@ -310,6 +310,7 @@ function setDayProgram(program) {
     // Remove all timeline parts
     timeline.innerHTML = '';
 
+    // Generate timeline parts from the array of switches
     for (var i = 0; i < switches.length - 1; i++) {
         // Make a part that has the same type as the beginning switch
         part = document.createElement('div');
