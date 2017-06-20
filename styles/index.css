@@ -19,7 +19,7 @@
 }
 
 .part--disabled {
-    background: #bdbdbd url('/icons/ic_lock_grey_24px.svg') center no-repeat;
+    background: #bdbdbd url('../icons/ic_lock_grey_24px.svg') center no-repeat;
     background-size: 32px;
     box-shadow: none;
     flex-grow: 1;

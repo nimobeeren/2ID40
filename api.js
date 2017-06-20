@@ -1,7 +1,7 @@
 /**
  * Random thermostat id
  */
-var THERMOSTAT_ID = 11;
+var THERMOSTAT_ID = 843;
 
 /**
  * The REST API base url
@@ -68,15 +68,17 @@ function refresh() {
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             // day = $(weekProgramXML).find('day').attr('name');
             weekProgramXMLToJSON(weekProgramXML);
-            dayProgram = getSpecificDayProgram(day);
+            dayProgram = getDayProgram(day);
             console.log(day);
+            console.log(time);
             console.log(dayProgram);
         }
     });
+
 }
 
-function getSpecificDayProgram(specDay) {
-    return weekProgramJSON[specDay];
+function getDayProgram(day) {
+    return weekProgramJSON[day];
 }
 
 function sortByTime(a, b) {
@@ -85,21 +87,65 @@ function sortByTime(a, b) {
     return ((aTime < bTime) ? -1 : ((aTime > bTime) ? 1 : 0));
 }
 
-function saveProgram(weeklyProgram) {
 
-    var doc = $.parseXML("<xml/>");
-    var xml = doc.getElementsByTagName("xml")[0];
+function saveProgram() {
+    var weeklyProgram = weekProgramJSON;
+    var doc = document.implementation.createDocument(null, null, null);
+    var week = doc.createElement('week_program');
+    week.setAttribute('state', weekProgramState);
 
+    var day, switches;
+    for (var key in weeklyProgram) {
+        day = doc.createElement('day');
+        day.setAttribute('name', key);
+        for (var i in weeklyProgram[key].switches) {
+            switches = doc.createElement('switch');
+            switches.setAttribute('type', weeklyProgram[key].switches[i].type);
+            switches.setAttribute('state', weeklyProgram[key].switches[i].state);
+            switches.appendChild(doc.createTextNode(weeklyProgram[key].switches[i].time));
+            day.appendChild(switches);
+        }
+        week.appendChild(day);
+    }
+    doc.appendChild(week);
 
-    console.log(xml);
+    $.ajax({
+        type: "put",
+        url: BASE_URL + 'weekProgram/',
+        contentType: 'application/xml',
+        data: new XMLSerializer().serializeToString(doc)
+        // async: false,
+    });
+}
 
-    // $.ajax({
-    //     type: "put",
-    //     url: BASE_URL +  'weekProgram/',
-    //     contentType: 'application/xml',
-    //     data: xml,
-    //     async: false
-    // });
+function saveDayTemperature(temp) {
+    var doc = document.implementation.createDocument(null, null, null);
+    var day_temp = doc.createElement('day_temperature');
+    day_temp.appendChild(doc.createTextNode(temp));
+    doc.appendChild(day_temp);
+
+    $.ajax({
+        type: "put",
+        url: BASE_URL + 'dayTemperature/',
+        contentType: 'application/xml',
+        data: new XMLSerializer().serializeToString(doc)
+        // async: false,
+    });
+}
+
+function saveNightTemperature(temp) {
+    var doc = document.implementation.createDocument(null, null, null);
+    var night_temp = doc.createElement('night_temperature');
+    night_temp.appendChild(doc.createTextNode(temp));
+    doc.appendChild(night_temp);
+
+    $.ajax({
+        type: "put",
+        url: BASE_URL + 'nightTemperature/',
+        contentType: 'application/xml',
+        data: new XMLSerializer().serializeToString(doc)
+        // async: false,
+    });
 }
 
 function weekProgramXMLToJSON(xml) {
@@ -121,6 +167,4 @@ function weekProgramXMLToJSON(xml) {
     }
     // console.log(weekProgramJSON)
 }
-
-
 
