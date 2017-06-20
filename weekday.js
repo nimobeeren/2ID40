@@ -16,12 +16,12 @@ var existing = document.getElementById('existing_switches');
 var addBox = document.getElementById('addbox');
 var timeline = document.getElementById('timeline');
 var hideButton = document.getElementById('add__switch');
+var editingDay;
 
 
-
-function setWeekDayProgram(program) {
-    switches = program && program["switches"];
-    console.log(program);
+function setWeekDayProgram(day) {
+    switches = day && getDayProgram(day)["switches"];
+    editingDay = day;
     updateSwitches();
 }
 
@@ -176,6 +176,9 @@ function save() {
             var button = document.getElementById('add__button');
             button.addEventListener("click", display, false);
         }
+        //----save the new switch-----
+        weekProgramJSON[editingDay].switches = switches;
+        saveProgram();
     }
 }
 

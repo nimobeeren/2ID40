@@ -98,13 +98,23 @@ function saveProgram() {
     for (var key in weeklyProgram) {
         day = doc.createElement('day');
         day.setAttribute('name', key);
+        var type;
+        var dayCounter = 0;
+        var nightCounter = 0;
         for (var i in weeklyProgram[key].switches) {
             switches = doc.createElement('switch');
-            switches.setAttribute('type', weeklyProgram[key].switches[i].type);
+            type =  weeklyProgram[key].switches[i].type;
+            switches.setAttribute('type',type);
             switches.setAttribute('state', weeklyProgram[key].switches[i].state);
             switches.appendChild(doc.createTextNode(weeklyProgram[key].switches[i].time));
+            if(type === 'day'){
+                dayCounter++;
+            }else{
+                nightCounter++;
+            }
             day.appendChild(switches);
         }
+        day = fillMissingSwitches(dayCounter,nightCounter,day,doc);
         week.appendChild(day);
     }
     doc.appendChild(week);
@@ -113,7 +123,7 @@ function saveProgram() {
         type: "put",
         url: BASE_URL + 'weekProgram/',
         contentType: 'application/xml',
-        data: new XMLSerializer().serializeToString(doc)
+        data: new XMLSerializer().serializeToString(doc),
         // async: false,
     });
 }
@@ -168,3 +178,20 @@ function weekProgramXMLToJSON(xml) {
     // console.log(weekProgramJSON)
 }
 
+function fillMissingSwitches(dayCounter,nightCounter,day,doc){
+    for (var i = dayCounter ; i < 5 ; i++){
+        switches = doc.createElement('switch');
+        switches.setAttribute('type','day');
+        switches.setAttribute('state', 'off');
+        switches.appendChild(doc.createTextNode('00:00'));
+        day.appendChild(switches);
+    }
+    for (var j = nightCounter ; j < 5 ; j++){
+        switches = doc.createElement('switch');
+        switches.setAttribute('type','night');
+        switches.setAttribute('state', 'off');
+        switches.appendChild(doc.createTextNode('00:00'));
+        day.appendChild(switches);
+    }
+    return day;
+}
