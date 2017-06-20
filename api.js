@@ -1,7 +1,7 @@
 /**
  * Random thermostat id
  */
-var THERMOSTAT_ID = 843;
+var THERMOSTAT_ID = 423;
 
 /**
  * The REST API base url
@@ -68,6 +68,7 @@ function refresh() {
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             // day = $(weekProgramXML).find('day').attr('name');
             weekProgramXMLToJSON(weekProgramXML);
+            mergeProgram();
             dayProgram = getDayProgram(day);
             console.log(day);
             console.log(time);
@@ -81,14 +82,11 @@ function getDayProgram(day) {
     return weekProgramJSON[day];
 }
 
-function sortByTime(a, b) {
-    aTime = a.time;
-    bTime = b.time;
-    return ((aTime < bTime) ? -1 : ((aTime > bTime) ? 1 : 0));
-}
+
 
 
 function saveProgram() {
+    mergeProgram();
     var weeklyProgram = weekProgramJSON;
     var doc = document.implementation.createDocument(null, null, null);
     var week = doc.createElement('week_program');
@@ -98,23 +96,27 @@ function saveProgram() {
     for (var key in weeklyProgram) {
         day = doc.createElement('day');
         day.setAttribute('name', key);
-        var type;
+        var type, state, time;
         var dayCounter = 0;
         var nightCounter = 0;
         for (var i in weeklyProgram[key].switches) {
             switches = doc.createElement('switch');
-            type =  weeklyProgram[key].switches[i].type;
-            switches.setAttribute('type',type);
-            switches.setAttribute('state', weeklyProgram[key].switches[i].state);
-            switches.appendChild(doc.createTextNode(weeklyProgram[key].switches[i].time));
-            if(type === 'day'){
+            type = weeklyProgram[key].switches[i].type;
+            state = weeklyProgram[key].switches[i].state;
+            time = weeklyProgram[key].switches[i].time;
+            if (type === 'night' && state === 'on' && (time == '24:00' || time == '00:00')) continue;
+
+            switches.setAttribute('type', type);
+            switches.setAttribute('state', state);
+            switches.appendChild(doc.createTextNode(time));
+            if (type === 'day') {
                 dayCounter++;
-            }else{
+            } else {
                 nightCounter++;
             }
             day.appendChild(switches);
         }
-        day = fillMissingSwitches(dayCounter,nightCounter,day,doc);
+        day = fillMissingSwitches(dayCounter, nightCounter, day, doc);
         week.appendChild(day);
     }
     doc.appendChild(week);
@@ -178,20 +180,48 @@ function weekProgramXMLToJSON(xml) {
     // console.log(weekProgramJSON)
 }
 
-function fillMissingSwitches(dayCounter,nightCounter,day,doc){
-    for (var i = dayCounter ; i < 5 ; i++){
+function fillMissingSwitches(dayCounter, nightCounter, day, doc) {
+    for (var i = dayCounter; i < 5; i++) {
         switches = doc.createElement('switch');
-        switches.setAttribute('type','day');
+        switches.setAttribute('type', 'day');
         switches.setAttribute('state', 'off');
         switches.appendChild(doc.createTextNode('00:00'));
         day.appendChild(switches);
     }
-    for (var j = nightCounter ; j < 5 ; j++){
+    for (var j = nightCounter; j < 5; j++) {
         switches = doc.createElement('switch');
-        switches.setAttribute('type','night');
+        switches.setAttribute('type', 'night');
         switches.setAttribute('state', 'off');
         switches.appendChild(doc.createTextNode('00:00'));
         day.appendChild(switches);
     }
+    console.log(day);
     return day;
+}
+
+
+function mergeProgram() {
+    var first, second;
+    for (var key in weekProgramJSON) {
+        weekProgramJSON[key].switches.sort(sortByTime);
+        console.log(key)
+        for (var i = 0; i < weekProgramJSON[key].switches.length - 1; i++) {
+            first = weekProgramJSON[key].switches[i];
+            second = weekProgramJSON[key].switches[i + 1];
+
+            if (second.type === first.type) {
+                // console.log(first);
+                // console.log(second);
+                // console.log('----');
+                weekProgramJSON[key].switches.splice(i + 1, 1);
+                // i++;
+            }
+        }
+    }
+}
+
+function sortByTime(a, b) {
+    aTime = a.time;
+    bTime = b.time;
+    return ((aTime < bTime) ? -1 : ((aTime > bTime) ? 1 : 0));
 }

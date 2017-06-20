@@ -2,6 +2,7 @@ window.onload = function () {
     // setWeekDayProgram(dayProgram);
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
+
 }
 // Get day and night temperature
 var day ;
@@ -113,12 +114,13 @@ function updateSwitches() {
     for (var i = 0; i < switches.length - 1; i+=1) {
         var startTime = switches[i]["time"];
         var endTime = switches[i + 1]["time"];
+        if (startTime == endTime) continue;
         var switchType = switches[i]["type"];
-        if (switchType == "night" && prevType == "night") {
-            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/moon_white.svg'>" + startTime + " - " + endTime +
+        if (switchType == "night") {
+            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='icons/moon_white.svg'>" + startTime + " - " + endTime +
                 "<input id='delete__switch' type='submit' value=''></div>";
         } else if (switchType == "day") {
-            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" + startTime + " - " + endTime +
+            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" + startTime + " - " + endTime +
                 "<input id='delete__switch' type='submit' value=''></div>";
         }
     }
@@ -134,9 +136,9 @@ function display() {
     }
     else if (switches.length < 10){
         adding = true;
-        addBox.innerHTML += "<form><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" +
+        addBox.innerHTML += "<form><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
-            "<img id='switch__icons' src='/icons/moon_white.svg'>" +
+            "<img id='switch__icons' src='icons/moon_white.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
             "<input id='checkmark__button'  type='submit'  value=''></form>";
         var addSwitch = document.getElementById('checkmark__button');
