@@ -5,7 +5,7 @@
 }
 
 #add__button {
-    background: url('/icons/ic_switch_add_40px.png') no-repeat left;
+    background: url('../icons/ic_switch_add_40px.png') no-repeat left;
     font-size: 26px;
     padding-top: 3px;
     padding-left: 50px;
@@ -44,7 +44,7 @@ form {
 }
 
 #checkmark__button {
-    background: url('/icons/ic_checkmark_40px.png') no-repeat;
+    background: url('../icons/ic_checkmark_40px.png') no-repeat;
     background-size:35px;
     width:35px;
     height:35px;
@@ -52,7 +52,7 @@ form {
 }
 
 #delete__switch {
-    background: url('/icons/ic_delete_switch_40px.png') no-repeat;
+    background: url('../icons/ic_delete_switch_40px.png') no-repeat;
     background-size:35px;
     width:35px;
     height:35px;

@@ -1,5 +1,5 @@
 window.onload = function () {
-    setDayProgram(dayProgram);
+    // setWeekDayProgram(dayProgram);
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
 }
@@ -19,8 +19,9 @@ var hideButton = document.getElementById('add__switch');
 
 
 
-function setDayProgram(program) {
+function setWeekDayProgram(program) {
     switches = program && program["switches"];
+    console.log(program);
     updateSwitches();
 }
 
@@ -114,15 +115,15 @@ function updateSwitches() {
         var switchType = switches[i]["type"];
 
         if (startTime == "00:00" && endTime == "24:00") {
-            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" + startTime + "<img id='switch__icons' src='/icons/moon_white.svg'>" + endTime;
+            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" + startTime + "<img id='switch__icons' src='icons/moon_white.svg'>" + endTime;
         } else if (startTime ==  "00:00" && switchType == "Night") {
-            existing.innerHTML +="<div id='switch__info'><img id='switch__icons' src='/icons/moon_white.svg'>" + startTime +
+            existing.innerHTML +="<div id='switch__info'><img id='switch__icons' src='icons/moon_white.svg'>" + startTime +
                 "<input id='delete__switch' type='submit' value=''></div>";
             i += 1;
             var deleteSwitch = document.getElementById('delete__switch');
             deleteSwitch.addEventListener("click", delSwitch, false);
         } else {
-            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" + startTime + "<img id='switch__icons' src='/icons/moon_white.svg'>" + endTime +
+            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" + startTime + "<img id='switch__icons' src='icons/moon_white.svg'>" + endTime +
                 "<input id='delete__switch' type='submit' value=''></div>";
             var deleteSwitch = document.getElementById('delete__switch');
             deleteSwitch.addEventListener("click", delSwitch, false);
@@ -141,9 +142,9 @@ function display() {
     }
     else if (switches.length < 10){
         adding = true;
-        addBox.innerHTML += "<form><img id='switch__icons' src='/icons/ic_wb_sunny_white_24px.svg'>" +
+        addBox.innerHTML += "<form><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
-            "<img id='switch__icons' src='/icons/moon_white.svg'>" +
+            "<img id='switch__icons' src='icons/moon_white.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
             "<input id='checkmark__button'  type='submit'  value=''></form>";
         var addSwitch = document.getElementById('checkmark__button');

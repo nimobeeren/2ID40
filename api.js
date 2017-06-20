@@ -68,7 +68,7 @@ function refresh() {
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             // day = $(weekProgramXML).find('day').attr('name');
             weekProgramXMLToJSON(weekProgramXML);
-            dayProgram = getSpecificDayProgram(day);
+            dayProgram = getDayProgram(day);
             console.log(day);
             console.log(time);
             console.log(dayProgram);
@@ -77,8 +77,8 @@ function refresh() {
 
 }
 
-function getSpecificDayProgram(specDay) {
-    return weekProgramJSON[specDay];
+function getDayProgram(day) {
+    return weekProgramJSON[day];
 }
 
 function sortByTime(a, b) {
