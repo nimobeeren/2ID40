@@ -1,7 +1,7 @@
 /**
  * Random thermostat id
  */
-var THERMOSTAT_ID = 1;
+var THERMOSTAT_ID = 11;
 
 /**
  * The REST API base url
