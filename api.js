@@ -88,8 +88,8 @@ function sortByTime(a, b) {
 }
 
 
-function saveProgram(weeklyProgram) {
-
+function saveProgram() {
+    var weeklyProgram = weekProgramJSON;
     var doc = document.implementation.createDocument(null, null, null);
     var week = doc.createElement('week_program');
     week.setAttribute('state', weekProgramState);
