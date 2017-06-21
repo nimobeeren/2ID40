@@ -29,6 +29,13 @@ function setWeekDayProgram(day) {
 function updateSwitches() {
     var part;
     switches = getDayProgram(editingDay)["switches"];
+    if (switches.length >= 10) {
+        $('#add__button').hide();
+    }else{
+        $('#add__button').show();
+
+    }
+
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {
