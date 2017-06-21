@@ -2,10 +2,11 @@
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #add__button {
-    background: url('../icons/ic_switch_add_40px.png') no-repeat left;
+    background: url('/icons/ic_switch_add_40px.png') no-repeat left;
     font-size: 26px;
     padding-top: 3px;
     padding-left: 50px;
@@ -36,27 +37,30 @@ input[type="submit"]{
 
 form {
     display:flex;
-    justify-content: center;
+    padding-left: 10%;
     align-items: center;
     border-bottom: 2px solid #aad9ff;
     padding-top: 15px;
     padding-bottom: 15px;
+    width: 90%;
 }
 
 #checkmark__button {
-    background: url('../icons/ic_checkmark_40px.png') no-repeat;
+    background: url('/icons/ic_checkmark_40px.png') no-repeat;
     background-size:35px;
     width:35px;
     height:35px;
-    margin-left: 25px;
+    position: absolute;
+    right: 10%;
 }
 
 .delete__switch {
-    background: url('../icons/ic_delete_switch_40px.png') no-repeat;
+    background: url('/icons/ic_delete_switch_40px.png') no-repeat;
     background-size:35px;
     width:35px;
     height:35px;
-    margin-left: 25px;
+    right: 10%;
+    position: absolute;
 }
 
 .switch__info {
@@ -64,11 +68,11 @@ form {
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 24px;
+    padding-left: 10%;
+    width: 90%;
     display: flex;
-    justify-content: center;
-    align-items: center;
 }
 
-#topBorder {
+.switch__info:first-child {
     border-top: 2px solid #aad9ff;
 }
