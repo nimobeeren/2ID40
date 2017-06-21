@@ -29,18 +29,15 @@ function setWeekDayProgram(day) {
 function updateSwitches() {
     var part;
     switches = getDayProgram(editingDay)["switches"];
-    if (switches.length >= 10) {
-        $('#add__button').hide();
-    }else{
-        $('#add__button').show();
 
-    }
 
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {
             return (s["state"] === "on" && s["time"] !== "00:00");
         });
+
+
 
     // Add two extra switches to night mode at midnight, if not already present
     if (!switches.some(function (s) {
@@ -87,14 +84,23 @@ function updateSwitches() {
     // Remove all timeline parts
     timeline.innerHTML = '';
 
+    var dayCounter = 0;
     for (var i = 0; i < switches.length - 1; i++) {
         // Make a part that has the same type as the beginning switch
         part = document.createElement('div');
         part.classList.add('timeline__part');
         if (switches[i]["type"] === "day") {
+            dayCounter++;
             part.classList.add('part--day');
         } else {
             part.classList.add('part--night');
+        }
+
+        if (dayCounter >=4 ) {
+            $('#add__button').hide();
+        }else{
+            $('#add__button').show();
+
         }
 
         // Make the part last until the next switch
