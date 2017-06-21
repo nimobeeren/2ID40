@@ -1,9 +1,4 @@
-window.onload = function () {
-    // setWeekDayProgram(dayProgram);
-    var button = document.getElementById('add__button');
-    button.addEventListener("click", display, false);
 
-}
 // Get day and night temperature
 var day ;
 var time;
@@ -17,8 +12,14 @@ var existing = document.getElementById('existing_switches');
 var addBox = document.getElementById('addbox');
 var timeline = document.getElementById('timeline');
 var hideButton = document.getElementById('add__switch');
+var deleteSwitch;
 var editingDay;
 
+window.onload = function() {
+    setWeekDayProgram(dayProgram);
+    var button = document.getElementById('add__button');
+    button.addEventListener("click", display, false);
+}
 
 function setWeekDayProgram(day) {
     switches = day && getDayProgram(day)["switches"];
@@ -32,8 +33,7 @@ function updateSwitches() {
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {
-            return s["state"] === "on";
-            return s["time"] !== "00:00";
+            return (s["state"] === "on" && s["time"] !== "00:00");
         });
 
     // Add two extra switches to night mode at midnight, if not already present
@@ -109,19 +109,30 @@ function updateSwitches() {
         // Add the part to the timeline
         timeline.appendChild(part);
     }
-    /**stuff added made by Jari: */
+
     existing.innerHTML = "";
     for (var i = 0; i < switches.length - 1; i+=1) {
-        var startTime = switches[i]["time"];
-        var endTime = switches[i + 1]["time"];
-        if (startTime == endTime) continue;
+        var firstTime = switches[i]["time"];
+        var secondTime = switches[i + 1]["time"];
         var switchType = switches[i]["type"];
-        if (switchType == "night") {
-            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='icons/moon_white.svg'>" + startTime + " - " + endTime +
-                "<input id='delete__switch' type='submit' value=''></div>";
-        } else if (switchType == "day") {
-            existing.innerHTML += "<div id='switch__info'><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" + startTime + " - " + endTime +
-                "<input id='delete__switch' type='submit' value=''></div>";
+        if (firstTime === "00:00" && secondTime === "24:00" && switchType === "night") {
+            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/moon_white.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>";
+        } else if (firstTime === "00:00" && secondTime === "24:00" && switchType === "day") {
+            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>";
+        } else if (switchType === "night") {
+            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/moon_white.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>" +
+                "<input class='delete__switch' type='submit' value=''></div>";
+            deleteSwitch = document.getElementsByClassName('delete__switch');
+            for (var k = 0; k < deleteSwitch.length; k++) {
+                deleteSwitch[k].addEventListener('click', delSwitch, false);
+            }
+        } else if (switchType === "day") {
+            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>" +
+                "<input class='delete__switch' type='submit' value=''></div>";
+            deleteSwitch = document.getElementsByClassName('delete__switch');
+            for (var k = 0; k < deleteSwitch.length; k++) {
+                deleteSwitch[k].addEventListener('click', delSwitch, false);
+            }
         }
     }
 }
@@ -130,15 +141,14 @@ function updateSwitches() {
 
 function display() {
     hideButton.innerHTML = "";
-    if (switches.length >= 10 || adding == true) {
+    if (switches.length >= 10 || adding === true) {
         document.getElementById('add__button').style="disabled";
-
     }
     else if (switches.length < 10){
         adding = true;
-        addBox.innerHTML += "<form><img id='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" +
+        addBox.innerHTML += "<form><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
-            "<img id='switch__icons' src='icons/moon_white.svg'>" +
+            "<img class='switch__icons' src='icons/moon_white.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
             "<input id='checkmark__button'  type='submit'  value=''></form>";
         var addSwitch = document.getElementById('checkmark__button');
@@ -151,7 +161,7 @@ function save() {
     var two = document.getElementById('two').value;
     adding = false;
     /*add various types of checks here*/
-    if (one != "" && two != "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(one) && /([0-9]|2[0-3]):[0-5][0-9]/.test(two)) {
+    if (one !== "" && two !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(one) && /([0-9]|2[0-3]):[0-5][0-9]/.test(two)) {
         switches.push({
             "type": "day",
             "state": "on",
@@ -176,13 +186,15 @@ function save() {
     }
 }
 
-function delSwitch()
-{
-    switches = [ ];
-    updateSwitches();
-    if (switches.length < 10) {
-        hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>"
-        var button = document.getElementById('add__button');
-        button.addEventListener("click", display, false);
+function delSwitch(event) {
+    var target = event.target;
+    var parent = target.parentElement;//parent of "target"
+    var start = parent.childNodes[1].innerHTML;
+    var end = parent.childNodes[3].innerHTML;
+    for (var i = 0; i < switches.length - 1; i++) {
+        if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
+            switches.splice(i, 2);
+            updateSwitches();
+        }
     }
 }
