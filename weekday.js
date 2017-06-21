@@ -163,6 +163,8 @@ function save() {
     adding = false;
     /*add various types of checks here*/
     if (one !== "" && two !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(one) && /([0-9]|2[0-3]):[0-5][0-9]/.test(two)) {
+        one = normalizeTime(one);
+        two = normalizeTime(two);
         switches.push({
             "type": "day",
             "state": "on",
@@ -195,11 +197,21 @@ function delSwitch(event) {
     for (var i = 0; i < switches.length - 1; i++) {
         if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
             switches.splice(i, 2);
-            console.log('----')
-            console.log(switches)
             weekProgramJSON[editingDay].switches = switches;
             saveProgram();
             updateSwitches();
         }
     }
+}
+
+function normalizeTime(time){
+    var startPattern = /^[0-9]:[0-5][0-9]?$/;
+    var endPattern = /[0-2]?[0-9]:[0-5]$/;
+    if (startPattern.test(time)){
+        time = '0'+time;
+    }
+    if (endPattern.test(time)){
+        time = time+'0';
+    }
+    return time;
 }
