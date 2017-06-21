@@ -27,7 +27,7 @@ input[type="submit"]{
     color: #ffffff;
 }
 
-#switch__icons {
+.switch__icons {
     width: 30px;
     height: 30px;
     margin-right:10px;
@@ -51,7 +51,7 @@ form {
     margin-left: 25px;
 }
 
-#delete__switch {
+.delete__switch {
     background: url('../icons/ic_delete_switch_40px.png') no-repeat;
     background-size:35px;
     width:35px;
@@ -59,7 +59,7 @@ form {
     margin-left: 25px;
 }
 
-#switch__info {
+.switch__info {
     border-bottom: 2px solid #aad9ff;
     padding-top: 15px;
     padding-bottom: 15px;

@@ -79,6 +79,7 @@ function refresh() {
 }
 
 function getDayProgram(day) {
+    // mergeProgram();
     return weekProgramJSON[day];
 }
 
@@ -204,24 +205,18 @@ function mergeProgram() {
     var first, second;
     for (var key in weekProgramJSON) {
         weekProgramJSON[key].switches.sort(sortByTime);
-        console.log(key)
-        for (var i = 0; i < weekProgramJSON[key].switches.length - 1; i++) {
+        for (var i = 0; i < weekProgramJSON[key].switches.length - 2 ; i++) {
             first = weekProgramJSON[key].switches[i];
             second = weekProgramJSON[key].switches[i + 1];
-
             if (second.type === first.type) {
-                // console.log(first);
-                // console.log(second);
-                // console.log('----');
                 weekProgramJSON[key].switches.splice(i + 1, 1);
-                // i++;
             }
         }
     }
 }
 
 function sortByTime(a, b) {
-    aTime = a.time;
-    bTime = b.time;
+    var aTime = a.time;
+    var bTime = b.time;
     return ((aTime < bTime) ? -1 : ((aTime > bTime) ? 1 : 0));
 }

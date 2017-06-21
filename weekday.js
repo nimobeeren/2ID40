@@ -28,7 +28,7 @@ function setWeekDayProgram(day) {
 
 function updateSwitches() {
     var part;
-
+    switches = getDayProgram(editingDay)["switches"];
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {
@@ -172,7 +172,6 @@ function save() {
             "time": two
         });
         existing.innerHTML = "";
-        updateSwitches();
         addBox.innerHTML = "";
         if (switches.length < 10) {
             hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>"
@@ -182,6 +181,7 @@ function save() {
         //----save the new switch-----
         weekProgramJSON[editingDay].switches = switches;
         saveProgram();
+        updateSwitches();
     }
 }
 
@@ -193,6 +193,10 @@ function delSwitch(event) {
     for (var i = 0; i < switches.length - 1; i++) {
         if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
             switches.splice(i, 2);
+            console.log('----')
+            console.log(switches)
+            weekProgramJSON[editingDay].switches = switches;
+            saveProgram();
             updateSwitches();
         }
     }
