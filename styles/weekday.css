@@ -73,6 +73,6 @@ form {
     display: flex;
 }
 
-.switch__info:first-child {
+#existing_switches {
     border-top: 2px solid #aad9ff;
 }
