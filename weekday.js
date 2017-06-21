@@ -16,7 +16,6 @@ var deleteSwitch;
 var editingDay;
 
 window.onload = function() {
-    setWeekDayProgram(dayProgram);
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
 }
