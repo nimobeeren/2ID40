@@ -83,7 +83,15 @@ function getDayProgram(day) {
     return weekProgramJSON[day];
 }
 
-
+function setTargetTemp(target){
+    $.ajax({
+        type: "put",
+        url: BASE_URL + 'targetTemperature/',
+        contentType: 'application/xml',
+        data: '<target_temperature>' + target + '</target_temperature>',
+        async: false,
+    });
+}
 
 
 function saveProgram() {
