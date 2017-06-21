@@ -24,13 +24,7 @@ window.onload = function () {
     buttonDown = document.getElementById('temp-down');
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
-
-    // Set UI elements to their corresponding values
-    setKnob(temperatureToAngle(dayTemperature));
-    setTargetTemperature(dayTemperature);
-    setDayTemperature(dayTemperature);
-    setNightTemperature(nightTemperature);
-    setDayProgram(dayProgram);
+    refreshDashBoard();
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
@@ -58,6 +52,19 @@ window.onload = function () {
     buttonUp.addEventListener('click', bumpUpTargetTemperature);
     buttonDown.addEventListener('click', bumpDownTargetTemperature);
 };
+
+
+function refreshDashBoard(){
+    // Set UI elements to their corresponding values
+    setKnob(temperatureToAngle(targetTemperature));
+    setTargetTemperature(targetTemperature);
+    setDayTemperature(dayTemperature);
+    setNightTemperature(nightTemperature);
+    setDayProgram(dayProgram);
+}
+
+setInterval(refresh,4000);
+setInterval(refreshDashBoard,4000)
 
 /**
  * Moves knob and sets temperature when knob is moved by user

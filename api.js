@@ -24,7 +24,6 @@ var weekProgramJSON = {
 };
 
 initialize();
-setInterval(refresh,3000); //TODO remove to auto refresh
 
 // ----------------------
 
