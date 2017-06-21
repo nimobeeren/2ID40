@@ -24,7 +24,7 @@ var weekProgramJSON = {
 };
 
 initialize();
-// setInterval(refresh,10000); //TODO remove to auto refresh
+setInterval(refresh,3000); //TODO remove to auto refresh
 
 // ----------------------
 
@@ -73,6 +73,7 @@ function refresh() {
             console.log(day);
             console.log(time);
             console.log(dayProgram);
+            console.log(currentTemperature);
         }
     });
 

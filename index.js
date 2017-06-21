@@ -145,6 +145,7 @@ function setTargetTemperature(temp) {
         temp = temp + '.0';
     }
     setTemp.innerHTML = temp + "&deg;";
+    setTargetTemp(temp);
 }
 
 /**
