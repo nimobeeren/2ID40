@@ -87,3 +87,17 @@ nav {
     padding-left: 20px;
     border-top: 1px solid #aad9ff;
 }
+
+#setIcon {
+    display: flex;
+    height: 48px;
+    vertical-align: middle;
+    line-height: 48px;
+}
+
+.settings {
+    font-size: 24px;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
