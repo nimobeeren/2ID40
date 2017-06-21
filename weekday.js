@@ -114,17 +114,8 @@ function updateSwitches() {
         var firstTime = switches[i]["time"];
         var secondTime = switches[i + 1]["time"];
         var switchType = switches[i]["type"];
-        if (firstTime === "00:00" && secondTime === "24:00" && switchType === "night") {
-            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/moon_white.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>";
-        } else if (firstTime === "00:00" && secondTime === "24:00" && switchType === "day") {
+        if (firstTime === "00:00" && secondTime === "24:00" && switchType === "day") {
             existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>";
-        } else if (switchType === "night") {
-            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/moon_white.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>" +
-                "<input class='delete__switch' type='submit' value=''></div>";
-            deleteSwitch = document.getElementsByClassName('delete__switch');
-            for (var k = 0; k < deleteSwitch.length; k++) {
-                deleteSwitch[k].addEventListener('click', delSwitch, false);
-            }
         } else if (switchType === "day") {
             existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>" +
                 "<input class='delete__switch' type='submit' value=''></div>";
@@ -136,8 +127,6 @@ function updateSwitches() {
     }
 }
 
-
-
 function display() {
     hideButton.innerHTML = "";
     if (switches.length >= 10 || adding === true) {
@@ -147,7 +136,7 @@ function display() {
         adding = true;
         addBox.innerHTML += "<form><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
-            "<img class='switch__icons' src='icons/moon_white.svg'>" +
+            "<span>&nbsp;-&nbsp;</span>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
             "<input id='checkmark__button'  type='submit'  value=''></form>";
         var addSwitch = document.getElementById('checkmark__button');

@@ -3,11 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Saturday</title>
+    <title>Settings</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
     <link rel="stylesheet" href="styles/index.css">
-    <link rel="stylesheet" href="styles/weekday.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body id="el">
@@ -20,30 +19,35 @@
         <a href="wednesday.html">Wednesday</a>
         <a href="thursday.html">Thursday</a>
         <a href="friday.html">Friday</a>
-        <div id="currentPage">Saturday</div>
+        <a href="saturday.html">Saturday</a>
         <a href="sunday.html">Sunday</a>
     </div>
-
-    <!-- Use any element to open the sidenav -->
     <img class="nav__button" src="icons/ic_menu_white_24px.svg" onclick="openNav()">
-    <div class="nav__title">Saturday</div>
-    <img class="nav__button" src="icons/ic_settings_white_24px.svg">
+    <div class="nav__title">Settings</div>
+    <img class="nav__button" src="icons/ic_settings_white_24px.svg" style="visibility:hidden">
 </nav>
 <main>
-    <div class="swipe-area"></div>
-    <div id="timeline" class="timeline">
-    <div class="timeline__part part--disabled"></div>
-</div>
-    <div id="existing_switches"></div>
-    <div id="addbox"></div>
-    <div id="add__switch">
-        <input id="add__button"  type="submit"  value="ADD SWITCH">
+    <div class="settings">Set Day Temperature
+        <a class="temp-button">
+            <img src="icons/ic_arrow_drop_up_white_24px.svg">
+        </a>
+        <div id="set-temp-value" class="temp-value">5.0&deg;</div>
+        <a class="temp-button">
+            <img src="icons/ic_arrow_drop_down_white_24px.svg">
+        </a>
     </div>
-
+    <div class="settings">Set Night Temperature
+        <a class="temp-button">
+            <img src="icons/ic_arrow_drop_up_white_24px.svg">
+        </a>
+        <div id="set-temp-value" class="temp-value">5.0&deg;</div>
+        <a class="temp-button">
+            <img src="icons/ic_arrow_drop_down_white_24px.svg">
+        </a>
+    </div>
 </main>
 <script src="api.js"></script>
-<script src="weekday.js"></script>
+<script src="index.js"></script>
 <script src="navigation.js"></script>
-<script>setWeekDayProgram('Saturday');</script>
 </body>
 </html>
