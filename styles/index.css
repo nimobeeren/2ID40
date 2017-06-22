@@ -25,11 +25,18 @@
     flex-grow: 1;
 }
 
-.timeline__label {
+.timeline__label__day {
     width: 0;
     text-align: center;
     margin-left: -16px;
     margin-top: -20px;
+}
+
+.timeline__label__night {
+    width: 0;
+    text-align: center;
+    margin-left: -16px;
+    margin-top: 48px;
 }
 
 .radial-slider {
