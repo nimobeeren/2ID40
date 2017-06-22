@@ -4,6 +4,7 @@ var buttonTempIncrement = 0.1;
 var dayTemperature;
 var nightTemperature;
 var buttonUpDay, buttonDownDay, buttonUpNight, buttonDownNight;
+var intValUpDay, intValDownDay, intValUpNight, intValDownNight;
 
 window.onload = function () {
     buttonUpDay = document.getElementById('temp-up-day');
@@ -18,6 +19,17 @@ window.onload = function () {
     buttonDownDay.addEventListener('click', bumpDownDayTemperature);
     buttonUpNight.addEventListener('click', bumpUpNightTemperature);
     buttonDownNight.addEventListener('click', bumpDownNightTemperature);
+
+    buttonUpDay.addEventListener('mousedown', intervalUpDay);
+    buttonDownDay.addEventListener('mousedown', intervalDownDay);
+    buttonUpNight.addEventListener('mousedown', intervalUpNight);
+    buttonDownNight.addEventListener('mousedown', intervalDownNight);
+
+    buttonUpDay.addEventListener('mouseup', intclear);
+    buttonDownDay.addEventListener('mouseup', intclear);
+    buttonUpNight.addEventListener('mouseup', intclear);
+    buttonDownNight.addEventListener('mouseup', intclear);
+
 }
 
 function bumpUpDayTemperature(event) {
@@ -28,7 +40,6 @@ function bumpUpDayTemperature(event) {
         temp = maxTemp
     }
     setDayTemperature(temp);
-    saveDayTemperature(temp);
 }
 
 /**
@@ -43,7 +54,6 @@ function bumpDownDayTemperature(event) {
         temp = minTemp
     }
     setDayTemperature(temp);
-    saveDayTemperature(temp);
 }
 
 function bumpUpNightTemperature(event) {
@@ -54,7 +64,6 @@ function bumpUpNightTemperature(event) {
         temp = maxTemp
     }
     setNightTemperature(temp);
-    saveNightTemperature(temp);
 }
 
 /**
@@ -69,7 +78,6 @@ function bumpDownNightTemperature(event) {
         temp = minTemp
     }
     setNightTemperature(temp);
-    saveNightTemperature(temp);
 }
 
 function setDayTemperature(temp) {
@@ -97,4 +105,27 @@ function setNightTemperature(temp) {
         temp = temp + '.0';
     }
     setNightTemp.innerHTML = temp + "&deg;";
+}
+
+function intervalUpDay() {
+    intValUpDay = setInterval(bumpUpDayTemperature,100);
+}
+
+function intervalDownDay() {
+    intValDownDay = setInterval(bumpDownDayTemperature,100);
+}
+
+function intervalUpNight() {
+    intValUpNight = setInterval(bumpUpNightTemperature,100);
+}
+
+function intervalDownNight() {
+    intValDownNight = setInterval(bumpDownNightTemperature,100);
+}
+
+function intclear() {
+    clearInterval(intValUpDay);
+    clearInterval(intValDownDay);
+    clearInterval(intValUpNight);
+    clearInterval(intValDownNight);
 }
