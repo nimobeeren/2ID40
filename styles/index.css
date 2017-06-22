@@ -18,6 +18,19 @@
     background-color: #0d47a1;
 }
 
+#timeline-time{
+    display: inline-block;
+    height: 56px;
+    width: 3px;
+    background-color: red;
+    /*margin-left: 30%;*/
+    /*position: relative;*/
+    /*top: -3px;*/
+    z-index: 1;
+    position: absolute;
+
+}
+
 .part--disabled {
     background: #bdbdbd url('../icons/ic_lock_grey_24px.svg') center no-repeat;
     background-size: 32px;

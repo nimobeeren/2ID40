@@ -7,7 +7,7 @@ var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 
 // Get day and night temperature
-var day ;
+var day;
 var time;
 var currentTemperature;
 var targetTemperature;
@@ -54,16 +54,16 @@ window.onload = function () {
 };
 
 
-function refreshDashBoard(){
+function refreshDashBoard() {
     // Set UI elements to their corresponding values
     setKnob(temperatureToAngle(targetTemperature));
     setTargetTemperature(targetTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
     setCurrentTemperature(currentTemperature);
-    if(weekProgramState === 'on'){
+    if (weekProgramState === 'on') {
         setDayProgram(dayProgram);
-    }else{
+    } else {
         setDayProgram(null);
     }
 }
@@ -345,5 +345,19 @@ function setDayProgram(program) {
 
         // Add the part to the timeline
         timeline.appendChild(part);
+
+
     }
+    //--------set current time-----
+    var currentTimeVerticalLine = document.createElement('div');
+    currentTimeVerticalLine.setAttribute('id', 'timeline-time');
+    var currentPositionOfTime = ( parseInt(time.substr(0, 2)) * 60 + parseInt(time.substr(3, 2)) ) / 1440;
+    var leftPosition = currentPositionOfTime * 100 - 0.5 + '%';
+    currentTimeVerticalLine.style.left = leftPosition;
+    timeline.appendChild(currentTimeVerticalLine);
+    var topPosition = $(currentTimeVerticalLine).position().top - 4;
+
+    $(currentTimeVerticalLine).css({top: topPosition});
+
+
 }
