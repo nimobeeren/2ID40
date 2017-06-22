@@ -27,13 +27,39 @@
     <img class="nav__button" src="icons/ic_settings_white_24px.svg" style="visibility:hidden">
 </nav>
 <main>
-    <a class="temp-button">
-        <img src="icons/ic_arrow_drop_up_white_24px.svg">
-    </a>
-    <div class="temp-value">5.0&deg;</div>
-    <a class="temp-button">
-        <img src="icons/ic_arrow_drop_down_white_24px.svg">
-    </a>
+    <div class="settings">
+        <span class="setText">Set Day Temperature</span>
+        <div class="leftColumn">
+            <img class="icons" src="icons/ic_wb_sunny_white_24px.svg"/>
+        </div>
+        <div class="rightColumn">
+            <a class="temp-button-settings">
+                <img src="icons/ic_arrow_drop_up_white_24px.svg">
+            </a>
+            <div id="set-temp-value-day" class="temp-value-settings">
+                <div class="temp-control">5.0&deg;</div>
+            </div>
+            <a class="temp-button-settings">
+                <img src="icons/ic_arrow_drop_down_white_24px.svg">
+            </a>
+        </div>
+            <span id="settings-border" class="setText">Set Night Temperature</span>
+        <div class="leftColumn">
+            <img class="icons" src="icons/moon_white.svg"/>
+        </div>
+        <div class="rightColumn">
+            <a class="temp-button-settings">
+                <img src="icons/ic_arrow_drop_up_white_24px.svg">
+            </a>
+            <div id="set-temp-value-night" class="temp-value-settings">
+                <div class="temp-control">5.0&deg;</div>
+            </div>
+            <a class="temp-button-settings">
+                <img src="icons/ic_arrow_drop_down_white_24px.svg">
+            </a>
+        </div>
+    </div>
+
 </main>
 <script src="api.js"></script>
 <script src="index.js"></script>
