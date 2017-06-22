@@ -28,6 +28,7 @@ function bumpUpDayTemperature(event) {
         temp = maxTemp
     }
     setDayTemperature(temp);
+    saveDayTemperature(temp);
 }
 
 /**
@@ -42,6 +43,7 @@ function bumpDownDayTemperature(event) {
         temp = minTemp
     }
     setDayTemperature(temp);
+    saveDayTemperature(temp);
 }
 
 function bumpUpNightTemperature(event) {
@@ -52,6 +54,7 @@ function bumpUpNightTemperature(event) {
         temp = maxTemp
     }
     setNightTemperature(temp);
+    saveNightTemperature(temp);
 }
 
 /**
@@ -66,6 +69,7 @@ function bumpDownNightTemperature(event) {
         temp = minTemp
     }
     setNightTemperature(temp);
+    saveNightTemperature(temp);
 }
 
 function setDayTemperature(temp) {
