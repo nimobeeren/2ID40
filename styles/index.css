@@ -71,6 +71,10 @@
     background-color: #0d47a1;
 }
 
+.line--current {
+    background-color: red;
+}
+
 .radial-slider__line img {
     width: 24px;
     margin-left: -12px;

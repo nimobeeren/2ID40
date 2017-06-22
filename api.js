@@ -62,13 +62,14 @@ function refresh() {
             targetTemperature = $(response).find('target_temperature')[0].innerHTML;
             dayTemperature = $(response).find('day_temperature')[0].innerHTML;
             nightTemperature = $(response).find('night_temperature')[0].innerHTML;
-            weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             weekProgramXML = response;
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             // day = $(weekProgramXML).find('day').attr('name');
-            weekProgramXMLToJSON(weekProgramXML);
-            mergeProgram();
-            dayProgram = getDayProgram(day);
+            // if(weekProgramState === 'on'){
+                weekProgramXMLToJSON(weekProgramXML);
+                mergeProgram();
+                dayProgram = getDayProgram(day);
+            // }
             console.log(day);
             console.log(time);
             console.log(dayProgram);
@@ -89,7 +90,7 @@ function setTargetTemp(target){
         url: BASE_URL + 'targetTemperature/',
         contentType: 'application/xml',
         data: '<target_temperature>' + target + '</target_temperature>',
-        async: false,
+        async: true
     });
 }
 
@@ -204,7 +205,6 @@ function fillMissingSwitches(dayCounter, nightCounter, day, doc) {
         switches.appendChild(doc.createTextNode('00:00'));
         day.appendChild(switches);
     }
-    console.log(day);
     return day;
 }
 
@@ -228,3 +228,4 @@ function sortByTime(a, b) {
     var bTime = b.time;
     return ((aTime < bTime) ? -1 : ((aTime > bTime) ? 1 : 0));
 }
+

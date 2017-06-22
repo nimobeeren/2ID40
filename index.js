@@ -60,11 +60,16 @@ function refreshDashBoard(){
     setTargetTemperature(targetTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
-    setDayProgram(dayProgram);
+    setCurrentTemperature(currentTemperature);
+    if(weekProgramState === 'on'){
+        setDayProgram(dayProgram);
+    }else{
+        setDayProgram(null);
+    }
 }
 
-setInterval(refresh,4000);
-setInterval(refreshDashBoard,4000)
+setInterval(refresh,2000);
+setInterval(refreshDashBoard,2000)
 
 /**
  * Moves knob and sets temperature when knob is moved by user
@@ -225,6 +230,21 @@ function setNightTemperature(temp) {
     icon.style.transform = 'rotate(-' + ang + 'deg)';
 }
 
+function setCurrentTemperature(temp) {
+    var line = document.getElementById('temp-line-current');
+    // var icon = line.getElementsByTagName('img')[0];
+    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
+    var radius = (slider.offsetWidth - borderWidth) / 2;
+
+    temp = parseFloat(temp);
+    currentTemperature = temp;
+
+    var ang = temperatureToAngle(temp);
+    line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
+    // icon.style.transform = 'rotate(-' + ang + 'deg)';
+}
+
+
 /**
  * Creates a timeline
  * @param program {object} contains a set of switches in the following form:
@@ -323,3 +343,4 @@ function setDayProgram(program) {
         timeline.appendChild(part);
     }
 }
+
