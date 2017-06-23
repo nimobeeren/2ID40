@@ -1,0 +1,83 @@
+.temp-value-settings {
+    font-size: 48px;
+    margin-right: 25%;
+    float: right;
+    text-align: right;
+}
+
+.temp-button-settings {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Chrome/Opera */
+}
+
+.temp-button-settings img {
+    float: right;
+    margin-right: 30%;
+    width: 100px;
+    height: 48px;
+    background-color: #1976d2;
+    color: #fafafa;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+
+}
+
+.setText {
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    display: inline-block;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+#settings-border {
+    border-top: 2px solid #aad9ff;
+    padding-top: 5%;
+    margin-top: 10%;
+}
+
+.icons {
+    width: 100px;
+    height: 100px;
+    margin-left: 30%;
+    display: inline;
+}
+
+.rightColumn {
+    width: 50%;
+    float: right;
+    height: 50%;
+}
+
+.leftColumn {
+    width: 50%;
+    float: left;
+    display: block;
+}
+
+.temp-slider {
+    height: 17px;
+    background-color: white;
+    width: 80%;
+    margin-left: 20%;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.radial-slider__knob {
+    z-index: 2;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+    background: #1976d2;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
