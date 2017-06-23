@@ -6,7 +6,7 @@
     <title>Settings</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/settings.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body id="el">
@@ -31,6 +31,7 @@
         <span class="setText">Set Day Temperature</span>
         <div class="leftColumn">
             <img class="icons" src="icons/ic_wb_sunny_white_24px.svg"/>
+            <div id="temp-slider-day" class="temp-slider"><div id="temp-knob-day" class="radial-slider__knob"></div></div>
         </div>
         <div class="rightColumn">
             <a id="temp-up-day" class="temp-button-settings">
@@ -46,6 +47,7 @@
             <span id="settings-border" class="setText">Set Night Temperature</span>
         <div class="leftColumn">
             <img class="icons" src="icons/moon_white.svg"/>
+            <div id="temp-slider-night" class="temp-slider"><div id="temp-knob-night" class="radial-slider__knob"></div></div>
         </div>
         <div class="rightColumn">
             <a id="temp-up-night" class="temp-button-settings">
