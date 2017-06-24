@@ -39,8 +39,8 @@ window.onload = function () {
 
     // Wire up touch events for slider
     knob.addEventListener('touchstart', function (e) {
-        mdown = true;
         e.preventDefault();
+        mdown = true;
     });
     document.addEventListener('touchend', function (e) {
         mdown = false;
@@ -159,7 +159,6 @@ function setTargetTemperature(temp) {
         temp = temp + '.0';
     }
     setTemp.innerHTML = temp + "&deg;";
-    setTargetTemp(temp);
 }
 
 /**

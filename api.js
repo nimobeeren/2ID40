@@ -48,7 +48,10 @@ function initialize() {
 }
 
 function refresh() {
-    //Getting current day and time
+    // Send data to server
+    setTargetTemp(targetTemperature);
+
+    // Get data from server
     $.get({
         url: BASE_URL,
         async: false,
@@ -70,7 +73,6 @@ function refresh() {
             // }
         }
     });
-
 }
 
 function getDayProgram(day) {
@@ -84,7 +86,7 @@ function setTargetTemp(target) {
         url: BASE_URL + 'targetTemperature/',
         contentType: 'application/xml',
         data: '<target_temperature>' + target + '</target_temperature>',
-        async: true
+        async: false
     });
 }
 
