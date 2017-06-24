@@ -5,6 +5,7 @@ var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
+var intValUp, intValDown;
 
 // Get day and night temperature
 var day;
@@ -51,6 +52,12 @@ window.onload = function () {
     // Wire up buttons
     buttonUp.addEventListener('click', bumpUpTargetTemperature);
     buttonDown.addEventListener('click', bumpDownTargetTemperature);
+
+    buttonUp.addEventListener('touchstart', intervalUp);
+    buttonDown.addEventListener('touchstart', intervalDown);
+
+    buttonUp.addEventListener('touchend', intclear);
+    buttonDown.addEventListener('touchend', intclear);
 };
 
 function refreshDashBoard() {
@@ -139,7 +146,6 @@ function setKnob(ang) {
     // Calculate knob position relative to center
     var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
     var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
-    console.log(X, Y);
 
     // Apply absolute knob position
     knob.style.left = centerX - knob.offsetWidth / 2 + X + 'px';
@@ -372,4 +378,17 @@ function setDayProgram(program) {
     var topPosition = $(currentTimeVerticalLine).position().top - 8;
 
     $(currentTimeVerticalLine).css({top: topPosition});
+}
+
+function intervalUp() {
+    intValUp = setInterval(bumpUpTargetTemperature, 100);
+}
+
+function intervalDown() {
+    intValDown = setInterval(bumpDownTargetTemperature, 100);
+}
+
+function intclear() {
+    clearInterval(intValUp);
+    clearInterval(intValDown);
 }
