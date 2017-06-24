@@ -18,7 +18,7 @@ var editingDay;
 window.onload = function() {
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
-}
+};
 
 function setWeekDayProgram(day) {
     switches = day && getDayProgram(day)["switches"];
@@ -30,14 +30,11 @@ function updateSwitches() {
     var part;
     switches = getDayProgram(editingDay)["switches"];
 
-
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {
             return (s["state"] === "on" && s["time"] !== "00:00");
         });
-
-
 
     // Add two extra switches to night mode at midnight, if not already present
     if (!switches.some(function (s) {

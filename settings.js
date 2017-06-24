@@ -88,7 +88,7 @@ window.onload = function () {
     buttonUpNight.addEventListener('touchend', intclear);
     buttonDownNight.addEventListener('touchend', intclear);
 
-}
+};
 
 function dragOrSwipeDay(event) {
     if (mdown) {

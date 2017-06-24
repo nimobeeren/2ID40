@@ -28,7 +28,6 @@ initialize();
 // ----------------------
 
 function initialize() {
-
     $.ajax({
         url: BASE_URL,
         type: 'PUT',
@@ -45,7 +44,6 @@ function initialize() {
             }
         }
     });
-
     refresh();
 }
 
@@ -66,9 +64,9 @@ function refresh() {
             weekProgramState = $(weekProgramXML).find("week_program").attr("state");
             // day = $(weekProgramXML).find('day').attr('name');
             // if(weekProgramState === 'on'){
-                weekProgramXMLToJSON(weekProgramXML);
-                mergeProgram();
-                dayProgram = getDayProgram(day);
+            weekProgramXMLToJSON(weekProgramXML);
+            mergeProgram();
+            dayProgram = getDayProgram(day);
             // }
             console.log(day);
             console.log(time);
@@ -84,7 +82,7 @@ function getDayProgram(day) {
     return weekProgramJSON[day];
 }
 
-function setTargetTemp(target){
+function setTargetTemp(target) {
     $.ajax({
         type: "put",
         url: BASE_URL + 'targetTemperature/',
@@ -93,7 +91,6 @@ function setTargetTemp(target){
         async: true
     });
 }
-
 
 function saveProgram() {
     mergeProgram();
@@ -114,7 +111,7 @@ function saveProgram() {
             type = weeklyProgram[key].switches[i].type;
             state = weeklyProgram[key].switches[i].state;
             time = weeklyProgram[key].switches[i].time;
-            if (type === 'night' && state === 'on' && (time == '24:00' || time == '00:00')) continue;
+            if (type === 'night' && state === 'on' && (time === '24:00' || time === '00:00')) continue;
 
             switches.setAttribute('type', type);
             switches.setAttribute('state', state);
@@ -135,7 +132,7 @@ function saveProgram() {
         type: "put",
         url: BASE_URL + 'weekProgram/',
         contentType: 'application/xml',
-        data: new XMLSerializer().serializeToString(doc),
+        data: new XMLSerializer().serializeToString(doc)
         // async: false,
     });
 }
@@ -208,12 +205,11 @@ function fillMissingSwitches(dayCounter, nightCounter, day, doc) {
     return day;
 }
 
-
 function mergeProgram() {
     var first, second;
     for (var key in weekProgramJSON) {
         weekProgramJSON[key].switches.sort(sortByTime);
-        for (var i = 0; i < weekProgramJSON[key].switches.length - 2 ; i++) {
+        for (var i = 0; i < weekProgramJSON[key].switches.length - 2; i++) {
             first = weekProgramJSON[key].switches[i];
             second = weekProgramJSON[key].switches[i + 1];
             if (second.type === first.type) {
@@ -224,8 +220,6 @@ function mergeProgram() {
 }
 
 function sortByTime(a, b) {
-    var aTime = a.time;
-    var bTime = b.time;
-    return ((aTime < bTime) ? -1 : ((aTime > bTime) ? 1 : 0));
+    return a.time - b.time;
 }
 

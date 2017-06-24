@@ -68,8 +68,8 @@ function refreshDashBoard() {
     }
 }
 
-setInterval(refresh,2000);
-setInterval(refreshDashBoard,2000)
+setInterval(refresh, 2000);
+setInterval(refreshDashBoard, 2000);
 
 /**
  * Moves knob and sets temperature when knob is moved by user
