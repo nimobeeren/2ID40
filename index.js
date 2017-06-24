@@ -5,6 +5,7 @@ var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
+var intValUp, intValDown;
 
 // Get day and night temperature
 var day;
@@ -51,6 +52,12 @@ window.onload = function () {
     // Wire up buttons
     buttonUp.addEventListener('click', bumpUpTargetTemperature);
     buttonDown.addEventListener('click', bumpDownTargetTemperature);
+
+    buttonUp.addEventListener('touchstart', intervalUp);
+    buttonDown.addEventListener('touchstart', intervalDown);
+
+    buttonUp.addEventListener('touchend', intclear);
+    buttonDown.addEventListener('touchend', intclear);
 };
 
 
@@ -360,4 +367,17 @@ function setDayProgram(program) {
     $(currentTimeVerticalLine).css({top: topPosition});
 
 
+}
+
+function intervalUp() {
+    intValUp = setInterval(bumpUpTargetTemperature, 100);
+}
+
+function intervalDown() {
+    intValDown = setInterval(bumpDownTargetTemperature, 100);
+}
+
+function intclear() {
+    clearInterval(intValUp);
+    clearInterval(intValDown);
 }
