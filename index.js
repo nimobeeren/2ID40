@@ -1,4 +1,3 @@
-// Global variables
 var knob, slider, buttonUp, buttonDown;
 var centerX, centerY;
 var mdown = false;
@@ -6,39 +5,17 @@ var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
+var intValUp, intValDown;
 
-// Get data from server
-var day = 'Sunday';             // TODO: Get from server
-var time = '09:00';             // TODO: Get from server
-var currentTemperature =  21.5; // TODO: Get from server
-var targetTemperature = 21.5;   // TODO: Get from server
-var dayTemperature = 21.5;      // TODO: Get from server
-var nightTemperature = 18;      // TODO: Get from server
-var weekProgramState = 'on';    // TODO: Get from server
-var dayProgram = {              // TODO: Get from server
-    "switches": [
-        {
-            "type": "day",
-            "state": "on",
-            "time": "07:00"
-        },
-        {
-            "type": "night",
-            "state": "on",
-            "time": "10:00"
-        },
-        {
-            "type": "day",
-            "state": "on",
-            "time": "16:00"
-        },
-        {
-            "type": "night",
-            "state": "on",
-            "time": "22:00"
-        }
-    ]
-};
+// Get day and night temperature
+var day;
+var time;
+var currentTemperature;
+var targetTemperature;
+var dayTemperature;
+var nightTemperature;
+var weekProgramState;
+var dayProgram;
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
@@ -47,18 +24,12 @@ window.onload = function () {
     buttonDown = document.getElementById('temp-down');
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
-
-    // Set UI elements to their corresponding values
-    setKnob(temperatureToAngle(dayTemperature));
-    setTargetTemperature(targetTemperature);
-    setDayTemperature(dayTemperature);
-    setNightTemperature(nightTemperature);
-    setDayProgram(dayProgram);
+    refreshDashBoard();
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
-        mdown = true;
         e.preventDefault();
+        mdown = true;
     });
     document.addEventListener('mouseup', function (e) {
         mdown = false;
@@ -68,8 +39,8 @@ window.onload = function () {
 
     // Wire up touch events for slider
     knob.addEventListener('touchstart', function (e) {
-        mdown = true;
         e.preventDefault();
+        mdown = true;
     });
     document.addEventListener('touchend', function (e) {
         mdown = false;
@@ -80,7 +51,32 @@ window.onload = function () {
     // Wire up buttons
     buttonUp.addEventListener('click', bumpUpTargetTemperature);
     buttonDown.addEventListener('click', bumpDownTargetTemperature);
+
+    buttonUp.addEventListener('touchstart', intervalUp);
+    buttonDown.addEventListener('touchstart', intervalDown);
+
+    buttonUp.addEventListener('touchend', intclear);
+    buttonDown.addEventListener('touchend', intclear);
 };
+
+function refreshDashBoard() {
+    // Set UI elements to their corresponding values
+    setKnob(temperatureToAngle(targetTemperature));
+    setTargetTemperature(targetTemperature);
+    setDayTemperature(dayTemperature);
+    setNightTemperature(nightTemperature);
+    setCurrentTemperature(currentTemperature);
+    setCurrentTime(time);
+    setCurrentDay(day);
+    if (weekProgramState === 'on') {
+        setDayProgram(dayProgram);
+    } else {
+        setDayProgram(null);
+    }
+}
+
+setInterval(refresh, 2000);
+setInterval(refreshDashBoard, 2000);
 
 /**
  * Moves knob and sets temperature when knob is moved by user
@@ -168,7 +164,6 @@ function setTargetTemperature(temp) {
         temp = temp + '.0';
     }
     setTemp.innerHTML = temp + "&deg;";
-    // TODO: reflect change on server
 }
 
 /**
@@ -241,6 +236,34 @@ function setNightTemperature(temp) {
     icon.style.transform = 'rotate(-' + ang + 'deg)';
 }
 
+function setCurrentTemperature(temp) {
+    var line = document.getElementById('temp-line-current');
+    var tempLabel = document.getElementById('current-temp');
+    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
+    var radius = (slider.offsetWidth - borderWidth) / 2;
+
+    temp = parseFloat(temp);
+    currentTemperature = temp;
+
+    var ang = temperatureToAngle(temp);
+    line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
+
+    if (temp === Math.round(temp)) {
+        temp = temp + '.0';
+    }
+    tempLabel.innerHTML = temp + '&deg;';
+}
+
+function setCurrentTime(time) {
+    var timeLabel = document.getElementById('current-time');
+    timeLabel.innerHTML = time;
+}
+
+function setCurrentDay(day) {
+    var dayLabel = document.getElementById('current-day');
+    dayLabel.innerHTML = day;
+}
+
 /**
  * Creates a timeline
  * @param program {object} contains a set of switches in the following form:
@@ -310,7 +333,6 @@ function setDayProgram(program) {
     // Remove all timeline parts
     timeline.innerHTML = '';
 
-    // Generate timeline parts from the array of switches
     for (var i = 0; i < switches.length - 1; i++) {
         // Make a part that has the same type as the beginning switch
         part = document.createElement('div');
@@ -331,12 +353,41 @@ function setDayProgram(program) {
         // For all but the first part, add a label with the starting time
         if (i !== 0) {
             var label = document.createElement('div');
-            label.classList.add('timeline__label');
+            if (switches[i]["type"] === "day") {
+                label.classList.add('timeline__label__day');
+            } else if (switches[i]["type"] === "night") {
+                label.classList.add('timeline__label__night');
+            }
             label.innerHTML = startTime;
             part.appendChild(label);
         }
 
         // Add the part to the timeline
         timeline.appendChild(part);
+
+
     }
+    //--------set current time-----
+    var currentTimeVerticalLine = document.createElement('div');
+    currentTimeVerticalLine.setAttribute('id', 'timeline-time');
+    var currentPositionOfTime = ( parseInt(time.substr(0, 2)) * 60 + parseInt(time.substr(3, 2)) ) / 1440;
+    var leftPosition = currentPositionOfTime * 100 - 0.5 + '%';
+    currentTimeVerticalLine.style.left = leftPosition;
+    timeline.appendChild(currentTimeVerticalLine);
+    var topPosition = $(currentTimeVerticalLine).position().top - 8;
+
+    $(currentTimeVerticalLine).css({top: topPosition});
+}
+
+function intervalUp() {
+    intValUp = setInterval(bumpUpTargetTemperature, 100);
+}
+
+function intervalDown() {
+    intValDown = setInterval(bumpDownTargetTemperature, 100);
+}
+
+function intclear() {
+    clearInterval(intValUp);
+    clearInterval(intValDown);
 }

@@ -1,13 +1,29 @@
+.current {
+    margin: 24px auto;
+}
+
+.current td {
+    padding: 0 10px 0 10px;
+}
+
+.current__label {
+    font-size: 20px;
+}
+
+.current__value {
+    font-size: 24px;
+}
+
 .timeline {
     display: flex;
-    margin: 48px 0 64px 0;
+    margin: 24px 0 24px 0;
     width: 100%;
 }
 
 .timeline__part {
     display: inline-block;
     height: 48px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .part--day {
@@ -18,18 +34,40 @@
     background-color: #0d47a1;
 }
 
+#timeline-time {
+    display: inline-block;
+    height: 64px;
+    width: 2px;
+    background: repeating-linear-gradient(
+            #f44336,
+            #f44336 calc(50%/5.5),
+            transparent calc(50%/5.5),
+            transparent calc(100%/5.5)
+    );
+    z-index: 1;
+    position: absolute;
+
+}
+
 .part--disabled {
-    background: #bdbdbd url('/icons/ic_lock_grey_24px.svg') center no-repeat;
+    background: #bdbdbd url('../icons/ic_lock_grey_24px.svg') center no-repeat;
     background-size: 32px;
     box-shadow: none;
     flex-grow: 1;
 }
 
-.timeline__label {
+.timeline__label__day {
     width: 0;
     text-align: center;
     margin-left: -16px;
     margin-top: -20px;
+}
+
+.timeline__label__night {
+    width: 0;
+    text-align: center;
+    margin-left: -16px;
+    margin-top: 48px;
 }
 
 .radial-slider {
@@ -37,7 +75,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 20px auto;
+    margin: 64px auto 20px auto;
     width: 270px;
     height: 270px;
     border-radius: 100%;
@@ -53,7 +91,7 @@
     background: #1976d2;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .radial-slider__line {
@@ -69,6 +107,15 @@
 
 .line--night {
     background-color: #0d47a1;
+}
+
+.line--current {
+    background: repeating-linear-gradient(
+            #f44336,
+            #f44336 calc(50%/4.5),
+            transparent calc(50%/4.5),
+            transparent calc(100%/4.5)
+    );
 }
 
 .radial-slider__line img {
@@ -90,12 +137,7 @@
     background-color: #1976d2;
     color: #fafafa;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Chrome/Opera */
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .temp-button img {

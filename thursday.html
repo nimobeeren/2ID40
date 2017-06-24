@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>Thursday</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="styles/base.css">
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/weekday.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body id="el">
+<nav>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)"></a>
+        <a href="index.html">Today</a>
+        <a href="monday.html">Monday</a>
+        <a href="tuesday.html">Tuesday</a>
+        <a href="wednesday.html">Wednesday</a>
+        <div id="currentPage">Thursday</div>
+        <a href="friday.html">Friday</a>
+        <a href="saturday.html">Saturday</a>
+        <a href="sunday.html">Sunday</a>
+    </div>
+
+    <!-- Use any element to open the sidenav -->
+    <img class="nav__button" src="icons/ic_menu_white_24px.svg" onclick="openNav()">
+    <div class="nav__title">Thursday</div>
+    <a href="settings.html" id="setIcon">
+        <img class="nav__button" src="icons/ic_settings_white_24px.svg">
+    </a>
+</nav>
+<main>
+    <div class="swipe-area"></div>
+    <div id="timeline" class="timeline">
+    <div class="timeline__part part--disabled"></div>
+</div>
+    <div id="existing_switches"></div>
+    <div id="addbox"></div>
+    <div id="add__switch">
+        <input id="add__button"  type="submit"  value="ADD SWITCH">
+    </div>
+
+</main>
+<script src="api.js"></script>
+<script src="weekday.js"></script>
+<script src="navigation.js"></script>
+<script>setWeekDayProgram('Thursday');</script>
+</body>
+</html>
