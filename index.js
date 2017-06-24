@@ -16,7 +16,6 @@ var dayTemperature;
 var nightTemperature;
 var weekProgramState;
 var dayProgram;
-// console.log(dayProgram);
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');

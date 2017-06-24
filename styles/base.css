@@ -23,11 +23,6 @@ nav {
 .nav__button {
     margin: 0 12px;
     cursor: pointer;
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Chrome/Opera */
 }
 
 /* The side navigation menu */
@@ -100,4 +95,13 @@ nav {
     justify-content: center;
     align-items: center;
     height: 100%;
+}
+
+.nodrag, img {
+    user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
 }
