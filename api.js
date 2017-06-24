@@ -6,7 +6,7 @@ var THERMOSTAT_ID = 111;
 /**
  * The REST API base url
  */
-var BASE_URL = 'http://wwwis.win.tue.nl/2id40-ws/' + THERMOSTAT_ID + '/';
+var BASE_URL = 'https://wwwis.win.tue.nl/2id40-ws/' + THERMOSTAT_ID + '/';
 
 //The whole XML response of the thermostat
 var program = null;
