@@ -129,9 +129,9 @@ function updateSwitches() {
         var secondTime = switches[i + 1]["time"];
         var switchType = switches[i]["type"];
         if (firstTime === "00:00" && secondTime === "24:00" && switchType === "day") {
-            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>";
+            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='../icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>";
         } else if (switchType === "day") {
-            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>" +
+            existing.innerHTML += "<div class='switch__info'><img class='switch__icons' src='../icons/ic_wb_sunny_white_24px.svg'><div class='start'>" + firstTime + "</div> - <div class='end'>" + secondTime + "</div>" +
                 "<input class='delete__switch' type='submit' value=''></div>";
             deleteSwitch = document.getElementsByClassName('delete__switch');
             for (var k = 0; k < deleteSwitch.length; k++) {
@@ -148,7 +148,7 @@ function display() {
     }
     else if (switches.length < 10){
         adding = true;
-        addBox.innerHTML += "<form><img class='switch__icons' src='icons/ic_wb_sunny_white_24px.svg'>" +
+        addBox.innerHTML += "<form><img class='switch__icons' src='../icons/ic_wb_sunny_white_24px.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
             "<span>&nbsp;-&nbsp;</span>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>"+
