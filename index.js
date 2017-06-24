@@ -355,9 +355,7 @@ function setDayProgram(program) {
     var leftPosition = currentPositionOfTime * 100 - 0.5 + '%';
     currentTimeVerticalLine.style.left = leftPosition;
     timeline.appendChild(currentTimeVerticalLine);
-    var topPosition = $(currentTimeVerticalLine).position().top - 4;
+    var topPosition = $(currentTimeVerticalLine).position().top - 8;
 
     $(currentTimeVerticalLine).css({top: topPosition});
-
-
 }

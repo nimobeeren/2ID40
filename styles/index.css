@@ -7,7 +7,7 @@
 .timeline__part {
     display: inline-block;
     height: 48px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .part--day {
@@ -18,14 +18,16 @@
     background-color: #0d47a1;
 }
 
-#timeline-time{
+#timeline-time {
     display: inline-block;
-    height: 56px;
-    width: 3px;
-    background-color: red;
-    /*margin-left: 30%;*/
-    /*position: relative;*/
-    /*top: -3px;*/
+    height: 64px;
+    width: 2px;
+    background: repeating-linear-gradient(
+            #f44336,
+            #f44336 calc(50%/5.5),
+            transparent calc(50%/5.5),
+            transparent calc(100%/5.5)
+    );
     z-index: 1;
     position: absolute;
 
@@ -73,7 +75,7 @@
     background: #1976d2;
     border-radius: 50%;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .radial-slider__line {
@@ -92,7 +94,12 @@
 }
 
 .line--current {
-    background-color: red;
+    background: repeating-linear-gradient(
+            #f44336,
+            #f44336 calc(50%/4.5),
+            transparent calc(50%/4.5),
+            transparent calc(100%/4.5)
+    );
 }
 
 .radial-slider__line img {
@@ -114,7 +121,7 @@
     background-color: #1976d2;
     color: #fafafa;
     cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
