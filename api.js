@@ -1,7 +1,7 @@
 /**
  * Random thermostat id
  */
-var THERMOSTAT_ID = 423;
+var THERMOSTAT_ID = 111;
 
 /**
  * The REST API base url
@@ -68,10 +68,6 @@ function refresh() {
             mergeProgram();
             dayProgram = getDayProgram(day);
             // }
-            console.log(day);
-            console.log(time);
-            console.log(dayProgram);
-            console.log(currentTemperature);
         }
     });
 

@@ -53,7 +53,6 @@ window.onload = function () {
     buttonDown.addEventListener('click', bumpDownTargetTemperature);
 };
 
-
 function refreshDashBoard() {
     // Set UI elements to their corresponding values
     setKnob(temperatureToAngle(targetTemperature));
@@ -61,6 +60,8 @@ function refreshDashBoard() {
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
     setCurrentTemperature(currentTemperature);
+    setCurrentTime(time);
+    setCurrentDay(day);
     if (weekProgramState === 'on') {
         setDayProgram(dayProgram);
     } else {
@@ -138,6 +139,7 @@ function setKnob(ang) {
     // Calculate knob position relative to center
     var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
     var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
+    console.log(X, Y);
 
     // Apply absolute knob position
     knob.style.left = centerX - knob.offsetWidth / 2 + X + 'px';
@@ -232,7 +234,7 @@ function setNightTemperature(temp) {
 
 function setCurrentTemperature(temp) {
     var line = document.getElementById('temp-line-current');
-    // var icon = line.getElementsByTagName('img')[0];
+    var tempLabel = document.getElementById('current-temp');
     var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
     var radius = (slider.offsetWidth - borderWidth) / 2;
 
@@ -241,9 +243,22 @@ function setCurrentTemperature(temp) {
 
     var ang = temperatureToAngle(temp);
     line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
-    // icon.style.transform = 'rotate(-' + ang + 'deg)';
+
+    if (temp === Math.round(temp)) {
+        temp = temp + '.0';
+    }
+    tempLabel.innerHTML = temp + '&deg;';
 }
 
+function setCurrentTime(time) {
+    var timeLabel = document.getElementById('current-time');
+    timeLabel.innerHTML = time;
+}
+
+function setCurrentDay(day) {
+    var dayLabel = document.getElementById('current-day');
+    dayLabel.innerHTML = day;
+}
 
 /**
  * Creates a timeline
