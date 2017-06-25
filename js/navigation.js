@@ -43,13 +43,13 @@ function swipeMove(e){
     e = e ? e : window.event;
     e = ('changedTouches' in e)?e.changedTouches[0] : e;
     var currentX = e.pageX;
-    if (currentX > touchStartCoords['x']) {
+    if (currentX > touchStartCoords['x'] && touchStartCoords['x'] < 30) {
         width = currentX - touchStartCoords['x'];
         direction = 'right';
     } else if (touchStartCoords['x'] <= touchStartCoords['x']) {
         direction = 'left';
         width = 250 - (touchStartCoords['x'] - currentX);
-        if (width < 250 && shown == true) {
+        if (width < 250 && shown === true) {
             var navSize = width.toString() + "px";
             document.getElementById("mySidenav").style.width = navSize;
         }
@@ -60,7 +60,7 @@ function swipeEnd() {
     if (direction === "left") {
         if (width < 200) {
             closeNav();
-        } else if (shown == true) {
+        } else if (shown === true) {
             openNav();
         }
     } else if (direction === "right") {
