@@ -21,7 +21,6 @@ window.onload = function() {
 };
 
 function setWeekDayProgram(day) {
-
     switches = api.getDayProgram(day)["switches"];
     editingDay = day;
     updateSwitches();
@@ -183,13 +182,16 @@ function save() {
         existing.innerHTML = "";
         addBox.innerHTML = "";
         if (switches.length < 10) {
-            hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>"
+            hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>";
             var button = document.getElementById('add__button');
             button.addEventListener("click", display, false);
         }
-        //----save the new switch-----
-        weekProgramJSON[editingDay].switches = switches;
-        saveProgram();
+
+        // Save the new switch
+        var program = api.getDayProgram(editingDay);
+        program.switches = switches;
+        api.setDayProgram(program);
+
         updateSwitches();
     }
 }
@@ -202,8 +204,11 @@ function delSwitch(event) {
     for (var i = 0; i < switches.length - 1; i++) {
         if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
             switches.splice(i, 2);
-            weekProgramJSON[editingDay].switches = switches;
-            saveProgram();
+
+            var program = api.getDayProgram(editingDay);
+            program.switches = switches;
+            api.setDayProgram(program);
+
             updateSwitches();
         }
     }

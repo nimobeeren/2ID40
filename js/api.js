@@ -100,6 +100,12 @@ var api = {
         return api.weekProgram[day];
     },
 
+    getWeekProgram: function () {
+        api.refresh();
+        api.weekProgram = api.mergeProgram(api.weekProgram);
+        return api.weekProgram;
+    },
+
     setTargetTemperature: function (target) {
         $.ajax({
             type: "put",
@@ -110,6 +116,12 @@ var api = {
         });
     },
 
+    setDayProgram: function(day, dayProgram) {
+        var weekProgram = api.getWeekProgram();
+        weekProgram[day] = dayProgram;
+        api.setWeekProgram(weekProgram);
+    },
+
     setWeekProgram: function (program) {
         program = api.mergeProgram(program);
         var doc = document.implementation.createDocument(null, null, null);
@@ -117,17 +129,17 @@ var api = {
         week.setAttribute('state', weekProgramState);
 
         var day, switches;
-        for (var key in program) {
+        for (var day in program) {
             day = doc.createElement('day');
-            day.setAttribute('name', key);
+            day.setAttribute('name', day);
             var type, state, time;
             var dayCounter = 0;
             var nightCounter = 0;
-            for (var i in program[key].switches) {
+            for (var i in program[day].switches) {
                 switches = doc.createElement('switch');
-                type = program[key].switches[i].type;
-                state = program[key].switches[i].state;
-                time = program[key].switches[i].time;
+                type = program[day].switches[i].type;
+                state = program[day].switches[i].state;
+                time = program[day].switches[i].time;
                 if (type === 'night' && state === 'on' && (time === '24:00' || time === '00:00')) continue;
 
                 switches.setAttribute('type', type);
@@ -248,13 +260,13 @@ var api = {
 
     mergeProgram: function (program) {
         var first, second;
-        for (var key in program) {
-            program[key].switches.sort(api.sortByTime);
-            for (var i = 0; i < program[key].switches.length - 2; i++) {
-                first = program[key].switches[i];
-                second = program[key].switches[i + 1];
+        for (var day in program) {
+            program[day].switches.sort(api.sortByTime);
+            for (var i = 0; i < program[day].switches.length - 2; i++) {
+                first = program[day].switches[i];
+                second = program[day].switches[i + 1];
                 if (second.type === first.type) {
-                    program[key].switches.splice(i + 1, 1);
+                    program[day].switches.splice(i + 1, 1);
                 }
             }
         }
