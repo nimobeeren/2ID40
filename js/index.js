@@ -24,7 +24,7 @@ window.onload = function () {
     buttonDown = document.getElementById('temp-down');
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
-    refreshDashBoard();
+    refreshDashboard();
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
@@ -57,9 +57,16 @@ window.onload = function () {
 
     buttonUp.addEventListener('touchend', intclear);
     buttonDown.addEventListener('touchend', intclear);
+
+    // Set interval for refreshing data
+    setInterval(refresh, 2000);
+    setInterval(refreshDashboard, 2000);
+
+    // Refresh data and create thermostat if necessary
+    initialize();
 };
 
-function refreshDashBoard() {
+function refreshDashboard() {
     // Set UI elements to their corresponding values
     setKnob(temperatureToAngle(targetTemperature));
     setTargetTemperature(targetTemperature);
@@ -74,9 +81,6 @@ function refreshDashBoard() {
         setDayProgram(null);
     }
 }
-
-setInterval(refresh, 2000);
-setInterval(refreshDashBoard, 2000);
 
 /**
  * Moves knob and sets temperature when knob is moved by user

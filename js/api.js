@@ -23,8 +23,6 @@ var weekProgramJSON = {
     Sunday: {}
 };
 
-initialize();
-
 // ----------------------
 
 function initialize() {
@@ -49,7 +47,9 @@ function initialize() {
 
 function refresh() {
     // Send data to server
-    setTargetTemp(targetTemperature);
+    if (targetTemperature) {
+        setTargetTemp(targetTemperature);
+    }
 
     // Get data from server
     $.get({
