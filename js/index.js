@@ -101,7 +101,7 @@ function refresh() {
     setTargetTemperature(targetTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
-    if (weekProgramState === 'on') {
+    if (weekProgramState) {
         setDayProgram(dayProgram);
     } else {
         setDayProgram(null);
@@ -363,7 +363,7 @@ function setDayProgram(program) {
         });
 
     // If all switches are off, indicate vacation mode
-    if (!switches || switches.length === 0 || weekProgramState !== 'on') {
+    if (!switches || switches.length === 0 || !weekProgramState) {
         // Remove all timeline parts
         timeline.innerHTML = '';
 
