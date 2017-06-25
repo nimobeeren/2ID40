@@ -21,16 +21,17 @@ window.onload = function() {
 };
 
 function setWeekDayProgram(day) {
-    console.log(getDayProgram(day));
-    switches = getDayProgram(day)["switches"];
+
+    switches = api.getDayProgram(day)["switches"];
     editingDay = day;
     updateSwitches();
 }
 
 function updateSwitches() {
     var part;
-    switches = getDayProgram(editingDay)["switches"];
-    console.log(getDayProgram(editingDay));
+    switches = api.getDayProgram(editingDay)["switches"];
+    weekProgramState = api.getWeekProgramState();
+
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {
@@ -56,6 +57,7 @@ function updateSwitches() {
             "time": "24:00"
         })
     }
+
 
     // If all switches are off, indicate vacation mode
     if (!switches || switches.length === 0 || weekProgramState !== 'on') {
@@ -83,6 +85,7 @@ function updateSwitches() {
     timeline.innerHTML = '';
 
     var dayCounter = 0;
+
     for (var i = 0; i < switches.length - 1; i++) {
         // Make a part that has the same type as the beginning switch
         part = document.createElement('div');
