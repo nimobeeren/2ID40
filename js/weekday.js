@@ -114,10 +114,11 @@ function updateSwitches() {
         // For all but the first part, add a label with the starting time
         if (i !== 0) {
             var label = document.createElement('div');
+            label.classList.add('timeline__label');
             if (switches[i]["type"] === "day") {
-                label.classList.add('timeline__label__day');
+                label.classList.add('label--day');
             } else if (switches[i]["type"] === "night") {
-                label.classList.add('timeline__label__night');
+                label.classList.add('label--night');
             }
             label.innerHTML = startTime;
             part.appendChild(label);

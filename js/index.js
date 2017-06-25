@@ -34,7 +34,7 @@ window.onload = function () {
     refresh();
 
     /*
-    Slider
+     Slider
      */
     knob.addEventListener('mousedown', function (e) {
         e.preventDefault();
@@ -49,7 +49,7 @@ window.onload = function () {
     document.addEventListener('touchmove', onKnobMove);
 
     /*
-    Buttons
+     Buttons
      */
     upButton.addEventListener('mousedown', onUpButton);
     upButton.addEventListener('touchstart', onUpButton);
@@ -57,8 +57,8 @@ window.onload = function () {
     downButton.addEventListener('touchstart', onDownButton);
 
     /*
-    Slider and buttons
-    */
+     Slider and buttons
+     */
     document.addEventListener('mouseup', function (e) {
         knobHold = false;
         buttonHold = false;
@@ -75,9 +75,9 @@ window.onload = function () {
     });
 
     /*
-    Vacation switch
+     Vacation switch
      */
-    vacationSwitch.addEventListener('change', function(e) {
+    vacationSwitch.addEventListener('change', function (e) {
         var vacationMode = vacationSwitch.checked;
         api.setWeekProgramState(!vacationMode);
     });
@@ -162,7 +162,7 @@ function onUpButton(event) {
     buttonHold = true;
     bumpUpTargetTemperature();
     setTimeout(function () {
-        var i = setInterval(function() {
+        var i = setInterval(function () {
             if (buttonHold) {
                 bumpUpTargetTemperature();
             } else {
@@ -181,7 +181,7 @@ function onDownButton(event) {
     buttonHold = true;
     bumpDownTargetTemperature();
     setTimeout(function () {
-        var i = setInterval(function() {
+        var i = setInterval(function () {
             if (buttonHold) {
                 bumpDownTargetTemperature();
             } else {
@@ -376,8 +376,8 @@ function setDayProgram(program) {
             return s["state"] === "on";
         });
 
-    // If all switches are off, indicate vacation mode
-    if (!switches || switches.length === 0 || !weekProgramState) {
+    // Indicate vacation mode
+    if (!weekProgramState) {
         // Remove all timeline parts
         timeline.innerHTML = '';
 
@@ -421,40 +421,71 @@ function setDayProgram(program) {
     // Remove all timeline parts
     timeline.innerHTML = '';
 
-    for (var i = 0; i < switches.length - 1; i++) {
+    if (switches.length === 2) {
         // Make a part that has the same type as the beginning switch
         part = document.createElement('div');
         part.classList.add('timeline__part');
-        if (switches[i]["type"] === "day") {
+        if (switches[0]["type"] === "day") {
             part.classList.add('part--day');
         } else {
             part.classList.add('part--night');
         }
 
-        // Make the part last until the next switch
-        var startTime = switches[i]["time"];
-        var endTime = switches[i + 1]["time"];
-        var startTimeMins = parseInt(startTime.substr(0, 2)) * 60 + parseInt(startTime.substr(3, 2));
-        var endTimeMins = parseInt(endTime.substr(0, 2)) * 60 + parseInt(endTime.substr(3, 2));
-        part.style.flexGrow = endTimeMins - startTimeMins;
+        // Make the part the full width
+        part.style.flexGrow = 1;
 
-        // For all but the first part, add a label with the starting time
-        if (i !== 0) {
-            var label = document.createElement('div');
-            if (switches[i]["type"] === "day") {
-                label.classList.add('timeline__label__day');
-            } else if (switches[i]["type"] === "night") {
-                label.classList.add('timeline__label__night');
-            }
-            label.innerHTML = startTime;
-            part.appendChild(label);
-        }
+        // Add label at the start of the timeline
+        var startLabel = document.createElement('div');
+        startLabel.classList.add('timeline__label');
+        startLabel.classList.add('label--start');
+        startLabel.innerHTML = "0:00";
+        part.appendChild(startLabel);
+
+        // Add label at the end of the timeline
+        var endLabel = document.createElement('div');
+        endLabel.classList.add('timeline__label');
+        endLabel.classList.add('label--end');
+        endLabel.innerHTML = "24:00";
+        part.appendChild(endLabel);
 
         // Add the part to the timeline
         timeline.appendChild(part);
+    } else {
+        for (var i = 0; i < switches.length - 1; i++) {
+            // Make a part that has the same type as the beginning switch
+            part = document.createElement('div');
+            part.classList.add('timeline__part');
+            if (switches[i]["type"] === "day") {
+                part.classList.add('part--day');
+            } else {
+                part.classList.add('part--night');
+            }
 
+            // Make the part last until the next switch
+            var startTime = switches[i]["time"];
+            var endTime = switches[i + 1]["time"];
+            var startTimeMins = parseInt(startTime.substr(0, 2)) * 60 + parseInt(startTime.substr(3, 2));
+            var endTimeMins = parseInt(endTime.substr(0, 2)) * 60 + parseInt(endTime.substr(3, 2));
+            part.style.flexGrow = endTimeMins - startTimeMins;
 
+            // For all but the first part, add a label with the starting time
+            if (i !== 0) {
+                var label = document.createElement('div');
+                label.classList.add('timeline__label');
+                if (switches[i]["type"] === "day") {
+                    label.classList.add('label--day');
+                } else if (switches[i]["type"] === "night") {
+                    label.classList.add('label--night');
+                }
+                label.innerHTML = startTime;
+                part.appendChild(label);
+            }
+
+            // Add the part to the timeline
+            timeline.appendChild(part);
+        }
     }
+
     //--------set current time-----
     var currentTimeVerticalLine = document.createElement('div');
     currentTimeVerticalLine.setAttribute('id', 'timeline-time');
