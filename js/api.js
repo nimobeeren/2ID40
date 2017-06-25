@@ -91,7 +91,7 @@ var api = {
 
     getWeekProgramState: function () {
         api.refresh();
-        return api.weekProgramState;
+        return api.weekProgramState === 'on';
     },
 
     getDayProgram: function (day) {
@@ -116,7 +116,7 @@ var api = {
         });
     },
 
-    setDayProgram: function(day, dayProgram) {
+    setDayProgram: function (day, dayProgram) {
         var weekProgram = api.getWeekProgram();
         weekProgram[day] = dayProgram;
         api.setWeekProgram(weekProgram);
@@ -196,8 +196,8 @@ var api = {
         });
     },
 
-    activateVacationMode: function (isVacation){
-        var state = (isVacation) ? 'on' : 'off';
+    setWeekProgramState: function (isOn) {
+        var state = (isOn) ? 'on' : 'off';
         $.ajax({
             type: "put",
             url: BASE_URL + 'weekProgramState/',

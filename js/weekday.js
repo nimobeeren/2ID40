@@ -59,7 +59,7 @@ function updateSwitches() {
 
 
     // If all switches are off, indicate vacation mode
-    if (!switches || switches.length === 0 || weekProgramState !== 'on') {
+    if (!switches || switches.length === 0 || !weekProgramState) {
         // Remove all timeline parts
         timeline.innerHTML = '';
 
