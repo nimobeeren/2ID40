@@ -59,8 +59,8 @@ window.onload = function () {
     buttonDown.addEventListener('touchend', intclear);
 
     // Set interval for refreshing data
-    setInterval(refresh, 2000);
-    setInterval(refreshDashboard, 2000);
+    setInterval(refresh, 4000);
+    setInterval(refreshDashboard, 4000);
 
     // Refresh data and create thermostat if necessary
     // initialize();
