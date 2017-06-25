@@ -58,7 +58,6 @@ function updateSwitches() {
         })
     }
 
-
     // If all switches are off, indicate vacation mode
     if (!switches || switches.length === 0 || !weekProgramState) {
         // Remove all timeline parts
@@ -97,7 +96,7 @@ function updateSwitches() {
             part.classList.add('part--night');
         }
 
-        if (dayCounter >=4 ) {
+        if (dayCounter >=5 ) {
             $('#add__button').hide();
         }else{
             $('#add__button').show();
@@ -148,10 +147,10 @@ function updateSwitches() {
 
 function display() {
     hideButton.innerHTML = "";
-    if (switches.length >= 10 || adding === true) {
+    if (switches.length >= 12 || adding === true) {
         document.getElementById('add__button').style="disabled";
     }
-    else if (switches.length < 10){
+    else if (switches.length < 12){
         adding = true;
         addBox.innerHTML += "<form><img class='switch__icons' src='../icons/ic_wb_sunny_white_24px.svg'>" +
             "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
@@ -183,7 +182,7 @@ function save() {
         });
         existing.innerHTML = "";
         addBox.innerHTML = "";
-        if (switches.length < 10) {
+        if (switches.length < 12) {
             hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>";
             var button = document.getElementById('add__button');
             button.addEventListener("click", display, false);
@@ -206,7 +205,11 @@ function delSwitch(event) {
     for (var i = 0; i < switches.length - 1; i++) {
         if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
             switches.splice(i, 2);
-
+            if (switches.length < 12) {
+                hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>";
+                var button = document.getElementById('add__button');
+                button.addEventListener("click", display, false);
+            }
             var program = api.getDayProgram(editingDay);
             program.switches = switches;
             api.setDayProgram(editingDay,program);
