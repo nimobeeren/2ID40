@@ -1,10 +1,13 @@
-var knob, slider, buttonUp, buttonDown;
+var knob, slider, upButton, downButton;
 var centerX, centerY;
-var mdown = false;
+var knobHold = false;
+var buttonHold = false;
 var minTemp = 5;
 var maxTemp = 30;
 var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
+var buttonTimeout = 400;
+var buttonInterval = 200;
 var intValUp, intValDown;
 
 // Get day and night temperature
@@ -17,67 +20,79 @@ var nightTemperature = api.getNightTemperature();
 var weekProgramState = api.getWeekProgramState();
 var dayProgram = api.getDayProgram(day);
 
+// Refresh data and create thermostat if necessary
+api.initialize();
+
 window.onload = function () {
     knob = document.getElementById('temp-knob');
     slider = document.getElementById('temp-slider');
-    buttonUp = document.getElementById('temp-up');
-    buttonDown = document.getElementById('temp-down');
+    upButton = document.getElementById('temp-up');
+    downButton = document.getElementById('temp-down');
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
     refresh();
 
-    // Wire up mouse events for slider
+    /*
+    Slider
+     */
     knob.addEventListener('mousedown', function (e) {
         e.preventDefault();
-        mdown = true;
+        knobHold = true;
     });
+    knob.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        knobHold = true;
+    });
+
+    document.addEventListener('mousemove', onKnobMove);
+    document.addEventListener('touchmove', onKnobMove);
+
+    /*
+    Buttons
+     */
+    upButton.addEventListener('mousedown', onUpButton);
+    upButton.addEventListener('touchstart', onUpButton);
+    downButton.addEventListener('mousedown', onDownButton);
+    downButton.addEventListener('touchstart', onDownButton);
+
+    /*
+    Slider and buttons
+    */
     document.addEventListener('mouseup', function (e) {
-        mdown = false;
+        knobHold = false;
+        buttonHold = false;
         document.documentElement.style.cursor = 'auto';
         setTargetTemperature(targetTemperature);
         api.setTargetTemperature(targetTemperature);
     });
-    document.addEventListener('mousemove', onDragOrSwipe);
-
-    // Wire up touch events for slider
-    knob.addEventListener('touchstart', function (e) {
-        e.preventDefault();
-        mdown = true;
-    });
     document.addEventListener('touchend', function (e) {
-        mdown = false;
+        knobHold = false;
+        buttonHold = false;
         document.documentElement.style.cursor = 'auto';
+        setTargetTemperature(targetTemperature);
         api.setTargetTemperature(targetTemperature);
     });
-    document.addEventListener('touchmove', onDragOrSwipe);
-
-    // Wire up buttons
-    buttonUp.addEventListener('click', bumpUpTargetTemperature);
-    buttonDown.addEventListener('click', bumpDownTargetTemperature);
-
-    buttonUp.addEventListener('touchstart', intervalUp);
-    buttonDown.addEventListener('touchstart', intervalDown);
-
-    buttonUp.addEventListener('touchend', intclear);
-    buttonDown.addEventListener('touchend', intclear);
 
     // Set interval for refreshing data
     setInterval(refresh, 2000);
-
-    // Refresh data and create thermostat if necessary
-    api.initialize();
 };
 
+/**
+ * Updates UI elements with recent data from server
+ */
 function refresh() {
     // Get data from server
     day = api.getDay();
     time = api.getTime();
     currentTemperature = api.getCurrentTemperature();
-    targetTemperature = api.getTargetTemperature();
     dayTemperature = api.getDayTemperature();
     nightTemperature = api.getNightTemperature();
     weekProgramState = api.getWeekProgramState();
     dayProgram = api.getDayProgram(day);
+
+    if (!knobHold && !buttonHold) {
+        targetTemperature = api.getTargetTemperature();
+    }
 
     // Set UI elements to their corresponding values
     setCurrentDay(day);
@@ -97,8 +112,8 @@ function refresh() {
  * Moves knob and sets temperature when knob is moved by user
  * @param event {MouseEvent/TouchEvent}
  */
-function onDragOrSwipe(event) {
-    if (mdown) {
+function onKnobMove(event) {
+    if (knobHold) {
         event.preventDefault();
         document.documentElement.style.cursor = 'pointer';
 
@@ -126,6 +141,40 @@ function onDragOrSwipe(event) {
         setKnob(ang);
         setTargetTemperature(angleToTemperature(ang));
     }
+}
+
+/**
+ * Increases target temperature in small steps until the button is released
+ * @param event
+ */
+function onUpButton(event) {
+    event.preventDefault();
+    buttonHold = true;
+    bumpUpTargetTemperature();
+    setTimeout(function () {
+        var i = setInterval(function() {
+            if (buttonHold) {
+                bumpUpTargetTemperature();
+            } else {
+                clearInterval(i);
+            }
+        }, buttonInterval);
+    }, buttonTimeout);
+}
+
+function onDownButton(event) {
+    event.preventDefault();
+    buttonHold = true;
+    bumpDownTargetTemperature();
+    setTimeout(function () {
+        var i = setInterval(function() {
+            if (buttonHold) {
+                bumpDownTargetTemperature();
+            } else {
+                clearInterval(i);
+            }
+        }, buttonInterval);
+    }, buttonTimeout);
 }
 
 /**
@@ -186,7 +235,7 @@ function setTargetTemperature(temp) {
     setTemp.innerHTML = temp + "&deg;";
 
     // Set knob position if the user is not moving it
-    if (!mdown) {
+    if (!knobHold && !buttonHold) {
         setKnob(temperatureToAngle(targetTemperature));
     }
 }
@@ -194,33 +243,29 @@ function setTargetTemperature(temp) {
 /**
  * Increases the set temperature by the amount buttonTempIncrement, making sure the knob
  * is in the correct position
- * @param event {MouseEvent/TouchEvent} (optional) parameters for the clicking/touching event
  */
-function bumpUpTargetTemperature(event) {
-    event && event.preventDefault();
+function bumpUpTargetTemperature() {
     var temp = targetTemperature;
     temp += buttonTempIncrement;
     if (temp > maxTemp) {
-        temp = maxTemp
+        temp = maxTemp;
     }
+    setKnob(temperatureToAngle(temp));
     setTargetTemperature(temp);
-    api.setTargetTemperature(targetTemperature);
 }
 
 /**
  * Decreases the set temperature by the amount buttonTempIncrement, making sure the knob
  * is in the correct position
- * @param event {MouseEvent/TouchEvent} (optional) parameters for the clicking/touching event
  */
-function bumpDownTargetTemperature(event) {
-    event && event.preventDefault();
+function bumpDownTargetTemperature() {
     var temp = targetTemperature;
     temp -= buttonTempIncrement;
     if (temp < minTemp) {
-        temp = minTemp
+        temp = minTemp;
     }
+    setKnob(temperatureToAngle(temp));
     setTargetTemperature(temp);
-    api.setTargetTemperature(targetTemperature);
 }
 
 /**
