@@ -127,11 +127,11 @@ var api = {
         var doc = document.implementation.createDocument(null, null, null);
         var week = doc.createElement('week_program');
         week.setAttribute('state', weekProgramState);
-
-        var day, switches;
+        var dayElement, switches;
         for (var day in program) {
-            day = doc.createElement('day');
-            day.setAttribute('name', day);
+            // console.log(program[day].switches);
+            dayElement = doc.createElement('day');
+            dayElement.setAttribute('name', day);
             var type, state, time;
             var dayCounter = 0;
             var nightCounter = 0;
@@ -150,10 +150,10 @@ var api = {
                 } else {
                     nightCounter++;
                 }
-                day.appendChild(switches);
+                dayElement.appendChild(switches);
             }
-            day = api.fillMissingSwitches(dayCounter, nightCounter, day, doc);
-            week.appendChild(day);
+            dayElement = api.fillMissingSwitches(dayCounter, nightCounter, dayElement, doc);
+            week.appendChild(dayElement);
         }
         doc.appendChild(week);
 
@@ -240,33 +240,33 @@ var api = {
         return program;
     },
 
-    fillMissingSwitches: function (dayCounter, nightCounter, day, doc) {
+    fillMissingSwitches: function (dayCounter, nightCounter, dayElement, doc) {
         for (var i = dayCounter; i < 5; i++) {
             switches = doc.createElement('switch');
             switches.setAttribute('type', 'day');
             switches.setAttribute('state', 'off');
             switches.appendChild(doc.createTextNode('00:00'));
-            day.appendChild(switches);
+            dayElement.appendChild(switches);
         }
         for (var j = nightCounter; j < 5; j++) {
             switches = doc.createElement('switch');
             switches.setAttribute('type', 'night');
             switches.setAttribute('state', 'off');
             switches.appendChild(doc.createTextNode('00:00'));
-            day.appendChild(switches);
+            dayElement.appendChild(switches);
         }
-        return day;
+        return dayElement;
     },
 
     mergeProgram: function (program) {
         var first, second;
-        for (var day in program) {
-            program[day].switches.sort(api.sortByTime);
-            for (var i = 0; i < program[day].switches.length - 2; i++) {
-                first = program[day].switches[i];
-                second = program[day].switches[i + 1];
+        for (var currentDay in program) {
+            program[currentDay].switches.sort(api.sortByTime);
+            for (var i = 0; i < program[currentDay].switches.length - 2; i++) {
+                first = program[currentDay].switches[i];
+                second = program[currentDay].switches[i + 1];
                 if (second.type === first.type) {
-                    program[day].switches.splice(i + 1, 1);
+                    program[currentDay].switches.splice(i + 1, 1);
                 }
             }
         }

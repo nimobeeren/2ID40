@@ -190,7 +190,7 @@ function save() {
         // Save the new switch
         var program = api.getDayProgram(editingDay);
         program.switches = switches;
-        api.setDayProgram(program);
+        api.setDayProgram(editingDay, program);
 
         updateSwitches();
     }
@@ -207,7 +207,7 @@ function delSwitch(event) {
 
             var program = api.getDayProgram(editingDay);
             program.switches = switches;
-            api.setDayProgram(program);
+            api.setDayProgram(editingDay,program);
 
             updateSwitches();
         }
