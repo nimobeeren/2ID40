@@ -220,6 +220,11 @@ function delSwitch(event) {
             updateSwitches();
         }
     }
+    if (switches.length < 10) {
+        hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>"
+        var button = document.getElementById('add__button');
+        button.addEventListener("click", display, false);
+    }
 }
 
 function normalizeTime(time){
