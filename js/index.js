@@ -63,7 +63,7 @@ window.onload = function () {
     setInterval(refreshDashboard, 2000);
 
     // Refresh data and create thermostat if necessary
-    initialize();
+    // initialize();
 };
 
 function refreshDashboard() {
@@ -168,6 +168,7 @@ function setTargetTemperature(temp) {
         temp = temp + '.0';
     }
     setTemp.innerHTML = temp + "&deg;";
+    setTargetTemp(temp);
 }
 
 /**

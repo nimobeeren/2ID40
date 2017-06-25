@@ -21,7 +21,8 @@ window.onload = function() {
 };
 
 function setWeekDayProgram(day) {
-    switches = day && getDayProgram(day)["switches"];
+    console.log(getDayProgram(day));
+    switches = getDayProgram(day)["switches"];
     editingDay = day;
     updateSwitches();
 }
@@ -29,7 +30,7 @@ function setWeekDayProgram(day) {
 function updateSwitches() {
     var part;
     switches = getDayProgram(editingDay)["switches"];
-
+    console.log(getDayProgram(editingDay));
     // Remove all switches which are turned off
     switches =
         switches && switches.filter(function (s) {

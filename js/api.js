@@ -24,7 +24,7 @@ var weekProgramJSON = {
 };
 
 // ----------------------
-
+initialize();
 function initialize() {
     $.ajax({
         url: BASE_URL,
@@ -47,9 +47,9 @@ function initialize() {
 
 function refresh() {
     // Send data to server
-    if (targetTemperature) {
-        setTargetTemp(targetTemperature);
-    }
+    // if (targetTemperature) {
+    //     setTargetTemp(targetTemperature);
+    // }
 
     // Get data from server
     $.get({
@@ -77,6 +77,7 @@ function refresh() {
 
 function getDayProgram(day) {
     // mergeProgram();
+    // console.log(weekProgramJSON);
     return weekProgramJSON[day];
 }
 
@@ -221,3 +222,15 @@ function sortByTime(a, b) {
     return a.time - b.time;
 }
 
+
+function activateVacationMode(isVacation){
+    var state = (isVacation) ? 'on' : 'off';
+    $.ajax({
+        type: "put",
+        url: BASE_URL + 'weekProgramState/',
+        contentType: 'application/xml',
+        data: '<week_program_state>' + state + '</week_program_state>'
+        // async: false,
+    });
+
+}
