@@ -162,6 +162,10 @@ function onUpButton(event) {
     }, buttonTimeout);
 }
 
+/**
+ * Decreases target temperature in small steps until the button is released
+ * @param event
+ */
 function onDownButton(event) {
     event.preventDefault();
     buttonHold = true;
