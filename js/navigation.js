@@ -1,4 +1,5 @@
 var shown = false;
+var direction = 'default';
 addEventListener("click", getClickPosition, false);
 addEventListener("touch", getClickPosition, false);
 
@@ -42,18 +43,30 @@ function swipeMove(e){
     e = e ? e : window.event;
     e = ('changedTouches' in e)?e.changedTouches[0] : e;
     var currentX = e.pageX;
-    width = 250 - (touchStartCoords['x'] - currentX);
-    if (width < 250 && shown == true) {
-        var navSize = width.toString() + "px";
-        document.getElementById("mySidenav").style.width = navSize;
+    if (currentX > touchStartCoords['x']) {
+        width = currentX - touchStartCoords['x'];
+        direction = 'right';
+    } else if (touchStartCoords['x'] <= touchStartCoords['x']) {
+        direction = 'left';
+        width = 250 - (touchStartCoords['x'] - currentX);
+        if (width < 250 && shown == true) {
+            var navSize = width.toString() + "px";
+            document.getElementById("mySidenav").style.width = navSize;
+        }
     }
 }
 
 function swipeEnd() {
-    if (width < 200) {
-        closeNav();
-    } else if (shown == true) {
-        openNav();
+    if (direction === "left") {
+        if (width < 200) {
+            closeNav();
+        } else if (shown == true) {
+            openNav();
+        }
+    } else if (direction === "right") {
+        if (width > 150) {
+            openNav();
+        }
     }
 }
 
