@@ -1,4 +1,4 @@
-var knob, slider, upButton, downButton;
+var knob, slider, upButton, downButton, vacationSwitch;
 var centerX, centerY;
 var knobHold = false;
 var buttonHold = false;
@@ -28,6 +28,7 @@ window.onload = function () {
     slider = document.getElementById('temp-slider');
     upButton = document.getElementById('temp-up');
     downButton = document.getElementById('temp-down');
+    vacationSwitch = document.getElementById('vacation-switch');
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
     refresh();
@@ -73,6 +74,14 @@ window.onload = function () {
         api.setTargetTemperature(targetTemperature);
     });
 
+    /*
+    Vacation switch
+     */
+    vacationSwitch.addEventListener('change', function(e) {
+        var vacationMode = vacationSwitch.checked;
+        api.setWeekProgramState(!vacationMode);
+    });
+
     // Set interval for refreshing data
     setInterval(refresh, 2000);
 };
@@ -101,6 +110,7 @@ function refresh() {
     setTargetTemperature(targetTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
+    setWeekProgramState(weekProgramState);
     if (weekProgramState) {
         setDayProgram(dayProgram);
     } else {
@@ -338,6 +348,10 @@ function setCurrentDay(day) {
     dayLabel.innerHTML = day;
 }
 
+function setWeekProgramState(state) {
+    vacationSwitch.checked = !state;
+}
+
 /**
  * Creates a timeline
  * @param program {object} contains a set of switches in the following form:
@@ -451,17 +465,4 @@ function setDayProgram(program) {
     var topPosition = $(currentTimeVerticalLine).position().top - 8;
 
     $(currentTimeVerticalLine).css({top: topPosition});
-}
-
-function intervalUp() {
-    intValUp = setInterval(bumpUpTargetTemperature, 100);
-}
-
-function intervalDown() {
-    intValDown = setInterval(bumpDownTargetTemperature, 100);
-}
-
-function intclear() {
-    clearInterval(intValUp);
-    clearInterval(intValDown);
 }

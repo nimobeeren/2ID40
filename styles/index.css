@@ -75,7 +75,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 64px auto 20px auto;
+    margin: 64px auto -25px auto;
     width: 270px;
     height: 270px;
     border-radius: 100%;
@@ -146,4 +146,19 @@
 .temp-button--up {
     background: #1976d2 url('../icons/ic_arrow_drop_up_white_24px.svg') center no-repeat;
     background-size: contain;
+}
+
+.vacation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.vacation__img {
+
+}
+
+.vacation__label {
+    margin: 10px;
+    font-size: 18px;
 }
