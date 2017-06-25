@@ -221,3 +221,14 @@ function sortByTime(a, b) {
     return a.time - b.time;
 }
 
+function activateVacationMode(isVacation){
+    var state = (isVacation) ? 'on' : 'off';
+    $.ajax({
+        type: "put",
+        url: BASE_URL + 'weekProgramState/',
+        contentType: 'application/xml',
+        data: '<week_program_state>' + state + '</week_program_state>'
+        // async: false,
+    });
+
+}
