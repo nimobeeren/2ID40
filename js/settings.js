@@ -1,8 +1,3 @@
-var knobDay, knobNight, sliderDay, sliderNight;
-var centerX;
-var mdown = false;
-var sliderTempIncrement = 0.5;
-
 var minTemp = 5;
 var maxTemp = 30;
 var buttonTempIncrement = 0.1;
@@ -12,66 +7,16 @@ var buttonUpDay, buttonDownDay, buttonUpNight, buttonDownNight;
 var intValUpDay, intValDownDay, intValUpNight, intValDownNight;
 
 window.onload = function () {
-    knobDay = document.getElementById('temp-knob-day');
-    knobNight = document.getElementById('temp-knob-night');
-    sliderDay = document.getElementById('temp-slider-day');
-    sliderNight = document.getElementById('temp-slider-night');
-
-    centerX = knob.offsetLeft + knob.offsetWidth / 2;
-    centerY = knob.offsetTop + knob.offsetHeight / 2;
-
-    // Wire up mouse events for slider
-    knobDay.addEventListener('mousedown', function (e) {
-        e.preventDefault();
-        mdown = true;
-    });
-    document.addEventListener('mouseup', function (e) {
-        mdown = false;
-        document.documentElement.style.cursor = 'auto';
-    });
-    document.addEventListener('mousemove', dragOrSwipeDay);
-
-    // Wire up touch events for slider
-    knobDay.addEventListener('touchstart', function (e) {
-        mdown = true;
-        e.preventDefault();
-    });
-    document.addEventListener('touchend', function (e) {
-        mdown = false;
-        document.documentElement.style.cursor = 'auto';
-    });
-    document.addEventListener('touchmove', dragOrSwipeDay);
-
-    // Wire up mouse events for slider
-    knobNight.addEventListener('mousedown', function (e) {
-        e.preventDefault();
-        mdown = true;
-    });
-    document.addEventListener('mouseup', function (e) {
-        mdown = false;
-        document.documentElement.style.cursor = 'auto';
-    });
-    document.addEventListener('mousemove', dragOrSwipeNight);
-
-    // Wire up touch events for slider
-    knobNight.addEventListener('touchstart', function (e) {
-        mdown = true;
-        e.preventDefault();
-    });
-    document.addEventListener('touchend', function (e) {
-        mdown = false;
-        document.documentElement.style.cursor = 'auto';
-    });
-    document.addEventListener('touchmove', dragOrSwipeNight);
-
-
     buttonUpDay = document.getElementById('temp-up-day');
     buttonDownDay = document.getElementById('temp-down-day');
     buttonUpNight = document.getElementById('temp-up-night');
     buttonDownNight = document.getElementById('temp-down-night');
+	
 
-    setDayTemperature(dayTemperature);
-    setNightTemperature(nightTemperature);
+    api.setDayTemperature(dayTemperature);
+    api.setNightTemperature(nightTemperature);
+	setDayTemperature(dayTemperature);
+	setNightTemperature(nightTemperature);
 
     buttonUpDay.addEventListener('click', bumpUpDayTemperature);
     buttonDownDay.addEventListener('click', bumpDownDayTemperature);
@@ -90,46 +35,6 @@ window.onload = function () {
 
 };
 
-function dragOrSwipeDay(event) {
-    if (mdown) {
-        event.preventDefault();
-        document.documentElement.style.cursor = 'pointer';
-
-        // Move knob to correct position
-        setKnobDay(ang);
-        setDayTemperature(angleToTemperature(ang));
-    }
-}
-
-function setKnobDay(ang) {
-    // Calculate knob position relative to center
-    var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
-
-    // Apply absolute knob position
-    knobDay.style.left = centerX - knobDay.offsetWidth / 2 + X + 'px';
-}
-
-function dragOrSwipeNight(event) {
-    if (mdown) {
-        event.preventDefault();
-        document.documentElement.style.cursor = 'pointer';
-        // Move knob to correct position
-        setKnobNight(ang);
-        setNightTemperature(angleToTemperature(ang));
-    }
-}
-
-function setKnobNight(ang) {
-    var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
-    var radius = (slider.offsetWidth - borderWidth) / 2;
-
-    // Calculate knob position relative to center
-    var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
-
-    // Apply absolute knob position
-    knobNight.style.left = centerX - knobNight.offsetWidth / 2 + X + 'px';
-}
-
 function bumpUpDayTemperature(event) {
     event && event.preventDefault();
     var temp = dayTemperature;
@@ -138,7 +43,7 @@ function bumpUpDayTemperature(event) {
         temp = maxTemp
     }
     setDayTemperature(temp);
-    saveDayTemperature(temp);
+
 }
 
 /**
@@ -153,7 +58,6 @@ function bumpDownDayTemperature(event) {
         temp = minTemp
     }
     setDayTemperature(temp);
-    saveDayTemperature(temp);
 }
 
 function bumpUpNightTemperature(event) {
@@ -164,7 +68,6 @@ function bumpUpNightTemperature(event) {
         temp = maxTemp
     }
     setNightTemperature(temp);
-    saveNightTemperature(temp);
 }
 
 
@@ -180,7 +83,6 @@ function bumpDownNightTemperature(event) {
         temp = minTemp
     }
     setNightTemperature(temp);
-    saveNightTemperature(temp);
 }
 
 function setDayTemperature(temp) {
@@ -192,6 +94,7 @@ function setDayTemperature(temp) {
         temp = temp + '.0';
     }
     setDayTemp.innerHTML = temp + "&deg;";
+	api.setDayTemperature(temp);
 }
 
 /**
@@ -208,6 +111,7 @@ function setNightTemperature(temp) {
         temp = temp + '.0';
     }
     setNightTemp.innerHTML = temp + "&deg;";
+	api.setNightTemperature(temp);
 }
 
 function intervalUpDay() {
