@@ -34,7 +34,7 @@ nav {
     top: 0;
     left: 0;
     overflow-x: hidden; /* Disable horizontal scroll */
-    padding-top: 48px; /* Place content 60px from the top */
+    padding-top: 48px; /* Place content 48px from the top */
     transition: 0.3s; /* 0.5 second transition effect to slide in the sidenav */
     text-align: left;
     background-color: #1976d2;
@@ -109,6 +109,14 @@ nav {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+}
+
+.nav_separate {
+    border-bottom: 4px solid #aad9ff;
+}
+
+#date {
+    font-size: 16px;
 }
 
 /* The switch - the box around the slider */

@@ -5,27 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Thermostat</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="../styles/base.css">
+    <link rel="stylesheet" href="../styles/index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
 <body id="el">
 <nav>
     <div id="mySidenav" class="sidenav">
-        <div id="currentPage" class="nav_separate">Dashboard</div>
-        <a href="views/monday.html">Monday</a>
-        <a href="views/tuesday.html">Tuesday</a>
-        <a href="views/wednesday.html">Wednesday</a>
-        <a href="views/thursday.html">Thursday</a>
-        <a href="views/friday.html">Friday</a>
-        <a href="views/saturday.html">Saturday</a>
-        <a href="views/sunday.html" class="nav_separate">Sunday</a>
-        <a href="views/settings.html">Settings</a>
+        <div class="nav_separate" id="currentPage">Dashboard</div>
+        <a href="monday.html">Monday</a>
+        <a href="tuesday.html">Tuesday</a>
+        <a href="wednesday.html">Wednesday</a>
+        <a href="thursday.html">Thursday</a>
+        <a href="friday.html">Friday</a>
+        <a href="saturday.html">Saturday</a>
+        <a class="nav_separate" href="sunday.html">Sunday</a>
+        <a href="settings.html">Settings</a>
     </div>
-    <img class="nav__button" src="icons/ic_menu_white_24px.svg" onclick="openNav()">
+    <img class="nav__button" src="../icons/ic_menu_white_24px.svg" onclick="openNav()">
     <div class="nav__title">Thermostat</div>
-    <a href="views/settings.html" id="setIcon">
-        <img class="nav__button" src="icons/ic_settings_white_24px.svg">
+    <a href="settings.html" id="setIcon">
+        <img class="nav__button" src="../icons/ic_settings_white_24px.svg">
     </a>
 </nav>
 <main>
@@ -49,29 +49,19 @@
     <div id="temp-slider" class="radial-slider">
         <div id="temp-knob" class="radial-slider__knob"></div>
         <div id="temp-line-day" class="radial-slider__line line--day">
-            <img src="icons/ic_wb_sunny_white_24px.svg">
+            <img src="../icons/ic_wb_sunny_white_24px.svg">
         </div>
         <div id="temp-line-night" class="radial-slider__line line--night">
-            <img src="icons/moon_white.svg">
+            <img src="../icons/moon_white.svg">
         </div>
         <div id="temp-line-current" class="radial-slider__line line--current"></div>
         <a id="temp-up" class="temp-button temp-button--up"></a>
         <div id="set-temp-value" class="temp-value">5.0&deg;</div>
         <a id="temp-down" class="temp-button temp-button--down"></a>
     </div>
-    <div class="vacation">
-        <img class="vacation__img" src="icons/ic_lock_grey_24px.svg">
-        <div class="vacation__label">Vacation mode</div>
-        <div>
-            <label class="switch">
-                <input id="vacation-switch" type="checkbox">
-                <div class="slider round"></div>
-            </label>
-        </div>
-    </div>
 </main>
-<script src="js/api.js"></script>
-<script src="js/index.js"></script>
-<script src="js/navigation.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/index.js"></script>
+<script src="../js/navigation.js"></script>
 </body>
 </html>
