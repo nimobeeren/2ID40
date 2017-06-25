@@ -8,14 +8,14 @@ var buttonTempIncrement = 0.1;
 var intValUp, intValDown;
 
 // Get day and night temperature
-var day;
-var time;
-var currentTemperature;
-var targetTemperature;
-var dayTemperature;
-var nightTemperature;
-var weekProgramState;
-var dayProgram;
+var day = api.getDay();
+var time = api.getTime();
+var currentTemperature = api.getCurrentTemperature();
+var targetTemperature = api.getTargetTemperature();
+var dayTemperature = api.getDayTemperature();
+var nightTemperature = api.getNightTemperature();
+var weekProgramState = api.getWeekProgramState();
+var dayProgram = api.getDayProgram(day);
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
@@ -24,7 +24,7 @@ window.onload = function () {
     buttonDown = document.getElementById('temp-down');
     centerX = knob.offsetLeft + knob.offsetWidth / 2;
     centerY = knob.offsetTop + knob.offsetHeight / 2;
-    refreshDashboard();
+    refresh();
 
     // Wire up mouse events for slider
     knob.addEventListener('mousedown', function (e) {
@@ -34,8 +34,10 @@ window.onload = function () {
     document.addEventListener('mouseup', function (e) {
         mdown = false;
         document.documentElement.style.cursor = 'auto';
+        setTargetTemperature(targetTemperature);
+        api.setTargetTemperature(targetTemperature);
     });
-    document.addEventListener('mousemove', dragOrSwipe);
+    document.addEventListener('mousemove', onDragOrSwipe);
 
     // Wire up touch events for slider
     knob.addEventListener('touchstart', function (e) {
@@ -45,8 +47,9 @@ window.onload = function () {
     document.addEventListener('touchend', function (e) {
         mdown = false;
         document.documentElement.style.cursor = 'auto';
+        api.setTargetTemperature(targetTemperature);
     });
-    document.addEventListener('touchmove', dragOrSwipe);
+    document.addEventListener('touchmove', onDragOrSwipe);
 
     // Wire up buttons
     buttonUp.addEventListener('click', bumpUpTargetTemperature);
@@ -60,21 +63,29 @@ window.onload = function () {
 
     // Set interval for refreshing data
     setInterval(refresh, 2000);
-    setInterval(refreshDashboard, 2000);
 
     // Refresh data and create thermostat if necessary
-    initialize();
+    api.initialize();
 };
 
-function refreshDashboard() {
+function refresh() {
+    // Get data from server
+    day = api.getDay();
+    time = api.getTime();
+    currentTemperature = api.getCurrentTemperature();
+    targetTemperature = api.getTargetTemperature();
+    dayTemperature = api.getDayTemperature();
+    nightTemperature = api.getNightTemperature();
+    weekProgramState = api.getWeekProgramState();
+    dayProgram = api.getDayProgram(day);
+
     // Set UI elements to their corresponding values
-    setKnob(temperatureToAngle(targetTemperature));
+    setCurrentDay(day);
+    setCurrentTime(time);
+    setCurrentTemperature(currentTemperature);
     setTargetTemperature(targetTemperature);
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
-    setCurrentTemperature(currentTemperature);
-    setCurrentTime(time);
-    setCurrentDay(day);
     if (weekProgramState === 'on') {
         setDayProgram(dayProgram);
     } else {
@@ -86,7 +97,7 @@ function refreshDashboard() {
  * Moves knob and sets temperature when knob is moved by user
  * @param event {MouseEvent/TouchEvent}
  */
-function dragOrSwipe(event) {
+function onDragOrSwipe(event) {
     if (mdown) {
         event.preventDefault();
         document.documentElement.style.cursor = 'pointer';
@@ -161,13 +172,23 @@ function setKnob(ang) {
  */
 function setTargetTemperature(temp) {
     var setTemp = document.getElementById('set-temp-value');
+
     temp = parseFloat(temp);
     targetTemperature = temp;
+
+    // Make sure we are using 1 decimal
     temp = Math.round(temp * 10) / 10;
     if (temp === Math.round(temp)) {
         temp = temp + '.0';
     }
+
+    // Set target label text
     setTemp.innerHTML = temp + "&deg;";
+
+    // Set knob position if the user is not moving it
+    if (!mdown) {
+        setKnob(temperatureToAngle(targetTemperature));
+    }
 }
 
 /**
@@ -183,7 +204,7 @@ function bumpUpTargetTemperature(event) {
         temp = maxTemp
     }
     setTargetTemperature(temp);
-    setKnob(temperatureToAngle(temp));
+    api.setTargetTemperature(targetTemperature);
 }
 
 /**
@@ -199,7 +220,7 @@ function bumpDownTargetTemperature(event) {
         temp = minTemp
     }
     setTargetTemperature(temp);
-    setKnob(temperatureToAngle(temp));
+    api.setTargetTemperature(targetTemperature);
 }
 
 /**
