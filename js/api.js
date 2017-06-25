@@ -1,5 +1,5 @@
 var api = {
-    BASE_URL: 'http://wwwis.win.tue.nl/2id40-ws/423/',
+    BASE_URL: 'http://wwwis.win.tue.nl/2id40-ws/11/',
     MAX_REQUEST_TIME: 1000,
 
     response: null,
