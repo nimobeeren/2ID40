@@ -12,9 +12,9 @@ window.onload = function () {
     buttonUpNight = document.getElementById('temp-up-night');
     buttonDownNight = document.getElementById('temp-down-night');
 	
+    dayTemperature = api.getDayTemperature();
+    nightTemperature = api.getNightTemperature();
 
-    api.setDayTemperature(dayTemperature);
-    api.setNightTemperature(nightTemperature);
 	setDayTemperature(dayTemperature);
 	setNightTemperature(nightTemperature);
 
