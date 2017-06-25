@@ -184,6 +184,21 @@ var api = {
         });
     },
 
+    activateVacationMode: function (isVacation){
+        var state = (isVacation) ? 'on' : 'off';
+        $.ajax({
+            type: "put",
+            url: BASE_URL + 'weekProgramState/',
+            contentType: 'application/xml',
+            data: '<week_program_state>' + state + '</week_program_state>'
+            // async: false,
+        });
+    },
+
+    /*
+     Utility functions
+     */
+
     parseWeekProgram: function (xml) {
         var program = {
             Monday: {},
@@ -212,10 +227,6 @@ var api = {
 
         return program;
     },
-
-    /*
-     Utility functions
-     */
 
     fillMissingSwitches: function (dayCounter, nightCounter, day, doc) {
         for (var i = dayCounter; i < 5; i++) {
