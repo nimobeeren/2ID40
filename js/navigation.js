@@ -64,7 +64,7 @@ function swipeEnd() {
             openNav();
         }
     } else if (direction === "right") {
-        if (width > 150) {
+        if (width > 100) {
             openNav();
         }
     }
