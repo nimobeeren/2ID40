@@ -134,19 +134,16 @@
 .temp-button {
     width: 100px;
     height: 48px;
-    background-color: #1976d2;
-    color: #fafafa;
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-    -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-    -moz-user-select: none; /* Firefox */
-    -ms-user-select: none; /* Internet Explorer/Edge */
-    user-select: none; /* Chrome/Opera */
 }
 
-.temp-button img {
-    display: block;
-    margin: 0 auto;
-    height: inherit;
+.temp-button--down {
+    background: #1976d2 url('../icons/ic_arrow_drop_down_white_24px.svg') center no-repeat;
+    background-size: contain;
+}
+
+.temp-button--up {
+    background: #1976d2 url('../icons/ic_arrow_drop_up_white_24px.svg') center no-repeat;
+    background-size: contain;
 }

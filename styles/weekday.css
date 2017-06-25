@@ -17,6 +17,17 @@
     background-color: #1976d2;
 }
 
+#edit__button {
+    font-size: 26px;
+    padding-top: 3px;
+    padding-left: 15px;
+    padding-right: 15px;
+    font-family: "Source Code Pro", "Courier New";
+    border: 1px solid white;
+    height: 42px;
+    background-color: #1976d2;
+}
+
 input[type="submit"]{
     border: none;
     text-decoration: none;
