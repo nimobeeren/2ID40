@@ -126,7 +126,7 @@ var api = {
         program = api.mergeProgram(program);
         var doc = document.implementation.createDocument(null, null, null);
         var week = doc.createElement('week_program');
-        week.setAttribute('state', weekProgramState);
+        week.setAttribute('state', (weekProgramState) ? 'on' : 'off');
         var dayElement, switches;
         for (var day in program) {
             // console.log(program[day].switches);

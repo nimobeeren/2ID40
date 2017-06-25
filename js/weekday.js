@@ -29,6 +29,7 @@ function setWeekDayProgram(day) {
 function updateSwitches() {
     var part;
     switches = api.getDayProgram(editingDay)["switches"];
+
     weekProgramState = api.getWeekProgramState();
 
     // Remove all switches which are turned off
