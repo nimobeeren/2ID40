@@ -27,11 +27,10 @@ window.onload = function() {
     targetTemperature = api.getTargetTemperature();
     weekProgramState = api.getWeekProgramState();
 
-    console.log(dayTemperature, nightTemperature, targetTemperature, weekProgramState);
     // Set the background color based on current target temperature
     if (weekProgramState) {
         var amount;
-        if (dayTemperature > nightTemperature) {
+        if (dayTemperature >= nightTemperature) {
             if (targetTemperature >= dayTemperature) {
                 setBackground(dayColor);
             } else if (targetTemperature <= nightTemperature) {
@@ -40,17 +39,15 @@ window.onload = function() {
                 amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
                 setBackground(lerpColor(nightColor, dayColor, amount));
             }
-        } else if (dayTemperature < nightTemperature) {
+        } else {
             if (targetTemperature >= nightTemperature) {
-                setBackground(dayTemperature);
+                setBackground(nightColor);
             } else if (targetTemperature <= dayTemperature) {
-                setBackground(nightTemperature);
+                setBackground(dayColor);
             } else {
                 amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
                 setBackground(lerpColor(dayColor, nightColor, amount));
             }
-        } else {
-            setBackground(dayColor);
         }
     } else {
         setBackground(dayColor);
