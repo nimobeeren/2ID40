@@ -4,8 +4,7 @@ var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 var buttonTimeout = 400;
 var buttonInterval = 200;
-var dayTemperature;
-var nightTemperature;
+var dayTemperature, nightTemperature, weekProgramState, targetTemperature;
 var buttonUpDay, buttonDownDay, buttonUpNight, buttonDownNight;
 var sliderDay, sliderNight, knobDay, knobNight;
 var knobDayHold = false;
@@ -13,6 +12,8 @@ var knobNightHold = false;
 var buttonHold = false;
 var dayColor = '#64b5f6';
 var nightColor = '#1a237e';
+var moveDay = false;
+var moveNight = false;
 
 window.onload = function () {
     buttonUpDay = document.getElementById('temp-up-day');
@@ -27,8 +28,8 @@ window.onload = function () {
     // Set UI elements to their corresponding values
     dayTemperature = api.getDayTemperature();
     nightTemperature = api.getNightTemperature();
-    var weekProgramState = api.getWeekProgramState();
-    var targetTemperature = api.getTargetTemperature();
+    weekProgramState = api.getWeekProgramState();
+    targetTemperature = api.getTargetTemperature();
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
 
@@ -56,6 +57,14 @@ window.onload = function () {
         }
     } else {
         setBackground(dayColor);
+    }
+
+    // If target is currently at day/night, move the target with it
+    if (parseFloat(targetTemperature) === parseFloat(dayTemperature)) {
+        moveDay = true;
+    }
+    if (parseFloat(targetTemperature) === parseFloat(nightTemperature)) {
+        moveNight = true;
     }
 
     /*
@@ -314,6 +323,10 @@ function setDayTemperature(temp) {
     setDayTemp.innerHTML = temp + "&deg;";
     api.setDayTemperature(temp);
 
+    if (moveDay) {
+        api.setTargetTemperature(temp);
+    }
+
     if (!knobDayHold) {
         setDayKnob(temperatureToDistance(temp));
     }
@@ -329,6 +342,10 @@ function setNightTemperature(temp) {
     }
     setNightTemp.innerHTML = temp + "&deg;";
     api.setNightTemperature(temp);
+
+    if (moveNight) {
+        api.setTargetTemperature(temp);
+    }
 
     if (!knobNightHold) {
         setNightKnob(temperatureToDistance(temp));
