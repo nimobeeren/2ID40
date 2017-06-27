@@ -123,24 +123,28 @@ function refreshUI() {
     }
 
     // Set the background color based on current target temperature
-    var amount;
-    if (dayTemperature > nightTemperature) {
-        if (targetTemperature >= dayTemperature) {
+    if (weekProgramState) {
+        var amount;
+        if (dayTemperature > nightTemperature) {
+            if (targetTemperature >= dayTemperature) {
+                setBackground(dayColor);
+            } else if (targetTemperature <= nightTemperature) {
+                setBackground(nightColor);
+            } else {
+                amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
+                setBackground(lerpColor(nightColor, dayColor, amount));
+            }
+        } else if (dayTemperature < nightTemperature) {
+            if (targetTemperature >= nightTemperature) {
+                setBackground(dayTemperature);
+            } else if (targetTemperature <= dayTemperature) {
+                setBackground(nightTemperature);
+            } else {
+                amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
+                setBackground(lerpColor(dayColor, nightColor, amount));
+            }
+        } else {
             setBackground(dayColor);
-        } else if (targetTemperature <= nightTemperature) {
-            setBackground(nightColor);
-        } else {
-            amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
-            setBackground(lerpColor(nightColor, dayColor, amount));
-        }
-    } else if (dayTemperature < nightTemperature) {
-        if (targetTemperature >= nightTemperature) {
-            setBackground(dayTemperature);
-        } else if (targetTemperature <= dayTemperature) {
-            setBackground(nightTemperature);
-        } else {
-            amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
-            setBackground(lerpColor(dayColor, nightColor, amount));
         }
     } else {
         setBackground(dayColor);
@@ -437,6 +441,7 @@ function setDayProgram(program) {
         });
 
     // Indicate vacation mode
+    var lines, line;
     if (!weekProgramState) {
         // Remove all timeline parts
         timeline.innerHTML = '';
@@ -446,7 +451,15 @@ function setDayProgram(program) {
         part.classList.add('timeline__part');
         part.classList.add('part--disabled');
         timeline.appendChild(part);
+
+        // Hide indicator lines on slider
+        document.getElementById('temp-line-day').style.display = 'none';
+        document.getElementById('temp-line-night').style.display = 'none';
         return;
+    } else {
+        // Show indicator lines on slider
+        document.getElementById('temp-line-day').style.display = 'block';
+        document.getElementById('temp-line-night').style.display = 'block';
     }
 
     // Sort switches by ascending time
