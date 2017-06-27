@@ -1,5 +1,4 @@
-var knob, slider, upButton, downButton, vacationSwitch;
-var centerX, centerY;
+var knob, container, slider, upButton, downButton, vacationSwitch;
 var knobHold = false;
 var buttonHold = false;
 var minTemp = 5;
@@ -8,7 +7,6 @@ var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 var buttonTimeout = 400;
 var buttonInterval = 200;
-var intValUp, intValDown;
 
 // Get day and night temperature
 var day = api.getDay();
@@ -25,12 +23,11 @@ api.initialize();
 
 window.onload = function () {
     knob = document.getElementById('temp-knob');
+    container = document.getElementById('slider-container');
     slider = document.getElementById('temp-slider');
     upButton = document.getElementById('temp-up');
     downButton = document.getElementById('temp-down');
     vacationSwitch = document.getElementById('vacation-switch');
-    centerX = knob.offsetLeft + knob.offsetWidth / 2;
-    centerY = knob.offsetTop + knob.offsetHeight / 2;
     refresh();
 
     /*
@@ -127,6 +124,9 @@ function onKnobMove(event) {
         event.preventDefault();
         document.documentElement.style.cursor = 'pointer';
 
+        var centerX = container.offsetLeft + container.offsetWidth / 2;
+        var centerY = container.offsetTop + container.offsetHeight / 2;
+
         var a;
         if (event.touches) {
             a = Math.atan2(centerX - event.touches[0].clientX, centerY - event.touches[0].clientY);
@@ -218,15 +218,15 @@ function temperatureToAngle(temp) {
  */
 function setKnob(ang) {
     var borderWidth = window.getComputedStyle(slider).getPropertyValue('border-top-width').slice(0, -2);
-    var radius = (slider.offsetWidth - borderWidth) / 2;
+    var radius = slider.offsetWidth / 2 - borderWidth / 2;
 
     // Calculate knob position relative to center
     var X = Math.round(radius * -Math.sin(ang * Math.PI / 180));
     var Y = Math.round(radius * Math.cos(ang * Math.PI / 180));
 
     // Apply absolute knob position
-    knob.style.left = centerX - knob.offsetWidth / 2 + X + 'px';
-    knob.style.top = centerY - knob.offsetHeight / 2 + Y + 'px';
+    knob.style.left = container.offsetWidth / 2 - knob.offsetWidth / 2 + X + 'px';
+    knob.style.top = container.offsetHeight / 2  - knob.offsetHeight / 2 + Y + 'px';
 }
 
 /**

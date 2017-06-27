@@ -1,5 +1,15 @@
+main {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100vh - 48px);
+}
+
 .current {
-    margin: 24px auto;
+    display: flex;
+    align-items: center;
+    margin: 4px auto;
+    max-height: 100px;
 }
 
 .current td {
@@ -12,26 +22,6 @@
 
 .current__value {
     font-size: 24px;
-}
-
-.timeline {
-    display: flex;
-    margin: 24px 0 24px 0;
-    width: 100%;
-}
-
-.timeline__part {
-    display: inline-block;
-    height: 48px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-
-.part--day {
-    background-color: #bbdefb;
-}
-
-.part--night {
-    background-color: #0d47a1;
 }
 
 #timeline-time {
@@ -49,52 +39,51 @@
 
 }
 
-.part--disabled {
-    background: #bdbdbd url('../icons/ic_lock_grey_24px.svg') center no-repeat;
-    background-size: 32px;
-    box-shadow: none;
-    flex-grow: 1;
-}
-
-.timeline__label {
-    width: 0;
-    margin-left: -16px;
-    margin-top: -20px;
-}
-
-.label--day {
-    margin-top: -20px;
-}
-
-.label--night {
-    margin-top: 48px;
-}
-
-.label--start {
-    width: auto;
-    margin-top: -20px;
-    text-align: left;
-    margin-left: 4px;
-}
-
-.label--end {
-    width: auto;
-    margin-top: -20px;
-    text-align: right;
-    margin-right: 4px;
+.radial-slider__container {
+    width: 60%;
+    padding-top: 60%;
+    position: relative;
+    margin: 64px auto 0 auto;
 }
 
 .radial-slider {
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 64px auto -25px auto;
-    width: 270px;
-    height: 270px;
-    border-radius: 100%;
+    /*margin: 64px auto -25px auto;*/
+    border-radius: 50%;
     border: 25px solid;
     border-color: #fafafa #fafafa transparent #fafafa;
+}
+
+.controls__temp-value {
+    font-size: 48px;
+    text-align: center;
+    vertical-align: middle;
+    margin: 10px auto;
+}
+
+.controls__button {
+    width: 100px;
+    height: 48px;
+    cursor: pointer;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.button--down {
+    background: #1976d2 url('../icons/ic_arrow_drop_down_white_24px.svg') center no-repeat;
+    background-size: contain;
+}
+
+.button--up {
+    background: #1976d2 url('../icons/ic_arrow_drop_up_white_24px.svg') center no-repeat;
+    background-size: contain;
 }
 
 .radial-slider__knob {
@@ -138,38 +127,12 @@
     margin-top: 55px;
 }
 
-.temp-value {
-    font-size: 48px;
-    text-align: center;
-    vertical-align: middle;
-    margin: 10px auto;
-}
-
-.temp-button {
-    width: 100px;
-    height: 48px;
-    cursor: pointer;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-}
-
-.temp-button--down {
-    background: #1976d2 url('../icons/ic_arrow_drop_down_white_24px.svg') center no-repeat;
-    background-size: contain;
-}
-
-.temp-button--up {
-    background: #1976d2 url('../icons/ic_arrow_drop_up_white_24px.svg') center no-repeat;
-    background-size: contain;
-}
-
 .vacation {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-.vacation__img {
-
+    margin: 10px auto;
+    max-height: 100px;
 }
 
 .vacation__label {

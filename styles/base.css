@@ -1,11 +1,13 @@
-body {
+html, body {
     margin: 0 auto;
     background-color: #64b5f6;
     color: #fafafa;
+    /* TODO: #1a237e for night */
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
     overflow: hidden;
+    height: 100%;
 }
 
 nav {
@@ -134,7 +136,7 @@ nav {
 }
 
 /* The slider */
-.slider {
+.switch__knob {
     position: absolute;
     cursor: pointer;
     top: 0;
@@ -144,9 +146,10 @@ nav {
     background-color: #bdbdbd;
     -webkit-transition: .4s;
     transition: .4s;
+    border-radius: 34px;
 }
 
-.slider:before {
+.switch__knob:before {
     position: absolute;
     content: "";
     height: 26px;
@@ -156,27 +159,74 @@ nav {
     background-color: #fafafa;
     -webkit-transition: .4s;
     transition: .4s;
+    border-radius: 50%;
 }
 
-input:checked + .slider {
+input:checked + .switch__knob {
     background-color: #1976d2;
 }
 
-input:focus + .slider {
+input:focus + .switch__knob {
     box-shadow: 0 0 1px #1976d2;
 }
 
-input:checked + .slider:before {
+input:checked + .switch__knob:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
 
-/* Rounded sliders */
-.slider.round {
-    border-radius: 34px;
+.timeline {
+    display: flex;
+    margin: 24px 0 24px 0;
+    width: 100%;
 }
 
-.slider.round:before {
-    border-radius: 50%;
+.timeline__part {
+    display: inline-block;
+    height: 48px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.part--day {
+    background-color: #bbdefb;
+}
+
+.part--night {
+    background-color: #0d47a1;
+}
+
+.part--disabled {
+    background: #bdbdbd url('../icons/ic_lock_grey_24px.svg') center no-repeat;
+    background-size: 32px;
+    box-shadow: none;
+    flex-grow: 1;
+}
+
+.timeline__label {
+    width: 0;
+    margin-left: -16px;
+    margin-top: -20px;
+}
+
+.label--day {
+    margin-top: -20px;
+}
+
+.label--night {
+    margin-top: 48px;
+}
+
+.label--start {
+    width: auto;
+    margin-top: -20px;
+    text-align: left;
+    margin-left: 4px;
+}
+
+.label--end {
+    width: auto;
+    margin-top: -20px;
+    text-align: right;
+    margin-right: 4px;
 }

@@ -29,35 +29,39 @@
     </a>
 </nav>
 <main>
-    <table class="current">
-        <tr class="current__day">
-            <td class="current__label">Current day</td>
-            <td class="current__value" id="current-day">Loading</td>
-        </tr>
-        <tr class="current__time">
-            <td class="current__label">Current time</td>
-            <td class="current__value" id="current-time">0:00</td>
-        </tr>
-        <tr class="current__temp">
-            <td class="current__label">Current temperature</td>
-            <td class="current__value" id="current-temp">&deg;</td>
-        </tr>
-    </table>
+    <div class="current">
+        <table>
+            <tr class="current__day">
+                <td class="current__label">Current day</td>
+                <td class="current__value" id="current-day">Loading</td>
+            </tr>
+            <tr class="current__time">
+                <td class="current__label">Current time</td>
+                <td class="current__value" id="current-time">0:00</td>
+            </tr>
+            <tr class="current__temp">
+                <td class="current__label">Current temperature</td>
+                <td class="current__value" id="current-temp">&deg;</td>
+            </tr>
+        </table>
+    </div>
     <div id="timeline" class="timeline">
         <div class="timeline__part part--disabled"></div>
     </div>
-    <div id="temp-slider" class="radial-slider">
-        <div id="temp-knob" class="radial-slider__knob"></div>
-        <div id="temp-line-day" class="radial-slider__line line--day">
-            <img src="icons/ic_wb_sunny_white_24px.svg">
+    <div id="slider-container" class="radial-slider__container">
+        <div id="temp-slider" class="radial-slider">
+            <a id="temp-up" class="controls__button button--up"></a>
+            <div id="set-temp-value" class="controls__temp-value">5.0&deg;</div>
+            <a id="temp-down" class="controls__button button--down"></a>
+            <div id="temp-knob" class="radial-slider__knob"></div>
+            <div id="temp-line-day" class="radial-slider__line line--day">
+                <img src="icons/ic_wb_sunny_white_24px.svg">
+            </div>
+            <div id="temp-line-night" class="radial-slider__line line--night">
+                <img src="icons/moon_white.svg">
+            </div>
+            <div id="temp-line-current" class="radial-slider__line line--current"></div>
         </div>
-        <div id="temp-line-night" class="radial-slider__line line--night">
-            <img src="icons/moon_white.svg">
-        </div>
-        <div id="temp-line-current" class="radial-slider__line line--current"></div>
-        <a id="temp-up" class="temp-button temp-button--up"></a>
-        <div id="set-temp-value" class="temp-value">5.0&deg;</div>
-        <a id="temp-down" class="temp-button temp-button--down"></a>
     </div>
     <div class="vacation">
         <img class="vacation__img" src="icons/ic_lock_grey_24px.svg">
@@ -65,7 +69,7 @@
         <div>
             <label class="switch">
                 <input id="vacation-switch" type="checkbox">
-                <div class="slider round"></div>
+                <div class="switch__knob"></div>
             </label>
         </div>
     </div>
