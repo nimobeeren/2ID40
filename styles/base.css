@@ -179,6 +179,7 @@ input:checked + .switch__knob:before {
     display: flex;
     margin: 24px 0 24px 0;
     width: 100%;
+    position: relative;
 }
 
 .timeline__part {
