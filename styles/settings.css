@@ -1,8 +1,17 @@
-.temp-value-settings {
-    font-size: 48px;
+main {
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: calc(100vh - 48px);
 }
 
-.temp-button {
+.controls__value {
+    font-size: 36px;
+    text-align: center;
+}
+
+.controls__button {
     -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
@@ -10,7 +19,7 @@
     user-select: none; /* Chrome/Opera */
 }
 
-.temp-button img {
+.controls__button img {
     margin-right: 30%;
     width: 100px;
     height: 48px;
@@ -22,7 +31,7 @@
 
 .setting__label {
     width: 100%;
-    font-size: 24px;
+    font-size: 18px;
     text-align: center;
     display: inline-block;
     padding-top: 5%;
@@ -46,11 +55,10 @@
     display: flex;
 }
 
-.setting__buttons {
+.setting__controls {
     display: flex;
     flex-direction: column;
-    width: 50%;
-    height: 50%;
+    justify-content: center;
 }
 
 .setting__img {
