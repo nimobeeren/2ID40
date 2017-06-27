@@ -6,6 +6,11 @@ main {
     height: calc(100vh - 48px);
 }
 
+.nav-button {
+    margin: 0 12px;
+    cursor: pointer;
+}
+
 .controls__value {
     font-size: 36px;
     text-align: center;
