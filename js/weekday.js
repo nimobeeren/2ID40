@@ -4,7 +4,10 @@ var day ;
 var time;
 var weekProgramState;
 var dayProgram;
+var dayTemperature, nightTemperature, targetTemperature;
 // console.log(dayProgram);
+var dayColor = '#64b5f6';
+var nightColor = '#1a237e';
 
 var switches;
 var adding = false;
@@ -18,6 +21,40 @@ var editingDay;
 window.onload = function() {
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
+
+    dayTemperature = api.getDayTemperature();
+    nightTemperature = api.getNightTemperature();
+    targetTemperature = api.getTargetTemperature();
+    weekProgramState = api.getWeekProgramState();
+
+    console.log(dayTemperature, nightTemperature, targetTemperature, weekProgramState);
+    // Set the background color based on current target temperature
+    if (weekProgramState) {
+        var amount;
+        if (dayTemperature > nightTemperature) {
+            if (targetTemperature >= dayTemperature) {
+                setBackground(dayColor);
+            } else if (targetTemperature <= nightTemperature) {
+                setBackground(nightColor);
+            } else {
+                amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
+                setBackground(lerpColor(nightColor, dayColor, amount));
+            }
+        } else if (dayTemperature < nightTemperature) {
+            if (targetTemperature >= nightTemperature) {
+                setBackground(dayTemperature);
+            } else if (targetTemperature <= dayTemperature) {
+                setBackground(nightTemperature);
+            } else {
+                amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
+                setBackground(lerpColor(dayColor, nightColor, amount));
+            }
+        } else {
+            setBackground(dayColor);
+        }
+    } else {
+        setBackground(dayColor);
+    }
 };
 
 function setWeekDayProgram(day) {
@@ -56,19 +93,6 @@ function updateSwitches() {
             "state": "on",
             "time": "24:00"
         })
-    }
-
-    // If all switches are off, indicate vacation mode
-    if (!switches || switches.length === 0 || !weekProgramState) {
-        // Remove all timeline parts
-        timeline.innerHTML = '';
-
-        // Add a disabled timeline part
-        part = document.createElement('div');
-        part.classList.add('timeline__part');
-        part.classList.add('part--disabled');
-        timeline.appendChild(part);
-        return;
     }
 
     // Sort switches by ascending time
@@ -229,4 +253,31 @@ function normalizeTime(time){
         time = time+'0';
     }
     return time;
+}
+
+/**
+ * Interpolates between two colors
+ * @param a {string} color in #hex format
+ * @param b {string} color in #hex format
+ * @param amount {number} in range [0, 1]
+ * @returns {string}
+ */
+function lerpColor(a, b, amount) {
+    var ah = parseInt(a.replace(/#/g, ''), 16),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = parseInt(b.replace(/#/g, ''), 16),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+}
+
+/**
+ * Sets the background of the body
+ * @param color {string} any CSS accepted value for background-color
+ */
+function setBackground(color) {
+    document.getElementsByTagName('body')[0].style.backgroundColor = color;
 }
