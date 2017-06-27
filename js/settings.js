@@ -34,10 +34,12 @@ window.onload = function () {
     var onday = function(e) {
         e.preventDefault();
         knobDayHold = true;
+        onKnobMove(e);
     };
     var onnight = function (e) {
         e.preventDefault();
         knobNightHold = true;
+        onKnobMove(e);
     };
 
     knobDay.addEventListener('mousedown', onday);
@@ -45,9 +47,9 @@ window.onload = function () {
     knobNight.addEventListener('mousedown', onnight);
     knobNight.addEventListener('touchstart', onnight);
     sliderDay.addEventListener('mousedown', onday);
-    sliderDay.addEventListener('touchmove', onday);
+    sliderDay.addEventListener('touchstart', onday);
     sliderNight.addEventListener('mousedown', onnight);
-    sliderNight.addEventListener('touchmove', onnight);
+    sliderNight.addEventListener('touchstart', onnight);
     document.addEventListener('mousemove', onKnobMove);
     document.addEventListener('touchmove', onKnobMove);
 
@@ -66,7 +68,7 @@ window.onload = function () {
     /*
      Sliders and buttons
      */
-    var onRelease = function (e) {
+    var onrelease = function (e) {
         knobDayHold = false;
         knobNightHold = false;
         buttonHold = false;
@@ -77,8 +79,8 @@ window.onload = function () {
         api.setNightTemperature(nightTemperature);
     };
 
-    document.addEventListener('mouseup', onRelease);
-    document.addEventListener('touchend', onRelease);
+    document.addEventListener('mouseup', onrelease);
+    document.addEventListener('touchend', onrelease);
 };
 
 function onKnobMove(event) {
@@ -118,7 +120,7 @@ function onKnobMove(event) {
             clientX = event.clientX;
         }
 
-        X = clientX - sliderDay.offsetLeft;
+        X = clientX - sliderNight.offsetLeft;
 
         // Make knob move in increments of sliderTempIncrement
         distIncrement = temperatureToDistance(minTemp + sliderTempIncrement);
@@ -127,12 +129,12 @@ function onKnobMove(event) {
         // Make sure the knob stays on the slider
         if (X < 0) {
             X = 0;
-        } else if (X > sliderDay.offsetWidth) {
-            X = sliderDay.offsetWidth;
+        } else if (X > sliderNight.offsetWidth) {
+            X = sliderNight.offsetWidth;
         }
 
-        setDayKnob(X);
-        setDayTemperature(distanceToTemperature(X));
+        setNightKnob(X);
+        setNightTemperature(distanceToTemperature(X));
     }
 }
 
