@@ -7,6 +7,8 @@ var sliderTempIncrement = 0.5;
 var buttonTempIncrement = 0.1;
 var buttonTimeout = 400;
 var buttonInterval = 200;
+var dayColor = '#64b5f6';
+var nightColor = '#1a237e';
 
 // Get day and night temperature
 var day = api.getDay();
@@ -100,7 +102,13 @@ function refresh() {
         targetTemperature = api.getTargetTemperature();
     }
 
-    // Set UI elements to their corresponding values
+    refreshUI();
+}
+
+/**
+ * Sets UI elements to their corresponding values
+ */
+function refreshUI() {
     setCurrentDay(day);
     setCurrentTime(time);
     setCurrentTemperature(currentTemperature);
@@ -112,6 +120,30 @@ function refresh() {
         setDayProgram(dayProgram);
     } else {
         setDayProgram(null);
+    }
+
+    // Set the background color based on current target temperature
+    var amount;
+    if (dayTemperature > nightTemperature) {
+        if (targetTemperature >= dayTemperature) {
+            setBackground(dayColor);
+        } else if (targetTemperature <= nightTemperature) {
+            setBackground(nightColor);
+        } else {
+            amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
+            setBackground(lerpColor(nightColor, dayColor, amount));
+        }
+    } else if (dayTemperature < nightTemperature) {
+        if (targetTemperature >= nightTemperature) {
+            setBackground(dayTemperature);
+        } else if (targetTemperature <= dayTemperature) {
+            setBackground(nightTemperature);
+        } else {
+            amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
+            setBackground(lerpColor(dayColor, nightColor, amount));
+        }
+    } else {
+        setBackground(dayColor);
     }
 }
 
@@ -150,6 +182,7 @@ function onKnobMove(event) {
         // Move knob to correct position
         setKnob(ang);
         setTargetTemperature(angleToTemperature(ang));
+        refreshUI();
     }
 }
 
@@ -209,6 +242,33 @@ function angleToTemperature(ang) {
  */
 function temperatureToAngle(temp) {
     return (temp - minTemp) / (maxTemp - minTemp) * 270 + 45;
+}
+
+/**
+ * Interpolates between two colors
+ * @param a {string} color in #hex format
+ * @param b {string} color in #hex format
+ * @param amount {number} in range [0, 1]
+ * @returns {string}
+ */
+function lerpColor(a, b, amount) {
+    var ah = parseInt(a.replace(/#/g, ''), 16),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = parseInt(b.replace(/#/g, ''), 16),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+}
+
+/**
+ * Sets the background of the body
+ * @param color {string} any CSS accepted value for background-color
+ */
+function setBackground(color) {
+    document.getElementsByTagName('body')[0].style.backgroundColor = color;
 }
 
 /**
