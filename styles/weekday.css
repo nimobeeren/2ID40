@@ -31,18 +31,19 @@ input[type="submit"]{
 .switch__icons {
     width: 30px;
     height: 30px;
-    margin-right:10px;
-    margin-left:15px;
+	display: flex;
+	justify-content: space-around;
+	margin-left: 10%;
 }
 
 form {
     display:flex;
-    padding-left: 10%;
     align-items: center;
+	justify-content: space-around;
     border-bottom: 2px solid #aad9ff;
     padding-top: 15px;
     padding-bottom: 15px;
-    width: 90%;
+	font-size: 24px;
 }
 
 #checkmark__button {
@@ -50,17 +51,19 @@ form {
     background-size:35px;
     width:35px;
     height:35px;
-    position: absolute;
-    right: 10%;
+	display: flex;
+	justify-content: space-around;
+	margin-right: 10%;
 }
 
 .delete__switch {
     background: url('../icons/ic_delete_switch_40px.png') no-repeat;
     background-size:35px;
     width:35px;
-    height:35px;
-    right: 10%;
-    position: absolute;
+    height:35px; 
+	display: flex;
+	justify-content: space-around;
+	margin-right: 10%;
 }
 
 .switch__info {
@@ -68,8 +71,7 @@ form {
     padding-top: 15px;
     padding-bottom: 15px;
     font-size: 24px;
-    padding-left: 10%;
-    width: 90%;
+	justify-content: space-around;
     display: flex;
 }
 
