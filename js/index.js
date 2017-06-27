@@ -79,6 +79,10 @@ window.onload = function () {
     vacationSwitch.addEventListener('change', function (e) {
         var vacationMode = vacationSwitch.checked;
         api.setWeekProgramState(!vacationMode);
+        if (vacationMode) {
+            weekProgramState = false; // shouldn't do this
+            setDayProgram(null);
+        }
     });
 
     // Set interval for refreshing data
@@ -441,7 +445,6 @@ function setDayProgram(program) {
         });
 
     // Indicate vacation mode
-    var lines, line;
     if (!weekProgramState) {
         // Remove all timeline parts
         timeline.innerHTML = '';
