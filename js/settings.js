@@ -11,6 +11,8 @@ var sliderDay, sliderNight, knobDay, knobNight;
 var knobDayHold = false;
 var knobNightHold = false;
 var buttonHold = false;
+var dayColor = '#64b5f6';
+var nightColor = '#1a237e';
 
 window.onload = function () {
     buttonUpDay = document.getElementById('temp-up-day');
@@ -25,8 +27,38 @@ window.onload = function () {
     // Set UI elements to their corresponding values
     dayTemperature = api.getDayTemperature();
     nightTemperature = api.getNightTemperature();
+    var weekProgramState = api.getWeekProgramState();
+    var targetTemperature = api.getTargetTemperature();
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
+
+    // Set the background color based on current target temperature
+    if (weekProgramState) {
+        var amount;
+        if (dayTemperature > nightTemperature) {
+            if (targetTemperature >= dayTemperature) {
+                setBackground(dayColor);
+            } else if (targetTemperature <= nightTemperature) {
+                setBackground(nightColor);
+            } else {
+                amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
+                setBackground(lerpColor(nightColor, dayColor, amount));
+            }
+        } else if (dayTemperature < nightTemperature) {
+            if (targetTemperature >= nightTemperature) {
+                setBackground(dayTemperature);
+            } else if (targetTemperature <= dayTemperature) {
+                setBackground(nightTemperature);
+            } else {
+                amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
+                setBackground(lerpColor(dayColor, nightColor, amount));
+            }
+        } else {
+            setBackground(dayColor);
+        }
+    } else {
+        setBackground(dayColor);
+    }
 
     /*
      Sliders
@@ -144,6 +176,33 @@ function temperatureToDistance(temp) {
 
 function distanceToTemperature(dist) {
     return dist / sliderDay.offsetWidth * (maxTemp - minTemp) + minTemp;
+}
+
+/**
+ * Interpolates between two colors
+ * @param a {string} color in #hex format
+ * @param b {string} color in #hex format
+ * @param amount {number} in range [0, 1]
+ * @returns {string}
+ */
+function lerpColor(a, b, amount) {
+    var ah = parseInt(a.replace(/#/g, ''), 16),
+        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
+        bh = parseInt(b.replace(/#/g, ''), 16),
+        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
+        rr = ar + amount * (br - ar),
+        rg = ag + amount * (bg - ag),
+        rb = ab + amount * (bb - ab);
+
+    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
+}
+
+/**
+ * Sets the background of the body
+ * @param color {string} any CSS accepted value for background-color
+ */
+function setBackground(color) {
+    document.getElementsByTagName('body')[0].style.backgroundColor = color;
 }
 
 function onButtonUpDay(event) {
