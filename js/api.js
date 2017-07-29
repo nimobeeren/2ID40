@@ -96,13 +96,11 @@ var api = {
 
     getDayProgram: function (day) {
         api.refresh();
-        api.weekProgram = api.mergeProgram(api.weekProgram);
         return api.weekProgram[day];
     },
 
     getWeekProgram: function () {
         api.refresh();
-        api.weekProgram = api.mergeProgram(api.weekProgram);
         return api.weekProgram;
     },
 
@@ -212,31 +210,20 @@ var api = {
      */
 
     parseWeekProgram: function (xml) {
-        var program = {
-            Monday: {},
-            Tuesday: {},
-            Wednesday: {},
-            Thursday: {},
-            Friday: {},
-            Saturday: {},
-            Sunday: {}
-        };
-
-        var days = $(xml).find('day');
-
-        for (var i = 0; i < days.length; i++) {
-            var dayName = $(days[i]).attr('name');
-            var switches = $(days[i]).find('switch');
-            program[dayName].switches = [];
-            for (var j = 0; j < switches.length; j++) {
-                program[dayName].switches.push({
-                    type: $(switches[j]).attr('type'),
-                    state: $(switches[j]).attr('state'),
-                    time: $(switches[j])[0].innerHTML
-                });
-            }
-        }
-
+        var program = {};
+        $(xml).find('day').each(function() {
+            var day = $(this).attr('name');
+            program[day] = [];
+            $(this).find('switch').each(function() {
+                if ($(this).attr('state') === 'on') {
+                    if ($(this).attr('type') === 'day') {
+                        program[day].push([$(this).text(), '00:00']);
+                    } else {
+                        program[day][program[day].length - 1][1] = $(this).text();
+                    }
+                }
+            })
+        });
         return program;
     },
 
