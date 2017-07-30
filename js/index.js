@@ -292,7 +292,7 @@ function setKnob(ang) {
 
     // Apply absolute knob position
     knob.style.left = container.offsetWidth / 2 - knob.offsetWidth / 2 + X + 'px';
-    knob.style.top = container.offsetHeight / 2  - knob.offsetHeight / 2 + Y + 'px';
+    knob.style.top = container.offsetHeight / 2 - knob.offsetHeight / 2 + Y + 'px';
 }
 
 /**
@@ -420,27 +420,11 @@ function setWeekProgramState(state) {
 
 /**
  * Creates a timeline
- * @param program {object} contains a set of switches in the following form:
- * {
- *       "switches": [
- *           {
- *               "type": "day|night",
- *               "state": "on|off",
- *               "time": "HH:MM"
- *           }
- *       ]
- *   }
+ * @param program {object} contains an array of timespans where the heating is turned on
  */
 function setDayProgram(program) {
-    var switches = program && program["switches"];
     var timeline = document.getElementById('timeline');
-    var part;
-
-    // Remove all switches which are turned off
-    switches =
-        switches && switches.filter(function (s) {
-            return s["state"] === "on";
-        });
+    var part, label;
 
     // Indicate vacation mode
     if (!weekProgramState) {
@@ -463,111 +447,100 @@ function setDayProgram(program) {
         document.getElementById('temp-line-night').style.display = 'block';
     }
 
-    // Sort switches by ascending time
-    switches.sort(function (a, b) {
-        if (a["time"].substr(0, 2) === b["time"].substr(0, 2)) {
-            return a["time"].substr(3, 2) > b["time"].substr(3, 2);
-        } else {
-            return a["time"].substr(0, 2) > b["time"].substr(0, 2);
-        }
-    });
-
-    // Add two extra switches to night mode at midnight, if not already present
-    if (!switches.some(function (s) {
-            return s["time"] === "00:00"
-        })) {
-        switches.unshift({
-            "type": "night",
-            "state": "on",
-            "time": "00:00"
-        });
-    }
-    if (!switches.some(function (s) {
-            return s["time"] === "24:00"
-        })) {
-        switches.push({
-            "type": "night",
-            "state": "on",
-            "time": "24:00"
-        })
-    }
-
     // Remove all timeline parts
     timeline.innerHTML = '';
 
-    if (switches.length === 2) {
-        // Make a part that has the same type as the beginning switch
+    // If there are no day parts, show a single night part
+    if (program.length === 0) {
         part = document.createElement('div');
         part.classList.add('timeline__part');
-        if (switches[0]["type"] === "day") {
-            part.classList.add('part--day');
-        } else {
-            part.classList.add('part--night');
-        }
-
-        // Make the part the full width
+        part.classList.add('part--night');
         part.style.flexGrow = 1;
 
-        // Add label at the start of the timeline
-        var startLabel = document.createElement('div');
-        startLabel.classList.add('timeline__label');
-        startLabel.classList.add('label--start');
-        startLabel.innerHTML = "0:00";
-        part.appendChild(startLabel);
+        label = document.createElement('div');
+        label.classList.add('timeline__label');
+        label.classList.add('label--start');
+        label.innerHTML = '00:00';
+        part.appendChild(label);
 
-        // Add label at the end of the timeline
-        var endLabel = document.createElement('div');
-        endLabel.classList.add('timeline__label');
-        endLabel.classList.add('label--end');
-        endLabel.innerHTML = "24:00";
-        part.appendChild(endLabel);
+        label = document.createElement('div');
+        label.classList.add('timeline__label');
+        label.classList.add('label--end');
+        label.innerHTML = '24:00';
+        part.appendChild(label);
 
-        // Add the part to the timeline
         timeline.appendChild(part);
-    } else {
-        for (var i = 0; i < switches.length - 1; i++) {
-            // Make a part that has the same type as the beginning switch
-            part = document.createElement('div');
-            part.classList.add('timeline__part');
-            if (switches[i]["type"] === "day") {
-                part.classList.add('part--day');
-            } else {
-                part.classList.add('part--night');
-            }
+        return;
+    }
 
-            // Make the part last until the next switch
-            var startTime = switches[i]["time"];
-            var endTime = switches[i + 1]["time"];
-            var startTimeMins = parseInt(startTime.substr(0, 2)) * 60 + parseInt(startTime.substr(3, 2));
-            var endTimeMins = parseInt(endTime.substr(0, 2)) * 60 + parseInt(endTime.substr(3, 2));
-            part.style.flexGrow = endTimeMins - startTimeMins;
+    // first night part
+    part = document.createElement('div');
+    part.classList.add('timeline__part');
+    part.classList.add('part--night');
+    part.style.flexGrow = parseTime(program[0][0]);
+    if (part.style.flexGrow > 0) {
+        timeline.appendChild(part);
+    }
 
-            // For all but the first part, add a label with the starting time
-            if (i !== 0) {
-                var label = document.createElement('div');
-                label.classList.add('timeline__label');
-                if (switches[i]["type"] === "day") {
-                    label.classList.add('label--day');
-                } else if (switches[i]["type"] === "night") {
-                    label.classList.add('label--night');
-                }
-                label.innerHTML = startTime;
-                part.appendChild(label);
-            }
+    // all other parts
+    for (var i = 0; i < program.length; i++) {
+        // day part
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        part.classList.add('part--day');
+        part.style.flexGrow = parseTime(program[i][1]) - parseTime(program[i][0]);
 
-            // Add the part to the timeline
+        label = document.createElement('div');
+        label.classList.add('timeline__label');
+        if (program[i][0] === '00:00') {
+            label.classList.add('label--start');
+        } else {
+            label.classList.add('label--day');
+        }
+        label.innerHTML = program[i][0];
+        part.appendChild(label);
+
+        if (part.style.flexGrow > 0) {
+            timeline.appendChild(part);
+        }
+
+        // night part
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        part.classList.add('part--night');
+        if (i === program.length - 1) {
+            part.style.flexGrow = parseTime('24:00') - parseTime(program[i][1]);
+        } else {
+            part.style.flexGrow = parseTime(program[i + 1][0]) - parseTime(program[i][1]);
+        }
+
+        label = document.createElement('div');
+        label.classList.add('timeline__label');
+        if (program[i][1] === '24:00') {
+            label.classList.add('label--end');
+        } else {
+            label.classList.add('label--night');
+        }
+        label.innerHTML = program[i][1];
+        part.appendChild(label);
+
+        if (part.style.flexGrow > 0) {
             timeline.appendChild(part);
         }
     }
-
-    //--------set current time-----
-    var currentTimeVerticalLine = document.createElement('div');
-    currentTimeVerticalLine.setAttribute('id', 'timeline-time');
-    var currentPositionOfTime = ( parseInt(time.substr(0, 2)) * 60 + parseInt(time.substr(3, 2)) ) / 1440;
-    var leftPosition = currentPositionOfTime * 100 - 0.5 + '%';
-    currentTimeVerticalLine.style.left = leftPosition;
-    timeline.appendChild(currentTimeVerticalLine);
-    var topPosition = $(currentTimeVerticalLine).position().top - 8;
-
-    $(currentTimeVerticalLine).css({top: topPosition});
 }
+
+function parseTime(t) {
+    return parseFloat(t.substr(0, 2)) + parseFloat(t.substr(3, 2)) / 60;
+}
+
+//--------set current time-----
+var currentTimeVerticalLine = document.createElement('div');
+currentTimeVerticalLine.setAttribute('id', 'timeline-time');
+var currentPositionOfTime = ( parseInt(time.substr(0, 2)) * 60 + parseInt(time.substr(3, 2)) ) / 1440;
+var leftPosition = currentPositionOfTime * 100 - 0.5 + '%';
+currentTimeVerticalLine.style.left = leftPosition;
+timeline.appendChild(currentTimeVerticalLine);
+var topPosition = $(currentTimeVerticalLine).position().top - 8;
+
+$(currentTimeVerticalLine).css({top: topPosition});
