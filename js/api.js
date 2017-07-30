@@ -96,7 +96,7 @@ var api = {
 
     getDayProgram: function (day) {
         api.refresh();
-        return api.weekProgram[day];
+        return api.sortMergeProgram(api.weekProgram[day]);
     },
 
     getWeekProgram: function () {
@@ -120,47 +120,68 @@ var api = {
         api.setWeekProgram(weekProgram);
     },
 
-    setWeekProgram: function (program) {
-        program = api.mergeProgram(program);
+    setWeekProgram: function (weekProgram) {
         var doc = document.implementation.createDocument(null, null, null);
-        var week = doc.createElement('week_program');
-        week.setAttribute('state', (weekProgramState) ? 'on' : 'off');
-        var dayElement, switches;
-        for (var day in program) {
-            // console.log(program[day].switches);
-            dayElement = doc.createElement('day');
-            dayElement.setAttribute('name', day);
-            var type, state, time;
-            var dayCounter = 0;
-            var nightCounter = 0;
-            for (var i in program[day].switches) {
-                switches = doc.createElement('switch');
-                type = program[day].switches[i].type;
-                state = program[day].switches[i].state;
-                time = program[day].switches[i].time;
-                if (type === 'night' && state === 'on' && (time === '24:00' || time === '00:00')) continue;
+        var program = doc.createElement('week_program');
+        program.setAttribute('state', api.weekProgramState ? 'on' : 'off');
+        for (var key in weekProgram) {
+            if (!weekProgram.hasOwnProperty(key)) continue;
 
-                switches.setAttribute('type', type);
-                switches.setAttribute('state', state);
-                switches.appendChild(doc.createTextNode(time));
-                if (type === 'day') {
-                    dayCounter++;
-                } else {
-                    nightCounter++;
-                }
-                dayElement.appendChild(switches);
+            // Make sure the day program is sorted and not overlapping
+            weekProgram[key] = api.sortMergeProgram(weekProgram[key]);
+
+            var day = doc.createElement('day');
+            day.setAttribute('name', key);
+
+            var daySwitches = [];
+            var nightSwitches = [];
+
+            var i, text, sw;
+            var periods = weekProgram[key];
+            for (i = 0; i < periods.length; i++) {
+                daySwitches.push(periods[i][0]);
+                nightSwitches.push(periods[i][1]);
             }
-            dayElement = api.fillMissingSwitches(dayCounter, nightCounter, dayElement, doc);
-            week.appendChild(dayElement);
+
+            for (i = 0; i < 5; i++) {
+                sw = doc.createElement('switch');
+                sw.setAttribute('type', 'day');
+
+                if (i < daySwitches.length) {
+                    sw.setAttribute('state', 'on');
+                    text = doc.createTextNode(daySwitches[i]);
+                } else {
+                    sw.setAttribute('state', 'off');
+                    text = doc.createTextNode('00:00');
+                }
+                sw.appendChild(text);
+                day.appendChild(sw);
+            }
+
+            for (i = 0; i < 5; i++) {
+                sw = doc.createElement('switch');
+                sw.setAttribute('type', 'night');
+
+                if (i < nightSwitches.length) {
+                    sw.setAttribute('state', 'on');
+                    text = doc.createTextNode(nightSwitches[i]);
+                } else {
+                    sw.setAttribute('state', 'off');
+                    text = doc.createTextNode('00:00');
+                }
+                sw.appendChild(text);
+                day.appendChild(sw);
+            }
+            program.appendChild(day);
         }
-        doc.appendChild(week);
+        doc.appendChild(program);
 
         $.ajax({
             type: "put",
             url: api.BASE_URL + 'weekProgram/',
             contentType: 'application/xml',
-            data: new XMLSerializer().serializeToString(doc)
-            // async: false,
+            data: new XMLSerializer().serializeToString(doc),
+            async: false
         });
     },
 
@@ -174,8 +195,8 @@ var api = {
             type: "put",
             url: api.BASE_URL + 'dayTemperature/',
             contentType: 'application/xml',
-            data: new XMLSerializer().serializeToString(doc)
-            // async: false,
+            data: new XMLSerializer().serializeToString(doc),
+            async: false
         });
     },
 
@@ -189,8 +210,8 @@ var api = {
             type: "put",
             url: api.BASE_URL + 'nightTemperature/',
             contentType: 'application/xml',
-            data: new XMLSerializer().serializeToString(doc)
-            // async: false,
+            data: new XMLSerializer().serializeToString(doc),
+            async: false
         });
     },
 
@@ -200,8 +221,8 @@ var api = {
             type: "put",
             url: api.BASE_URL + 'weekProgramState/',
             contentType: 'application/xml',
-            data: '<week_program_state>' + state + '</week_program_state>'
-            // async: false,
+            data: '<week_program_state>' + state + '</week_program_state>',
+            async: false
         });
     },
 
@@ -211,10 +232,10 @@ var api = {
 
     parseWeekProgram: function (xml) {
         var program = {};
-        $(xml).find('day').each(function() {
+        $(xml).find('day').each(function () {
             var day = $(this).attr('name');
             program[day] = [];
-            $(this).find('switch').each(function() {
+            $(this).find('switch').each(function () {
                 if ($(this).attr('state') === 'on') {
                     if ($(this).attr('type') === 'day') {
                         program[day].push([$(this).text(), '00:00']);
@@ -227,40 +248,20 @@ var api = {
         return program;
     },
 
-    fillMissingSwitches: function (dayCounter, nightCounter, dayElement, doc) {
-        for (var i = dayCounter; i < 5; i++) {
-            switches = doc.createElement('switch');
-            switches.setAttribute('type', 'day');
-            switches.setAttribute('state', 'off');
-            switches.appendChild(doc.createTextNode('00:00'));
-            dayElement.appendChild(switches);
-        }
-        for (var j = nightCounter; j < 5; j++) {
-            switches = doc.createElement('switch');
-            switches.setAttribute('type', 'night');
-            switches.setAttribute('state', 'off');
-            switches.appendChild(doc.createTextNode('00:00'));
-            dayElement.appendChild(switches);
-        }
-        return dayElement;
-    },
-
-    mergeProgram: function (program) {
-        var first, second;
-        for (var currentDay in program) {
-            program[currentDay].switches.sort(api.sortByTime);
-            for (var i = 0; i < program[currentDay].switches.length - 2; i++) {
-                first = program[currentDay].switches[i];
-                second = program[currentDay].switches[i + 1];
-                if (second.type === first.type) {
-                    program[currentDay].switches.splice(i + 1, 1);
-                }
+    sortMergeProgram: function (program) {
+        program.sort(function (a, b) {
+            return parseTime(a[0]) - parseTime(b[0])
+        });
+        for (var i = 0; i < program.length - 1; i++) {
+            if (parseTime(program[i][1]) >= parseTime(program[i + 1][0])) {
+                var start = (program[i][0]);
+                var end = (parseTime(program[i][1]) > parseTime(program[i + 1][1])) ? program[i][1] : program[i + 1][1];
+                program.splice(i, 2);
+                program.push([start, end]);
+                program = api.sortMergeProgram(program);
+                break;
             }
         }
         return program;
-    },
-
-    sortByTime: function (a, b) {
-        return a.time - b.time;
     }
 };
