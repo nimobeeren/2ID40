@@ -407,6 +407,9 @@ function setCurrentTemperature(temp) {
 function setCurrentTime(time) {
     var timeLabel = document.getElementById('current-time');
     timeLabel.innerHTML = time;
+
+    var line = document.getElementById('current-time-line');
+    line.style.left = parseTime(time) / 24 * 100 - 0.5 + '%';
 }
 
 function setCurrentDay(day) {
@@ -426,10 +429,14 @@ function setDayProgram(program) {
     var timeline = document.getElementById('timeline');
     var part, label;
 
+    // Remove all timeline parts
+    var parts = timeline.querySelectorAll('.timeline__part');
+    Array.prototype.forEach.call(parts, function(part) {
+        part.parentNode.removeChild(part);
+    });
+
     // Indicate vacation mode
     if (!weekProgramState) {
-        // Remove all timeline parts
-        timeline.innerHTML = '';
 
         // Add a disabled timeline part
         part = document.createElement('div');
@@ -446,9 +453,6 @@ function setDayProgram(program) {
         document.getElementById('temp-line-day').style.display = 'block';
         document.getElementById('temp-line-night').style.display = 'block';
     }
-
-    // Remove all timeline parts
-    timeline.innerHTML = '';
 
     // If there are no day parts, show a single night part
     if (program.length === 0) {
@@ -533,14 +537,3 @@ function setDayProgram(program) {
 function parseTime(t) {
     return parseFloat(t.substr(0, 2)) + parseFloat(t.substr(3, 2)) / 60;
 }
-
-//--------set current time-----
-var currentTimeVerticalLine = document.createElement('div');
-currentTimeVerticalLine.setAttribute('id', 'timeline-time');
-var currentPositionOfTime = ( parseInt(time.substr(0, 2)) * 60 + parseInt(time.substr(3, 2)) ) / 1440;
-var leftPosition = currentPositionOfTime * 100 - 0.5 + '%';
-currentTimeVerticalLine.style.left = leftPosition;
-timeline.appendChild(currentTimeVerticalLine);
-var topPosition = $(currentTimeVerticalLine).position().top - 8;
-
-$(currentTimeVerticalLine).css({top: topPosition});
