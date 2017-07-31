@@ -408,8 +408,8 @@ function setCurrentTime(time) {
     var timeLabel = document.getElementById('current-time');
     timeLabel.innerHTML = time;
 
-    var line = document.getElementById('current-time-line');
-    line.style.left = parseTime(time) / 24 * 100 - 0.5 + '%';
+    var line = document.getElementById('time-indicator');
+    line.style.left = parseTime(time) / 24 * 100 + '%';
 }
 
 function setCurrentDay(day) {
