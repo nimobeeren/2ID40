@@ -14,14 +14,14 @@ window.onload = function () {
     refresh();
     setInterval(refresh, refreshTime);
 
+    // Wire up add button
     button.addEventListener("click", display);
-
-    // Set the background color based on current target temperature
-    setBackground(calcBackground());
 };
 
 function refreshUI() {
+    setBackground(calcBackground());
     setTimeline(dayProgram, timeline);
+
     setSwitches(dayProgram);
 }
 

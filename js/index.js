@@ -79,6 +79,9 @@ window.onload = function () {
  * Sets UI elements to their corresponding values
  */
 function refreshUI() {
+    setBackground(calcBackground());
+    setTimeline(dayProgram, timeline);
+
     setCurrentDay(day);
     setCurrentTime(time);
     setCurrentTemperature(currentTemperature);
@@ -86,9 +89,6 @@ function refreshUI() {
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
     setWeekProgramState(weekProgramState);
-
-    setTimeline(dayProgram, timeline);
-    setBackground(calcBackground());
 }
 
 /**
