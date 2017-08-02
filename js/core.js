@@ -32,7 +32,9 @@ function refresh() {
         targetTemperature = api.getTargetTemperature();
     }
 
-    refreshUI();
+    if (typeof refreshUI === 'function') {
+        refreshUI();
+    }
 }
 
 /**
