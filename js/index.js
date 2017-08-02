@@ -67,7 +67,7 @@ window.onload = function () {
         api.setWeekProgramState(!vacationMode);
         if (vacationMode) {
             weekProgramState = false; // shouldn't do this
-            setDayProgram(null, timeline);
+            setTimeline(null, timeline);
         }
     });
 
@@ -86,13 +86,8 @@ function refreshUI() {
     setDayTemperature(dayTemperature);
     setNightTemperature(nightTemperature);
     setWeekProgramState(weekProgramState);
-    if (weekProgramState) {
-        setDayProgram(dayProgram, timeline);
-    } else {
-        setDayProgram(null, timeline);
-    }
 
-    // Set the background color based on current target temperature
+    setTimeline(dayProgram, timeline);
     setBackground(calcBackground());
 }
 
@@ -171,26 +166,6 @@ function onDownButton(event) {
             }
         }, buttonInterval);
     }, buttonTimeout);
-}
-
-/**
- * Maps an angle representing the position of the knob on the radial slider, to a
- * temperature in the allowed range
- * @param ang {number} an angle between 45 and 315 degrees
- * @returns {number} a temperature between minTemp and maxTemp
- */
-function angleToTemperature(ang) {
-    return (ang - 45) / 270 * (maxTemp - minTemp) + minTemp;
-}
-
-/**
- * Maps a temperature to an angle representing the position of the knob on the cirular
- * slider
- * @param temp {number} a temperature between minTemp and maxTemp
- * @returns {number} an angle between 45 and 315 degrees
- */
-function temperatureToAngle(temp) {
-    return (temp - minTemp) / (maxTemp - minTemp) * 270 + 45;
 }
 
 /**
@@ -281,6 +256,12 @@ function setDayTemperature(temp) {
     var ang = temperatureToAngle(temp);
     line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
     icon.style.transform = 'rotate(-' + ang + 'deg)';
+
+    if (weekProgramState) {
+        line.style.display = 'block';
+    } else {
+        line.style.display = 'none';
+    }
 }
 
 /**
@@ -300,6 +281,12 @@ function setNightTemperature(temp) {
     var ang = temperatureToAngle(temp);
     line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
     icon.style.transform = 'rotate(-' + ang + 'deg)';
+
+    if (weekProgramState) {
+        line.style.display = 'block';
+    } else {
+        line.style.display = 'none';
+    }
 }
 
 function setCurrentTemperature(temp) {
@@ -335,4 +322,28 @@ function setCurrentDay(day) {
 
 function setWeekProgramState(state) {
     vacationSwitch.checked = !state;
+}
+
+/*
+Utility functions
+ */
+
+/**
+ * Maps an angle representing the position of the knob on the radial slider, to a
+ * temperature in the allowed range
+ * @param ang {number} an angle between 45 and 315 degrees
+ * @returns {number} a temperature between minTemp and maxTemp
+ */
+function angleToTemperature(ang) {
+    return (ang - 45) / 270 * (maxTemp - minTemp) + minTemp;
+}
+
+/**
+ * Maps a temperature to an angle representing the position of the knob on the cirular
+ * slider
+ * @param temp {number} a temperature between minTemp and maxTemp
+ * @returns {number} an angle between 45 and 315 degrees
+ */
+function temperatureToAngle(temp) {
+    return (temp - minTemp) / (maxTemp - minTemp) * 270 + 45;
 }

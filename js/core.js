@@ -35,7 +35,7 @@ function refresh() {
  * @param program {object} an array of timespans where the heating is turned on
  * @param timeline {Element} a timeline div
  */
-function setDayProgram(program, timeline) {
+function setTimeline(program, timeline) {
     var part, label;
 
     // Remove all timeline parts
@@ -46,21 +46,12 @@ function setDayProgram(program, timeline) {
 
     // Indicate vacation mode
     if (!weekProgramState) {
-
         // Add a disabled timeline part
         part = document.createElement('div');
         part.classList.add('timeline__part');
         part.classList.add('part--disabled');
         timeline.appendChild(part);
-
-        // Hide indicator lines on slider
-        document.getElementById('temp-line-day').style.display = 'none';
-        document.getElementById('temp-line-night').style.display = 'none';
         return;
-    } else {
-        // Show indicator lines on slider
-        document.getElementById('temp-line-day').style.display = 'block';
-        document.getElementById('temp-line-night').style.display = 'block';
     }
 
     // If there are no day parts, show a single night part
