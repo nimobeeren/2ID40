@@ -10,27 +10,29 @@
     <link rel="stylesheet" href="../styles/weekday.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body id="el">
-<nav>
-    <div id="mySidenav" class="sidenav">
-        <a class="nav_separate" href="../index.html">Dashboard</a>
-        <a href="monday.html">Monday</a>
-        <a href="tuesday.html">Tuesday</a>
-        <a href="wednesday.html">Wednesday</a>
-        <a href="thursday.html">Thursday</a>
-        <div id="currentPage">Friday</div>
-        <a href="saturday.html">Saturday</a>
-        <a class="nav_separate" href="sunday.html">Sunday</a>
-        <a href="settings.html">Settings</a>
-    </div>
-
-    <!-- Use any element to open the sidenav -->
-    <img class="nav-button" src="../icons/ic_menu_white_24px.svg" onclick="openNav()">
-    <div class="nav__title">Friday</div>
-    <a href="settings.html" id="setIcon">
-        <img class="nav-button" src="../icons/ic_settings_white_24px.svg">
+<body>
+<header>
+    <a class="header__button" onclick="openNav()">
+        <img src="../icons/ic_menu_white_24px.svg">
     </a>
-</nav>
+    <div class="header__title">Friday</div>
+    <a class="header__button" href="settings.html">
+        <img src="../icons/ic_settings_white_24px.svg">
+    </a>
+</header>
+<aside id="sidenav">
+    <a class="aside__item" href="../index.html">Dashboard</a>
+    <div class="aside__separator"></div>
+    <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
+    <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
+    <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
+    <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
+    <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
+    <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
+    <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
+    <div class="aside__separator"></div>
+    <a class="aside__item" href="settings.html">Settings</a>
+</aside>
 <main>
     <div class="swipe-area"></div>
     <div id="timeline" class="timeline">
@@ -41,7 +43,6 @@
     <div id="add__switch">
         <input id="add__button"  type="submit"  value="ADD SWITCH">
     </div>
-
 </main>
 <script src="../js/api.js"></script>
 <script src="../js/core.js"></script>

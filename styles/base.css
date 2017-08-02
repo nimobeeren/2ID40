@@ -9,30 +9,27 @@ html, body {
     height: 100%;
 }
 
-nav {
+header {
     display: flex;
     justify-content: space-between;
     width: 100%;
     height: 48px;
+    line-height: 48px;
     font-size: 20px;
     background-color: #1976d2;
     text-align: center;
     vertical-align: middle;
-    line-height: 48px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
-.nav-button {
+.header__button {
+    display: flex;
     margin: 0 12px;
     cursor: pointer;
 }
 
-.nav-button--home {
-    background: url(../icons/ic_home_white_24px.svg) center no-repeat;
-}
-
 /* The side navigation menu */
-.sidenav {
+aside {
     height: 100%; /* 100% Full-height */
     width: 0; /* 0 width - change this with JavaScript */
     position: fixed; /* Stay in place */
@@ -43,11 +40,12 @@ nav {
     padding-top: 48px; /* Place content 48px from the top */
     transition: 0.3s; /* 0.5 second transition effect to slide in the sidenav */
     text-align: left;
+    line-height: 48px;
     background-color: #1976d2;
 }
 
 /* The navigation menu links */
-.sidenav a {
+.aside__item {
     text-decoration: none;
     font-size: 25px;
     color: white;
@@ -57,13 +55,24 @@ nav {
     border-top: 1px solid #aad9ff;
 }
 
-.sidenav a:last-child {
+.item--current {
+    background-color: #64b5f6;
+    pointer-events: none;
+    cursor: default;
+}
+
+.aside__item:last-child {
     border-bottom: 1px solid #aad9ff;
 }
 
 /* When you mouse over the navigation links, change their color */
-.sidenav a:hover, .offcanvas a:focus {
+.aside__item:hover, .aside__item:focus {
     color: #64b5f6;
+}
+
+.aside__separator {
+    height: 4px;
+    background-color: #aad9ff;
 }
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
@@ -74,31 +83,13 @@ nav {
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-    .sidenav {
+    aside {
         padding-top: 15px;
     }
 
-    .sidenav a {
+    aside a {
         font-size: 18px;
     }
-}
-
-#currentPage {
-    background-color: #64b5f6;
-    text-decoration: none;
-    font-size: 25px;
-    color: white;
-    display: block;
-    transition: 0.3s;
-    padding-left: 20px;
-    border-top: 1px solid #aad9ff;
-}
-
-#setIcon {
-    display: flex;
-    height: 48px;
-    vertical-align: middle;
-    line-height: 48px;
 }
 
 .settings {
@@ -115,10 +106,6 @@ nav {
     -webkit-user-drag: none;
     -webkit-user-select: none;
     -ms-user-select: none;
-}
-
-.nav_separate {
-    border-bottom: 4px solid #aad9ff;
 }
 
 #date {
