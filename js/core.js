@@ -6,14 +6,7 @@ const nightColor = '#1a237e';
 var knobHold = false;
 var buttonHold = false;
 
-var day = api.getDay();
-var time = api.getTime();
-var currentTemperature = api.getCurrentTemperature();
-var targetTemperature = api.getTargetTemperature();
-var dayTemperature = api.getDayTemperature();
-var nightTemperature = api.getNightTemperature();
-var weekProgramState = api.getWeekProgramState();
-var dayProgram = api.getDayProgram(day);
+var day, time, currentTemperature, dayTemperature, nightTemperature, weekProgramState, dayProgram, targetTemperature;
 
 /**
  * Updates UI elements with recent data from server
