@@ -5,15 +5,15 @@ addEventListener("touch", getClickPosition, false);
 
 /* Set the width of the side navigation to 250px */
 function openNav() {
-    document.getElementById("mySidenav").style.width = "250px";
-    document.getElementById("mySidenav").style.borderRight = "2px solid #aad9ff";
+    document.getElementById("sidenav").style.width = "250px";
+    document.getElementById("sidenav").style.borderRight = "2px solid #aad9ff";
     shown = true;
 }
 
 /* Set the width of the side navigation to 0 */
 function closeNav() {
-    document.getElementById("mySidenav").style.width = "0";
-    document.getElementById("mySidenav").style.borderRight = "0";
+    document.getElementById("sidenav").style.width = "0";
+    document.getElementById("sidenav").style.borderRight = "0";
     shown = false;
 }
 
@@ -30,7 +30,7 @@ function getClickPosition(e) {
 /* Source of the code below: https://codepen.io/yzubizarreta/pen/ojJBQp */
 
 var touchStartCoords =  {'x':-1, 'y':-1}, // X and Y coordinates on mousedown or touchstart events.
-    targetElement = document.getElementById('el'),// Element to delegate
+    targetElement = document.body, // Element to delegate
     width = 250; //default width of openNav
 
 function swipeStart(e) {
@@ -51,7 +51,7 @@ function swipeMove(e){
         width = 250 - (touchStartCoords['x'] - currentX);
         if (width < 250 && shown === true) {
             var navSize = width.toString() + "px";
-            document.getElementById("mySidenav").style.width = navSize;
+            document.getElementById("sidenav").style.width = navSize;
         }
     }
 }

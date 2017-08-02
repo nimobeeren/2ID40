@@ -10,25 +10,29 @@
     <link rel="stylesheet" href="styles/index.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 </head>
-<body id="el">
-<nav>
-    <div id="mySidenav" class="sidenav">
-        <div id="currentPage" class="nav_separate">Dashboard</div>
-        <a href="views/monday.html">Monday</a>
-        <a href="views/tuesday.html">Tuesday</a>
-        <a href="views/wednesday.html">Wednesday</a>
-        <a href="views/thursday.html">Thursday</a>
-        <a href="views/friday.html">Friday</a>
-        <a href="views/saturday.html">Saturday</a>
-        <a href="views/sunday.html" class="nav_separate">Sunday</a>
-        <a href="views/settings.html">Settings</a>
-    </div>
-    <img class="nav-button" src="icons/ic_menu_white_24px.svg" onclick="openNav()">
-    <div class="nav__title">Thermostat</div>
-    <a href="views/settings.html" id="setIcon">
-        <img class="nav-button" src="icons/ic_settings_white_24px.svg">
+<body>
+<header>
+    <a class="header__button" onclick="openNav()">
+        <img src="icons/ic_menu_white_24px.svg">
     </a>
-</nav>
+    <div class="header__title">Friday</div>
+    <a class="header__button" href="views/settings.html">
+        <img src="icons/ic_settings_white_24px.svg">
+    </a>
+</header>
+<aside id="sidenav">
+    <a class="aside__item item--current" href="index.html">Dashboard</a>
+    <div class="aside__separator"></div>
+    <a class="aside__item" href="views/weekday.html?day=Monday">Monday</a>
+    <a class="aside__item" href="views/weekday.html?day=Tuesday">Tuesday</a>
+    <a class="aside__item" href="views/weekday.html?day=Wednesday">Wednesday</a>
+    <a class="aside__item" href="views/weekday.html?day=Thursday">Thursday</a>
+    <a class="aside__item" href="views/weekday.html?day=Friday">Friday</a>
+    <a class="aside__item" href="views/weekday.html?day=Saturday">Saturday</a>
+    <a class="aside__item" href="views/weekday.html?day=Sunday">Sunday</a>
+    <div class="aside__separator"></div>
+    <a class="aside__item" href="views/settings.html">Settings</a>
+</aside>
 <main>
     <div class="current">
         <table>
