@@ -1,14 +1,3 @@
-
-// Get day and night temperature
-var day ;
-var time;
-var weekProgramState;
-var dayProgram;
-var dayTemperature, nightTemperature, targetTemperature;
-// console.log(dayProgram);
-var dayColor = '#64b5f6';
-var nightColor = '#1a237e';
-
 var switches;
 var adding = false;
 var existing = document.getElementById('existing_switches');
@@ -22,36 +11,8 @@ window.onload = function() {
     var button = document.getElementById('add__button');
     button.addEventListener("click", display, false);
 
-    dayTemperature = api.getDayTemperature();
-    nightTemperature = api.getNightTemperature();
-    targetTemperature = api.getTargetTemperature();
-    weekProgramState = api.getWeekProgramState();
-
     // Set the background color based on current target temperature
-    if (weekProgramState) {
-        var amount;
-        if (dayTemperature >= nightTemperature) {
-            if (targetTemperature >= dayTemperature) {
-                setBackground(dayColor);
-            } else if (targetTemperature <= nightTemperature) {
-                setBackground(nightColor);
-            } else {
-                amount = (targetTemperature - nightTemperature) / (dayTemperature - nightTemperature);
-                setBackground(lerpColor(nightColor, dayColor, amount));
-            }
-        } else {
-            if (targetTemperature >= nightTemperature) {
-                setBackground(nightColor);
-            } else if (targetTemperature <= dayTemperature) {
-                setBackground(dayColor);
-            } else {
-                amount = (targetTemperature - dayTemperature) / (nightTemperature - dayTemperature);
-                setBackground(lerpColor(dayColor, nightColor, amount));
-            }
-        }
-    } else {
-        setBackground(dayColor);
-    }
+    setBackground(calcBackground());
 };
 
 function setWeekDayProgram(day) {
@@ -250,31 +211,4 @@ function normalizeTime(time){
         time = time+'0';
     }
     return time;
-}
-
-/**
- * Interpolates between two colors
- * @param a {string} color in #hex format
- * @param b {string} color in #hex format
- * @param amount {number} in range [0, 1]
- * @returns {string}
- */
-function lerpColor(a, b, amount) {
-    var ah = parseInt(a.replace(/#/g, ''), 16),
-        ar = ah >> 16, ag = ah >> 8 & 0xff, ab = ah & 0xff,
-        bh = parseInt(b.replace(/#/g, ''), 16),
-        br = bh >> 16, bg = bh >> 8 & 0xff, bb = bh & 0xff,
-        rr = ar + amount * (br - ar),
-        rg = ag + amount * (bg - ag),
-        rb = ab + amount * (bb - ab);
-
-    return '#' + ((1 << 24) + (rr << 16) + (rg << 8) + rb | 0).toString(16).slice(1);
-}
-
-/**
- * Sets the background of the body
- * @param color {string} any CSS accepted value for background-color
- */
-function setBackground(color) {
-    document.getElementsByTagName('body')[0].style.backgroundColor = color;
 }
