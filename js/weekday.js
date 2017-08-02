@@ -3,12 +3,20 @@ var adding = false;
 var button, existing, addBox, timeline, hideButton;
 var editingDay;
 
+var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 window.onload = function () {
     button = document.getElementById('add__button');
     existing = document.getElementById('existing_switches');
     addBox = document.getElementById('addbox');
     timeline = document.getElementById('timeline');
     hideButton = document.getElementById('add__switch');
+
+    editingDay = new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
+    if (!days.includes(editingDay)) {
+        document.body.innerHTML = 'Bad day parameter';
+        throw new Error('Bad day parameter');
+    }
 
     // Refresh data periodically
     refresh();
@@ -19,10 +27,12 @@ window.onload = function () {
 };
 
 function refreshUI() {
-    setBackground(calcBackground());
-    setTimeline(dayProgram, timeline);
+    var program = api.getDayProgram(editingDay);
 
-    setSwitches(dayProgram);
+    setBackground(calcBackground());
+    setTimeline(program, timeline);
+
+    setSwitches(program);
 }
 
 function setSwitches(program) {
