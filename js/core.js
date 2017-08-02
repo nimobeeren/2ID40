@@ -2,6 +2,7 @@ const minTemp = 5;
 const maxTemp = 30;
 const dayColor = '#64b5f6';
 const nightColor = '#1a237e';
+const refreshTime = 2000;
 
 var knobHold = false;
 var buttonHold = false;

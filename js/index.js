@@ -15,7 +15,10 @@ window.onload = function () {
     downButton = document.getElementById('temp-down');
     vacationSwitch = document.getElementById('vacation-switch');
     timeline = document.getElementById('timeline');
+
+    // Refresh data periodically
     refresh();
+    setInterval(refresh, refreshTime);
 
     /*
      Slider
@@ -70,9 +73,6 @@ window.onload = function () {
             setTimeline(null, timeline);
         }
     });
-
-    // Set interval for refreshing data
-    setInterval(refresh, 2000);
 };
 
 /**

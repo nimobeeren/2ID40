@@ -10,13 +10,14 @@ window.onload = function () {
     timeline = document.getElementById('timeline');
     hideButton = document.getElementById('add__switch');
 
+    // Refresh data periodically
+    refresh();
+    setInterval(refresh, refreshTime);
+
     button.addEventListener("click", display);
 
     // Set the background color based on current target temperature
     setBackground(calcBackground());
-
-    // Set interval for refreshing data
-    setInterval(refresh, 2000);
 };
 
 function refreshUI() {
