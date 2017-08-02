@@ -1,9 +1,9 @@
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
 var switches;
 var adding = false;
 var button, existing, addBox, timeline, hideButton;
 var editingDay;
-
-var days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 window.onload = function () {
     button = document.getElementById('add__button');
@@ -12,11 +12,7 @@ window.onload = function () {
     timeline = document.getElementById('timeline');
     hideButton = document.getElementById('add__switch');
 
-    editingDay = new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
-    if (!days.includes(editingDay)) {
-        document.body.innerHTML = 'Bad day parameter';
-        throw new Error('Bad day parameter');
-    }
+    editingDay = getEditingDay();
 
     // Refresh data periodically
     refresh();
@@ -33,6 +29,31 @@ function refreshUI() {
     setTimeline(program, timeline);
 
     setSwitches(program);
+    setEditingDay(editingDay);
+}
+
+function getEditingDay() {
+    var day =  new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
+    if (days.includes(day)) {
+        return day;
+    } else {
+        document.body.innerHTML = 'Bad day parameter';
+        throw new Error('Bad day parameter');
+    }
+}
+
+function setEditingDay(day) {
+    // Set title equal to current day
+    document.title = day;
+    document.getElementById('title').innerHTML = day;
+
+    // Highlight current day in side menu
+    var items = document.getElementsByClassName('aside__item');
+    Array.prototype.forEach.call(items, function (item) {
+        if (item.innerHTML === day) {
+            item.classList.add('item--current');
+        }
+    });
 }
 
 function setSwitches(program) {
@@ -42,6 +63,10 @@ function setSwitches(program) {
         existing.innerHTML += '<div class="switch__info"><img class="switch__icons" src="../icons/ic_wb_sunny_white_24px.svg"><div class="start">' + program[i][0] + '</div> - <div class="end">' + program[i][1] + '</div>' +
             '<input class="delete__switch" type="submit" value=""></div>';
     }
+}
+
+function setCurrentDay(day) {
+
 }
 
 function display() {
