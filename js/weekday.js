@@ -31,7 +31,13 @@ function refreshUI() {
 }
 
 function getEditingDay() {
-    var day =  new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
+    try {
+        var day =  new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
+    } catch (ex) {
+        document.body.innerHTML = 'Bad day parameter';
+        throw new Error('Bad day parameter');
+    }
+
     if (days.includes(day)) {
         return day;
     } else {
