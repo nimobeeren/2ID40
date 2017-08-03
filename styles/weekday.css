@@ -4,6 +4,10 @@
     justify-content: center;
 }
 
+.periods__existing {
+    border-top: 2px solid #aad9ff;
+}
+
 .periods__item {
     display: flex;
     justify-content: space-around;
@@ -11,10 +15,6 @@
     padding-bottom: 15px;
     border-bottom: 2px solid #aad9ff;
     font-size: 24px;
-}
-
-.periods__item:first-child {
-    border-top: 2px solid #aad9ff;
 }
 
 .item--new {
