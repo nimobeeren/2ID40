@@ -42,7 +42,6 @@ input[type="time"] {
 }
 
 .periods__add-button {
-    display: inline-block;
     font-size: 26px;
     padding: 3px 15px 0 50px;
     font-family: "Source Code Pro", "Courier New", "Arial", "sans-serif";

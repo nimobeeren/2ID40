@@ -18,8 +18,8 @@ window.onload = function () {
     setInterval(refresh, refreshTime);
 
     // Wire up inputs
-    addButton.addEventListener("click", display);
-    submitButton.addEventListener("click", save);
+    addButton.addEventListener("click", showNewPeriod);
+    submitButton.addEventListener("click", submitNewPeriod);
 };
 
 function refreshUI() {
@@ -67,40 +67,34 @@ function setSwitches(program) {
         existing.innerHTML += '<div class="periods__item"><img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg"><div class="start">' + program[i][0] + '</div> - <div class="end">' + program[i][1] + '</div>' +
             '<input class="delete__switch" type="submit" value=""></div>';
     }
+
+    if (program.length < 5 && !adding) {
+        addButton.style.display = 'block';
+    } else {
+        addButton.style.display = 'none';
+    }
 }
 
-function display() {
+function showNewPeriod() {
+    adding = true;
     addButton.style.display = 'none';
-
-    if (dayProgram.length > 5 || adding === true) {
-        document.getElementById('add-button').style = "disabled";
-    }
-    else if (dayProgram.length <= 5) {
-        adding = true;
-        newPeriod.style.display = 'flex';
-    }
+    newPeriod.style.display = 'flex';
 }
 
-function save() {
-    var one = document.getElementById('start').value;
-    var two = document.getElementById('end').value;
-    adding = false;
-    /*add various types of checks here*/
-    if (one !== "" && two !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(one) && /([0-9]|2[0-3]):[0-5][0-9]/.test(two)) {
-        one = normalizeTime(one);
-        two = normalizeTime(two);
-        dayProgram.push([one, two]);
+function submitNewPeriod() {
+    var start = document.getElementById('start').value;
+    var end = document.getElementById('end').value;
 
-        existing.innerHTML = "";
+    /*add various types of checks here*/
+    if (start !== "" && end !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(start) && /([0-9]|2[0-3]):[0-5][0-9]/.test(end)) {
+        // Hide the new period form
+        adding = false;
         newPeriod.style.display = 'none';
 
-        if (dayProgram.length < 6) {
-            hideButton.innerHTML = "<input id='add-button'  type='submit'  value='ADD SWITCH'>";
-            var button = document.getElementById('add-button');
-            button.addEventListener("click", display, false);
-        }
-
-        // Save the new switch
+        // Save and display the new period
+        dayProgram.push([start, end].map(normalizeTime));
+        dayProgram = api.sortMergeProgram(dayProgram);
+        refreshUI();
         api.setDayProgram(editingDay, dayProgram);
     }
 }
@@ -116,7 +110,7 @@ function delSwitch(event) {
             if (switches.length < 12) {
                 hideButton.innerHTML = "<input id='add-button'  type='submit'  value='ADD SWITCH'>";
                 var button = document.getElementById('add-button');
-                button.addEventListener("click", display, false);
+                button.addEventListener("click", showNewPeriod, false);
             }
             var program = api.getDayProgram(editingDay);
             program.switches = switches;
