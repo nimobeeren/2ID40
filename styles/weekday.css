@@ -85,7 +85,7 @@ form {
     margin-right: 10%;
 }
 
-.delete__switch {
+.item__remove-button {
     background: url('../icons/ic_delete_switch_40px.png') no-repeat;
     background-size: 35px;
     width: 35px;

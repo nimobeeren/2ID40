@@ -82,7 +82,7 @@ function setSwitches(program) {
 
     periods = document.querySelectorAll('.item--existing:not(.dummy)');
     Array.prototype.forEach.call(periods, function (period) {
-        period.addEventListener("click", delSwitch);
+        period.addEventListener("click", removePeriod);
     });
 
     // Show add button if there is still space for more periods
@@ -117,25 +117,26 @@ function submitNewPeriod() {
     }
 }
 
-function delSwitch(event) {
-    var target = event.target;
-    var parent = target.parentElement;//parent of "target"
-    var start = parent.childNodes[1].innerHTML;
-    var end = parent.childNodes[3].innerHTML;
-    for (var i = 0; i < switches.length - 1; i++) {
-        if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
-            switches.splice(i, 2);
-            if (switches.length < 12) {
-                hideButton.innerHTML = "<input id='add-button'  type='submit'  value='ADD SWITCH'>";
-                var button = document.getElementById('add-button');
-                button.addEventListener("click", showNewPeriod, false);
-            }
-            var program = api.getDayProgram(editingDay);
-            program.switches = switches;
-            api.setDayProgram(editingDay, program);
+function removePeriod(event) {
+    console.log(event.target);
 
-            updateSwitches();
+    var parent = event.target.parentElement;
+    var start = parent.getElementsByClassName('start')[0].innerHTML;
+    var end = parent.getElementsByClassName('end')[0].innerHTML;
+
+    var found = false;
+    for (var i = 0; i < dayProgram.length; i++) {
+        if (dayProgram[i][0] === start && dayProgram[i][1] === end) {
+            found = true;
+            dayProgram.splice(i, 1);
+            refreshUI();
+            api.setDayProgram(editingDay, dayProgram);
+            break;
         }
+    }
+
+    if (!found) {
+        console.error('Could not find period to remove');
     }
 }
 
