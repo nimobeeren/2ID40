@@ -245,7 +245,7 @@ input:checked + .switch__knob:before {
 
 .label--end {
     top: 50px;
-    right: 4px;
+    left: -38px;
     width: auto;
     text-align: right;
 }
