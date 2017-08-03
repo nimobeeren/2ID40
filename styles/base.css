@@ -232,7 +232,7 @@ input:checked + .switch__knob:before {
 }
 
 .label--night {
-    margin-top: 48px;
+    margin-top: 50px;
 }
 
 .label--start {
@@ -244,7 +244,7 @@ input:checked + .switch__knob:before {
 
 .label--end {
     width: auto;
-    margin-top: 52px;
+    margin-top: 50px;
     text-align: right;
     margin-right: 4px;
 }
