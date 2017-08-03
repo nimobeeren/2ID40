@@ -15,7 +15,7 @@
     <a class="header__button" onclick="openNav()">
         <img src="../icons/ic_menu_white_24px.svg">
     </a>
-    <div class="header__title" id="title">Friday</div>
+    <div class="header__title" id="title">Schedule</div>
     <a class="header__button" href="settings.html">
         <img src="../icons/ic_settings_white_24px.svg">
     </a>
@@ -35,13 +35,29 @@
 </aside>
 <main>
     <div class="swipe-area"></div>
-    <div id="timeline" class="timeline">
+    <div class="timeline" id="timeline">
         <div class="timeline__part part--disabled"></div>
     </div>
-    <div id="existing_switches"></div>
-    <div id="addbox"></div>
-    <div id="add__switch">
-        <input id="add__button"  type="submit"  value="ADD SWITCH">
+    <div class="periods">
+        <div class="periods__existing" id="existing">
+            <div class="periods__item item--existing" id="dummy-period">
+                <img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg">
+                <span class="start">start</span>
+                <span>-</span>
+                <span class="end">end</span>
+                <input class="delete__switch" type="submit" value="">
+            </div>
+        </div>
+        <form class="periods__item item--new" id="new">
+            <img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg">
+            <input type="time" id="start" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5" required>
+            <span>-</span>
+            <input type="time" id="end" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5" required>
+            <input id="submit-button" type="submit" value="">
+        </form>
+        <div class="add-button__wrapper">
+            <a class="periods__add-button" id="add-button">ADD SWITCH</a>
+        </div>
     </div>
 </main>
 <script src="../js/api.js"></script>

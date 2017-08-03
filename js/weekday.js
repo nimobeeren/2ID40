@@ -1,16 +1,15 @@
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-var switches;
 var adding = false;
-var button, existing, addBox, timeline, hideButton;
+var timeline, existing, addButton, newPeriod, submitButton;
 var editingDay;
 
 window.onload = function () {
-    button = document.getElementById('add__button');
-    existing = document.getElementById('existing_switches');
-    addBox = document.getElementById('addbox');
     timeline = document.getElementById('timeline');
-    hideButton = document.getElementById('add__switch');
+    existing = document.getElementById('existing');
+    addButton = document.getElementById('add-button');
+    newPeriod = document.getElementById('new');
+    submitButton = document.getElementById('submit-button');
 
     editingDay = getEditingDay();
 
@@ -18,17 +17,16 @@ window.onload = function () {
     refresh();
     setInterval(refresh, refreshTime);
 
-    // Wire up add button
-    button.addEventListener("click", display);
+    // Wire up inputs
+    addButton.addEventListener("click", display);
+    submitButton.addEventListener("click", save);
 };
 
 function refreshUI() {
-    var program = api.getDayProgram(editingDay);
-
     setBackground(calcBackground());
-    setTimeline(program, timeline);
+    setTimeline(dayProgram, timeline);
 
-    setSwitches(program);
+    setSwitches(dayProgram);
     setEditingDay(editingDay);
 }
 
@@ -60,64 +58,44 @@ function setSwitches(program) {
     existing.innerHTML = "";
 
     for (var i = 0; i < program.length; i++) {
-        existing.innerHTML += '<div class="switch__info"><img class="switch__icons" src="../icons/ic_wb_sunny_white_24px.svg"><div class="start">' + program[i][0] + '</div> - <div class="end">' + program[i][1] + '</div>' +
+        existing.innerHTML += '<div class="periods__item"><img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg"><div class="start">' + program[i][0] + '</div> - <div class="end">' + program[i][1] + '</div>' +
             '<input class="delete__switch" type="submit" value=""></div>';
     }
 }
 
-function setCurrentDay(day) {
-
-}
-
 function display() {
-    hideButton.innerHTML = "";
-    if (switches.length >= 12 || adding === true) {
-        document.getElementById('add__button').style = "disabled";
+    addButton.style.display = 'none';
+
+    if (dayProgram.length > 5 || adding === true) {
+        document.getElementById('add-button').style = "disabled";
     }
-    else if (switches.length < 12) {
+    else if (dayProgram.length <= 5) {
         adding = true;
-        addBox.innerHTML += "<form><img class='switch__icons' src='../icons/ic_wb_sunny_white_24px.svg'>" +
-            "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='one' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
-            "<span>&nbsp;-&nbsp;</span>" +
-            "<input pattern='[0-2]{1}[0-9]{1}:[0-5]{1}[0-9]{1}' required='required' maxlength='5' id='two' class='textbox' style='width:55px;height:20px;font-size:18px;font-weight:bold'>" +
-            "<input id='checkmark__button'  type='submit'  value=''></form>";
-        var addSwitch = document.getElementById('checkmark__button');
-        addSwitch.addEventListener("click", save, false);
+        newPeriod.style.display = 'flex';
     }
 }
 
 function save() {
-    var one = document.getElementById('one').value;
-    var two = document.getElementById('two').value;
+    var one = document.getElementById('start').value;
+    var two = document.getElementById('end').value;
     adding = false;
     /*add various types of checks here*/
     if (one !== "" && two !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(one) && /([0-9]|2[0-3]):[0-5][0-9]/.test(two)) {
         one = normalizeTime(one);
         two = normalizeTime(two);
-        switches.push({
-            "type": "day",
-            "state": "on",
-            "time": one
-        });
-        switches.push({
-            "type": "night",
-            "state": "on",
-            "time": two
-        });
+        dayProgram.push([one, two]);
+
         existing.innerHTML = "";
-        addBox.innerHTML = "";
-        if (switches.length < 12) {
-            hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>";
-            var button = document.getElementById('add__button');
+        newPeriod.style.display = 'none';
+
+        if (dayProgram.length < 6) {
+            hideButton.innerHTML = "<input id='add-button'  type='submit'  value='ADD SWITCH'>";
+            var button = document.getElementById('add-button');
             button.addEventListener("click", display, false);
         }
 
         // Save the new switch
-        var program = api.getDayProgram(editingDay);
-        program.switches = switches;
-        api.setDayProgram(editingDay, program);
-
-        updateSwitches();
+        api.setDayProgram(editingDay, dayProgram);
     }
 }
 
@@ -130,8 +108,8 @@ function delSwitch(event) {
         if (switches[i]["time"] === start && switches[i + 1]["time"] === end) {
             switches.splice(i, 2);
             if (switches.length < 12) {
-                hideButton.innerHTML = "<input id='add__button'  type='submit'  value='ADD SWITCH'>";
-                var button = document.getElementById('add__button');
+                hideButton.innerHTML = "<input id='add-button'  type='submit'  value='ADD SWITCH'>";
+                var button = document.getElementById('add-button');
                 button.addEventListener("click", display, false);
             }
             var program = api.getDayProgram(editingDay);

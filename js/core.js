@@ -20,7 +20,11 @@ function refresh() {
     dayTemperature = api.getDayTemperature();
     nightTemperature = api.getNightTemperature();
     weekProgramState = api.getWeekProgramState();
-    dayProgram = api.getDayProgram(day);
+    if (typeof editingDay === 'string') {
+        dayProgram = api.getDayProgram(editingDay);
+    } else {
+        dayProgram = api.getDayProgram(day);
+    }
 
     if (!knobHold && !buttonHold) {
         targetTemperature = api.getTargetTemperature();
