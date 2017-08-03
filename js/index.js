@@ -311,6 +311,12 @@ function setCurrentTime(time) {
 
     var line = document.getElementById('time-indicator');
     line.style.left = parseTime(time) / 24 * 100 + '%';
+
+    if (weekProgramState) {
+        line.style.display = 'flex';
+    } else {
+        line.style.display = 'none';
+    }
 }
 
 function setCurrentDay(day) {
