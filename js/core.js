@@ -61,23 +61,28 @@ function setTimeline(program, timeline) {
 
     // If there are no day parts, show a single night part
     if (program.length === 0) {
+        // Full width part to hold start label
         part = document.createElement('div');
         part.classList.add('timeline__part');
         part.classList.add('part--night');
         part.style.flexGrow = 1;
-
         label = document.createElement('div');
         label.classList.add('timeline__label');
         label.classList.add('label--start');
         label.innerHTML = '00:00';
         part.appendChild(label);
+        timeline.appendChild(part);
 
+        // Zero width part to hold end label
+        part = document.createElement('div');
+        part.classList.add('timeline__part');
+        part.classList.add('part--night');
+        part.style.flexGrow = 0;
         label = document.createElement('div');
         label.classList.add('timeline__label');
         label.classList.add('label--end');
         label.innerHTML = '24:00';
         part.appendChild(label);
-
         timeline.appendChild(part);
         return;
     }
