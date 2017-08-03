@@ -17,6 +17,10 @@
     font-size: 24px;
 }
 
+.dummy {
+    display: none;
+}
+
 .item--new {
     display: none;
 }

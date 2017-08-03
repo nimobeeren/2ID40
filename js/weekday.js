@@ -61,13 +61,31 @@ function setEditingDay(day) {
 }
 
 function setSwitches(program) {
-    existing.innerHTML = "";
+    // Remove all periods except the dummy
+    var periods = document.querySelectorAll('.item--existing:not(.dummy)');
+    Array.prototype.forEach.call(periods, function (period) {
+        period.parentNode.removeChild(period);
+    });
 
+    // Add new periods
     for (var i = 0; i < program.length; i++) {
-        existing.innerHTML += '<div class="periods__item"><img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg"><div class="start">' + program[i][0] + '</div> - <div class="end">' + program[i][1] + '</div>' +
-            '<input class="delete__switch" type="submit" value=""></div>';
+        var list = document.getElementById('existing');
+        var dummy = list.getElementsByClassName('dummy')[0];
+        var newPeriod = dummy.cloneNode(true);
+
+        newPeriod.classList.remove('dummy');
+        newPeriod.getElementsByClassName('start')[0].innerHTML = program[i][0];
+        newPeriod.getElementsByClassName('end')[0].innerHTML = program[i][1];
+
+        list.appendChild(newPeriod);
     }
 
+    periods = document.querySelectorAll('.item--existing:not(.dummy)');
+    Array.prototype.forEach.call(periods, function (period) {
+        period.addEventListener("click", delSwitch);
+    });
+
+    // Show add button if there is still space for more periods
     if (program.length < 5 && !adding) {
         addButton.style.display = 'block';
     } else {
