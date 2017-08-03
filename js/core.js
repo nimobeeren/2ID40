@@ -101,7 +101,7 @@ function setTimeline(program, timeline) {
 
         label = document.createElement('div');
         label.classList.add('timeline__label');
-        if (program[i][0] === '00:00') {
+        if (parseTime(program[i][0]) <= 1) {
             label.classList.add('label--start');
         } else {
             label.classList.add('label--day');
@@ -125,7 +125,7 @@ function setTimeline(program, timeline) {
 
         label = document.createElement('div');
         label.classList.add('timeline__label');
-        if (program[i][1] === '24:00') {
+        if (parseTime(program[i][1]) >= 23) {
             label.classList.add('label--end');
         } else {
             label.classList.add('label--night');
