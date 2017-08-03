@@ -67,11 +67,9 @@ window.onload = function () {
      */
     vacationSwitch.addEventListener('change', function (e) {
         var vacationMode = vacationSwitch.checked;
+        weekProgramState = !vacationMode;
         api.setWeekProgramState(!vacationMode);
-        if (vacationMode) {
-            weekProgramState = false; // shouldn't do this
-            setTimeline(null, timeline);
-        }
+        refreshUI();
     });
 };
 
