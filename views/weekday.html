@@ -38,27 +38,38 @@
     <div class="timeline" id="timeline">
         <div class="timeline__part part--disabled"></div>
     </div>
-    <div class="periods">
-        <div class="periods__existing" id="existing">
-            <div class="periods__item item--existing dummy">
-                <img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg">
-                <span class="start">start</span>
-                <span>-</span>
-                <span class="end">end</span>
-                <input class="item__remove-button" type="submit" value="">
+    <form class="periods" action="" onsubmit="return false">
+        <div class="periods__list" id="list">
+            <div class="periods__item dummy">
+                <a class="item__remove-button">
+                    <img class="data__icon" src="../icons/ic_delete_white_24px.svg">
+                </a>
+                <div class="item__data">
+                    <img class="data__icon" src="../icons/ic_wb_sunny_white_24px.svg">
+                    <div class="data__time" id="start">
+                        <label>start</label>
+                        <input type="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5"
+                               required>
+                    </div>
+                    <span>-</span>
+                    <div class="data__time" id="end">
+                        <label>end</label>
+                        <input type="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5"
+                               required>
+                    </div>
+                    <img class="data__icon" src="../icons/moon_white.svg">
+                </div>
             </div>
         </div>
-        <form class="periods__item item--new" id="new" action="" onsubmit="return false;">
-            <img class="period__icon" src="../icons/ic_wb_sunny_white_24px.svg">
-            <input type="time" id="start" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5" required>
-            <span>-</span>
-            <input type="time" id="end" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5" required>
-            <input id="submit-button" type="submit" value="">
-        </form>
-        <div class="add-button__wrapper">
-            <a class="periods__add-button" id="add-button">ADD SWITCH</a>
+        <a class="periods__add-button" id="add-button">+</a>
+        <div class="raised-buttons__wrapper buttons-viewing">
+            <a class="periods__raised-button" id="edit-button">EDIT</a>
         </div>
-    </div>
+        <div class="raised-buttons__wrapper buttons-editing">
+            <a class="periods__raised-button raised-button--red" id="cancel-button">CANCEL</a>
+            <a class="periods__raised-button" id="accept-button">ACCEPT</a>
+        </div>
+    </form>
 </main>
 <script src="../js/api.js"></script>
 <script src="../js/core.js"></script>
