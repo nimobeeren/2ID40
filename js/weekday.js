@@ -1,25 +1,28 @@
 const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
-var adding = false;
-var timeline, existing, addButton, newPeriod, submitButton;
+var editing = false;
+var timeline, list, editButton, addButton, cancelButton, acceptButton;
 var editingDay;
 
 window.onload = function () {
     timeline = document.getElementById('timeline');
-    existing = document.getElementById('existing');
+    list = document.getElementById('list');
+    editButton = document.getElementById('edit-button');
     addButton = document.getElementById('add-button');
-    newPeriod = document.getElementById('new');
-    submitButton = document.getElementById('submit-button');
+    cancelButton = document.getElementById('cancel-button');
+    acceptButton = document.getElementById('accept-button');
 
     editingDay = getEditingDay();
 
     // Refresh data periodically
-    refresh();
     setInterval(refresh, refreshTime);
+    refresh();
 
     // Wire up inputs
-    addButton.addEventListener("click", showNewPeriod);
-    submitButton.addEventListener("click", submitNewPeriod);
+    editButton.addEventListener('click', onEdit);
+    addButton.addEventListener('click', onAdd);
+    cancelButton.addEventListener('click', onCancel);
+    acceptButton.addEventListener('click', onAccept);
 };
 
 function refreshUI() {
@@ -28,6 +31,61 @@ function refreshUI() {
 
     setSwitches(dayProgram);
     setEditingDay(editingDay);
+}
+
+function onEdit() {
+
+}
+
+function onAdd() {
+    editing = true;
+    acceptButton.style.display = 'none';
+    newPeriod.style.display = 'flex';
+}
+
+function onCancel() {
+
+}
+
+function onAccept() {
+    var start = document.getElementById('start').value;
+    var end = document.getElementById('end').value;
+
+    /*add various types of checks here*/
+    if (start !== "" && end !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(start) && /([0-9]|2[0-3]):[0-5][0-9]/.test(end)) {
+        // Hide the new period form
+        editing = false;
+        newPeriod.style.display = 'none';
+
+        // Save and display the new period
+        dayProgram.push([start, end].map(normalizeTime));
+        dayProgram = api.sortMergeProgram(dayProgram);
+        refreshUI();
+        api.setDayProgram(editingDay, dayProgram);
+    }
+}
+
+function onRemove(event) {
+    console.log(event.target);
+
+    var parent = event.target.parentElement;
+    var start = parent.getElementsByClassName('start')[0].innerHTML;
+    var end = parent.getElementsByClassName('end')[0].innerHTML;
+
+    var found = false;
+    for (var i = 0; i < dayProgram.length; i++) {
+        if (dayProgram[i][0] === start && dayProgram[i][1] === end) {
+            found = true;
+            dayProgram.splice(i, 1);
+            refreshUI();
+            api.setDayProgram(editingDay, dayProgram);
+            break;
+        }
+    }
+
+    if (!found) {
+        console.error('Could not find period to remove');
+    }
 }
 
 function getEditingDay() {
@@ -62,83 +120,35 @@ function setEditingDay(day) {
 
 function setSwitches(program) {
     // Remove all periods except the dummy
-    var periods = document.querySelectorAll('.item--existing:not(.dummy)');
+    var periods = document.querySelectorAll('.periods__item:not(.dummy)');
     Array.prototype.forEach.call(periods, function (period) {
         period.parentNode.removeChild(period);
     });
 
     // Add new periods
     for (var i = 0; i < program.length; i++) {
-        var list = document.getElementById('existing');
         var dummy = list.getElementsByClassName('dummy')[0];
         var newPeriod = dummy.cloneNode(true);
 
         newPeriod.classList.remove('dummy');
-        newPeriod.getElementsByClassName('start')[0].innerHTML = program[i][0];
-        newPeriod.getElementsByClassName('end')[0].innerHTML = program[i][1];
+        newPeriod.getElementsByClassName('time--start')[0].getElementsByTagName('label')[0].innerHTML = program[i][0];
+        newPeriod.getElementsByClassName('time--start')[0].getElementsByTagName('input')[0].value = program[i][0];
+        newPeriod.getElementsByClassName('time--end')[0].getElementsByTagName('label')[0].innerHTML = program[i][1];
+        newPeriod.getElementsByClassName('time--end')[0].getElementsByTagName('input')[0].value = program[i][1];
 
         list.appendChild(newPeriod);
     }
 
-    periods = document.querySelectorAll('.item--existing:not(.dummy)');
+    // Wire up remove buttons
+    periods = document.querySelectorAll('.periods__item:not(.dummy)');
     Array.prototype.forEach.call(periods, function (period) {
-        period.addEventListener("click", removePeriod);
+        period.getElementsByClassName('item__remove-button')[0].addEventListener("click", onRemove);
     });
-
-    // Show add button if there is still space for more periods
-    if (program.length < 5 && !adding) {
-        addButton.style.display = 'block';
-    } else {
-        addButton.style.display = 'none';
-    }
 }
 
-function showNewPeriod() {
-    adding = true;
-    addButton.style.display = 'none';
-    newPeriod.style.display = 'flex';
-}
-
-function submitNewPeriod() {
-    var start = document.getElementById('start').value;
-    var end = document.getElementById('end').value;
-
-    /*add various types of checks here*/
-    if (start !== "" && end !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(start) && /([0-9]|2[0-3]):[0-5][0-9]/.test(end)) {
-        // Hide the new period form
-        adding = false;
-        newPeriod.style.display = 'none';
-
-        // Save and display the new period
-        dayProgram.push([start, end].map(normalizeTime));
-        dayProgram = api.sortMergeProgram(dayProgram);
-        refreshUI();
-        api.setDayProgram(editingDay, dayProgram);
-    }
-}
-
-function removePeriod(event) {
-    console.log(event.target);
-
-    var parent = event.target.parentElement;
-    var start = parent.getElementsByClassName('start')[0].innerHTML;
-    var end = parent.getElementsByClassName('end')[0].innerHTML;
-
-    var found = false;
-    for (var i = 0; i < dayProgram.length; i++) {
-        if (dayProgram[i][0] === start && dayProgram[i][1] === end) {
-            found = true;
-            dayProgram.splice(i, 1);
-            refreshUI();
-            api.setDayProgram(editingDay, dayProgram);
-            break;
-        }
-    }
-
-    if (!found) {
-        console.error('Could not find period to remove');
-    }
-}
+/*
+Utility functions
+ */
 
 function normalizeTime(time) {
     var startPattern = /^[0-9]:[0-5][0-9]?$/;
