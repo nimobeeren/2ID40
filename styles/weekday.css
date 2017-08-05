@@ -30,8 +30,17 @@
     font-size: 24px;
 }
 
+.data__time {
+    width: 65px;
+    text-align: center;
+}
+
 .data__time input {
     display: none;
+    width: 65px;
+    height: 20px;
+    font-size: 14px;
+    font-weight: bold;
 }
 
 .item--new {
@@ -48,13 +57,6 @@
     position: absolute;
     top: 18px;
     left: 8px;
-}
-
-input[type="time"] {
-    width: 65px;
-    height: 20px;
-    font-size: 14px;
-    font-weight: bold;
 }
 
 .periods__add-button {
