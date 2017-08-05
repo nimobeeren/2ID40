@@ -77,7 +77,8 @@ function onAccept() {
         if (re.test(start) && re.test(end)) {
             program.push([start, end]);
         } else {
-            throw new Error('Invalid time format on input');
+            alert("Please enter a valid time in all inputs.");
+            throw new Error("Invalid time inputs");
         }
     });
 
