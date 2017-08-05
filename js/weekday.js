@@ -28,6 +28,7 @@ window.onload = function () {
 
 function refreshUI() {
     setBackground(calcBackground());
+    setEditingMode(editing);
     if (!editing) {
         setTimeline(dayProgram, timeline);
         setSwitches(dayProgram);
@@ -41,21 +42,28 @@ function onEdit() {
     // Store old program to allow cancelling
     oldProgram = dayProgram;
 
-    setEditingMode(editing);
+    refreshUI();
 }
 
 function onAdd() {
+    var periods = document.querySelectorAll('.periods__item:not(.dummy)');
 
+    if (periods.length < 5) {
+        var dummy = list.getElementsByClassName('dummy')[0];
+        var newPeriod = dummy.cloneNode(true);
+        newPeriod.classList.remove('dummy');
+        newPeriod.getElementsByClassName('item__remove-button')[0].addEventListener('click', onRemove);
+        list.appendChild(newPeriod);
+        refreshUI();
+    } else {
+        console.error("Can't add more than 5 periods");
+    }
 }
 
 function onCancel() {
     editing = false;
-
-    // Restore old program
     dayProgram = oldProgram;
     refreshUI();
-
-    setEditingMode(editing);
 }
 
 function onAccept() {
@@ -78,8 +86,6 @@ function onAccept() {
     dayProgram = api.sortMergeProgram(program);
     refreshUI();
     api.setDayProgram(editingDay, dayProgram);
-
-    setEditingMode(editing);
 }
 
 function onRemove(event) {
@@ -93,6 +99,7 @@ function onRemove(event) {
     }
 
     parent.parentElement.removeChild(parent);
+    refreshUI();
 }
 
 function getEditingDay() {
@@ -158,7 +165,13 @@ function setEditingMode(isOn) {
     if (isOn) {
         document.querySelector('.buttons-viewing').style.display = 'none';
         document.querySelector('.buttons-editing').style.display = 'flex';
-        document.querySelector('#add-button').style.display = 'block';
+
+        var periods = document.querySelectorAll('.periods__item:not(.dummy)');
+        if (periods.length < 5) {
+            document.querySelector('#add-button').style.display = 'block';
+        } else {
+            document.querySelector('#add-button').style.display = 'none';
+        }
 
         items = document.querySelectorAll('.periods__item');
         Array.prototype.forEach.call(items, function (item) {
