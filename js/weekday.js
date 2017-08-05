@@ -83,24 +83,16 @@ function onAccept() {
 }
 
 function onRemove(event) {
-    // var parent = event.target.parentElement;
-    // var start = parent.getElementsByClassName('start')[0].innerHTML;
-    // var end = parent.getElementsByClassName('end')[0].innerHTML;
-    //
-    // var found = false;
-    // for (var i = 0; i < dayProgram.length; i++) {
-    //     if (dayProgram[i][0] === start && dayProgram[i][1] === end) {
-    //         found = true;
-    //         dayProgram.splice(i, 1);
-    //         refreshUI();
-    //         api.setDayProgram(editingDay, dayProgram);
-    //         break;
-    //     }
-    // }
-    //
-    // if (!found) {
-    //     console.error('Could not find period to remove');
-    // }
+    var parent = event.target.parentElement;
+    if (!parent.classList.contains('periods__item')) {
+        try {
+            parent = parent.parentElement;
+        } catch (ex) {
+            throw new Error("Can't find period to remove");
+        }
+    }
+
+    parent.parentElement.removeChild(parent);
 }
 
 function getEditingDay() {
