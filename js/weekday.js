@@ -3,6 +3,7 @@ const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
 var editing = false;
 var timeline, list, editButton, addButton, cancelButton, acceptButton;
 var editingDay;
+var oldProgram;
 
 window.onload = function () {
     timeline = document.getElementById('timeline');
@@ -27,14 +28,19 @@ window.onload = function () {
 
 function refreshUI() {
     setBackground(calcBackground());
-    setTimeline(dayProgram, timeline);
-
-    setSwitches(dayProgram);
-    setEditingDay(editingDay);
+    if (!editing) {
+        setTimeline(dayProgram, timeline);
+        setSwitches(dayProgram);
+        setEditingDay(editingDay);
+    }
 }
 
 function onEdit() {
-    editing = !editing;
+    editing = true;
+
+    // Store old program to allow cancelling
+    oldProgram = dayProgram;
+
     setEditingMode(editing);
 }
 
@@ -43,28 +49,36 @@ function onAdd() {
 }
 
 function onCancel() {
-    editing = !editing;
+    editing = false;
+
+    // Restore old program
+    dayProgram = oldProgram;
+    refreshUI();
+
     setEditingMode(editing);
 }
 
 function onAccept() {
-    // var start = document.getElementById('start').value;
-    // var end = document.getElementById('end').value;
-    //
-    // /*add various types of checks here*/
-    // if (start !== "" && end !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(start) && /([0-9]|2[0-3]):[0-5][0-9]/.test(end)) {
-    //     // Hide the new period form
-    //     editing = false;
-    //     newPeriod.style.display = 'none';
-    //
-    //     // Save and display the new period
-    //     dayProgram.push([start, end].map(normalizeTime));
-    //     dayProgram = api.sortMergeProgram(dayProgram);
-    //     refreshUI();
-    //     api.setDayProgram(editingDay, dayProgram);
-    // }
+    var program = [];
+    var periods = document.querySelectorAll('.periods__item:not(.dummy)');
+    Array.prototype.forEach.call(periods, function (period) {
+        var start = period.querySelector('.time--start input').value;
+        var end = period.querySelector('.time--end input').value;
 
-    editing = !editing;
+        var re = new RegExp(/([0-1][0-9]|2[0-3]):[0-5][0-9]/);
+        if (re.test(start) && re.test(end)) {
+            program.push([start, end]);
+        } else {
+            throw new Error('Invalid time format on input');
+        }
+    });
+
+    editing = false;
+
+    dayProgram = api.sortMergeProgram(program);
+    refreshUI();
+    api.setDayProgram(editingDay, dayProgram);
+
     setEditingMode(editing);
 }
 
@@ -91,7 +105,7 @@ function onRemove(event) {
 
 function getEditingDay() {
     try {
-        var day =  new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
+        var day = new RegExp(/[?|&]day=([^&;]+?)(&|#|;|$)/g).exec(location.search)[1];
     } catch (ex) {
         document.body.innerHTML = 'Bad day parameter';
         throw new Error('Bad day parameter');
@@ -176,20 +190,4 @@ function setEditingMode(isOn) {
             item.querySelector('.time--end input').style.display = 'none';
         });
     }
-}
-
-/*
-Utility functions
- */
-
-function normalizeTime(time) {
-    var startPattern = /^[0-9]:[0-5][0-9]?$/;
-    var endPattern = /[0-2]?[0-9]:[0-5]$/;
-    if (startPattern.test(time)) {
-        time = '0' + time;
-    }
-    if (endPattern.test(time)) {
-        time = time + '0';
-    }
-    return time;
 }
