@@ -10,7 +10,7 @@ function refreshUI() {
 
 function setTimelines() {
     for (var i = 0; i < days.length; i++) {
-        var timeline = document.querySelector('#' + days[i].toLowerCase() + ' .timeline');
+        var timeline = document.querySelector('#' + days[i].toLowerCase() + ' .content__timeline');
         var program = weekProgram[days[i]];
         setTimeline(program, timeline);
     }

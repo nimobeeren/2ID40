@@ -62,6 +62,13 @@ main {
     cursor: pointer;
 }
 
+@media screen and (max-width: 360px) {
+    .controls__button {
+        width: 90px;
+        height: 42px;
+    }
+}
+
 .button--down {
     background: #1976d2 url('../icons/ic_arrow_drop_down_white_24px.svg') center no-repeat;
     background-size: contain;
