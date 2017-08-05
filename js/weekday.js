@@ -75,6 +75,10 @@ function onCancel() {
 
 function onAccept() {
     var program = [];
+    var nextDay = days[(days.indexOf(editingDay) + 1) % 7];
+    var nextDayProgram = api.getDayProgram(nextDay);
+    var nextDayLength = nextDayProgram.length;
+
     var periods = document.querySelectorAll('.periods__item:not(.dummy)');
     Array.prototype.forEach.call(periods, function (period) {
         var start = period.querySelector('.time--start input').value;
@@ -84,6 +88,14 @@ function onAccept() {
         if (re.test(start) && re.test(end)) {
             if (parseTime(end) < parseTime(start)) {
                 program.push([start, '23:59']);
+                if (parseTime(end) !== 0) {
+                    if (nextDayLength < 5) {
+                        nextDayProgram.push(['00:00', end]);
+                    } else {
+                        alert(nextDay + " already has 5 periods, please remove any periods running into the next day.");
+                        throw new Error(nextDay + " is full");
+                    }
+                }
             } else {
                 program.push([start, end]);
             }
@@ -96,8 +108,10 @@ function onAccept() {
     editing = false;
 
     dayProgram = api.sortMergeProgram(program);
+    nextDayProgram = api.sortMergeProgram(nextDayProgram);
     refreshUI();
     api.setDayProgram(editingDay, dayProgram);
+    api.setDayProgram(nextDay, nextDayProgram);
 }
 
 function onRemove(event) {
@@ -118,18 +132,31 @@ function onTimeChange() {
     var periods = document.querySelectorAll('.periods__item:not(.dummy)');
     Array.prototype.forEach.call(periods, function (period) {
         var noteMerge = period.querySelector('.note--merge');
-        var noteNextDay = period.querySelector('.note--end-day');
+        var noteEndDay = period.querySelector('.note--end-day');
+        var noteNextDay = period.querySelector('.note--next-day');
         var start = period.querySelector('.time--start input').value;
         var end = period.querySelector('.time--end input').value;
 
         if (parseTime(end) < parseTime(start)) {
             noteMerge.style.display = 'none';
-            noteNextDay.style.display = 'block';
+            if (parseTime(end) === 0) {
+                // Periods ending at 00:00 will run to the end of the day
+                noteEndDay.style.display = 'block';
+                noteNextDay.style.display = 'none';
+            } else {
+                // Periods ending before they start will run into the next day
+                noteEndDay.style.display = 'none';
+                noteNextDay.style.display = 'block';
+            }
         } else if (isOverlapping(start, end)) {
+            // Periods that overlap will be merged
             noteMerge.style.display = 'block';
+            noteEndDay.style.display = 'none';
             noteNextDay.style.display = 'none';
         } else {
+            // Nothing special
             noteMerge.style.display = 'none';
+            noteEndDay.style.display = 'none';
             noteNextDay.style.display = 'none';
         }
     });
