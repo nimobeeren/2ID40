@@ -24,6 +24,11 @@ window.onload = function () {
     addButton.addEventListener('click', onAdd);
     cancelButton.addEventListener('click', onCancel);
     acceptButton.addEventListener('click', onAccept);
+
+    var inputs = list.querySelectorAll('input[type="time"]');
+    Array.prototype.forEach.call(inputs, function (input) {
+        input.addEventListener('change', onTimeChange);
+    });
 };
 
 function refreshUI() {
@@ -53,6 +58,8 @@ function onAdd() {
         var newPeriod = dummy.cloneNode(true);
         newPeriod.classList.remove('dummy');
         newPeriod.getElementsByClassName('item__remove-button')[0].addEventListener('click', onRemove);
+        newPeriod.getElementsByTagName('input')[0].addEventListener('change', onTimeChange);
+        newPeriod.getElementsByTagName('input')[1].addEventListener('change', onTimeChange);
         list.appendChild(newPeriod);
         refreshUI();
     } else {
@@ -75,7 +82,11 @@ function onAccept() {
 
         var re = new RegExp(/([0-1][0-9]|2[0-3]):[0-5][0-9]/);
         if (re.test(start) && re.test(end)) {
-            program.push([start, end]);
+            if (parseTime(end) < parseTime(start)) {
+                program.push([start, '23:59']);
+            } else {
+                program.push([start, end]);
+            }
         } else {
             alert("Please enter a valid time in all inputs.");
             throw new Error("Invalid time inputs");
@@ -101,6 +112,27 @@ function onRemove(event) {
 
     parent.parentElement.removeChild(parent);
     refreshUI();
+}
+
+function onTimeChange() {
+    var periods = document.querySelectorAll('.periods__item:not(.dummy)');
+    Array.prototype.forEach.call(periods, function (period) {
+        var noteMerge = period.querySelector('.note--merge');
+        var noteNextDay = period.querySelector('.note--end-day');
+        var start = period.querySelector('.time--start input').value;
+        var end = period.querySelector('.time--end input').value;
+
+        if (parseTime(end) < parseTime(start)) {
+            noteMerge.style.display = 'none';
+            noteNextDay.style.display = 'block';
+        } else if (isOverlapping(start, end)) {
+            noteMerge.style.display = 'block';
+            noteNextDay.style.display = 'none';
+        } else {
+            noteMerge.style.display = 'none';
+            noteNextDay.style.display = 'none';
+        }
+    });
 }
 
 function getEditingDay() {
@@ -196,4 +228,27 @@ function setEditingMode(isOn) {
             item.querySelector('.time--end input').style.display = 'none';
         });
     }
+}
+
+/*
+Utility functions
+ */
+
+function isOverlapping(start1, end1) {
+    var count = 0;
+    var periods = document.querySelectorAll('.periods__item:not(.dummy)');
+
+    start1 = parseTime(start1);
+    end1 = parseTime(end1);
+
+    Array.prototype.forEach.call(periods, function (period) {
+        var start2 = parseTime(period.querySelector('.time--start input').value);
+        var end2 = parseTime(period.querySelector('.time--end input').value);
+
+        if (start1 <= start2 && end1 >= start2 || start1 <= end2 && end1 >= start2) {
+            count++;
+        }
+    });
+
+    return count > 1;
 }
