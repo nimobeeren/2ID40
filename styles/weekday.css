@@ -2,6 +2,10 @@
     display: none;
 }
 
+.timeline {
+    margin: 32px 0;
+}
+
 .periods, .periods__list {
     display: flex;
     flex-direction: column;
