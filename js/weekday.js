@@ -1,5 +1,3 @@
-const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
-
 var editing = false;
 var timeline, list, editButton, addButton, cancelButton, acceptButton;
 var editingDay;

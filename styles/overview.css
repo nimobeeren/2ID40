@@ -1,0 +1,7 @@
+.timeline {
+    padding: 12px 0;
+}
+
+.timeline__label {
+    display: none;
+}

@@ -3,11 +3,12 @@ const maxTemp = 30;
 const dayColor = '#64b5f6';
 const nightColor = '#1a237e';
 const refreshTime = 2000;
+const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
 
 var knobHold = false;
 var buttonHold = false;
 
-var day, time, currentTemperature, dayTemperature, nightTemperature, weekProgramState, dayProgram, targetTemperature;
+var day, time, currentTemperature, dayTemperature, nightTemperature, weekProgramState, weekProgram, dayProgram, targetTemperature;
 
 /**
  * Updates UI elements with recent data from server
@@ -20,6 +21,7 @@ function refresh() {
     dayTemperature = api.getDayTemperature();
     nightTemperature = api.getNightTemperature();
     weekProgramState = api.getWeekProgramState();
+    weekProgram = api.getWeekProgram();
 
     if (typeof editingDay === 'string') {
         dayProgram = api.getDayProgram(editingDay);
