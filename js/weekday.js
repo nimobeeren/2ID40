@@ -34,58 +34,59 @@ function refreshUI() {
 }
 
 function onEdit() {
-
+    editing = !editing;
+    setEditingMode(editing);
 }
 
 function onAdd() {
-    editing = true;
-    acceptButton.style.display = 'none';
-    newPeriod.style.display = 'flex';
+
 }
 
 function onCancel() {
-
+    editing = !editing;
+    setEditingMode(editing);
 }
 
 function onAccept() {
-    var start = document.getElementById('start').value;
-    var end = document.getElementById('end').value;
+    // var start = document.getElementById('start').value;
+    // var end = document.getElementById('end').value;
+    //
+    // /*add various types of checks here*/
+    // if (start !== "" && end !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(start) && /([0-9]|2[0-3]):[0-5][0-9]/.test(end)) {
+    //     // Hide the new period form
+    //     editing = false;
+    //     newPeriod.style.display = 'none';
+    //
+    //     // Save and display the new period
+    //     dayProgram.push([start, end].map(normalizeTime));
+    //     dayProgram = api.sortMergeProgram(dayProgram);
+    //     refreshUI();
+    //     api.setDayProgram(editingDay, dayProgram);
+    // }
 
-    /*add various types of checks here*/
-    if (start !== "" && end !== "" && /([0-9]|2[0-3]):[0-5][0-9]/.test(start) && /([0-9]|2[0-3]):[0-5][0-9]/.test(end)) {
-        // Hide the new period form
-        editing = false;
-        newPeriod.style.display = 'none';
-
-        // Save and display the new period
-        dayProgram.push([start, end].map(normalizeTime));
-        dayProgram = api.sortMergeProgram(dayProgram);
-        refreshUI();
-        api.setDayProgram(editingDay, dayProgram);
-    }
+    editing = !editing;
+    setEditingMode(editing);
 }
 
 function onRemove(event) {
-    console.log(event.target);
-
-    var parent = event.target.parentElement;
-    var start = parent.getElementsByClassName('start')[0].innerHTML;
-    var end = parent.getElementsByClassName('end')[0].innerHTML;
-
-    var found = false;
-    for (var i = 0; i < dayProgram.length; i++) {
-        if (dayProgram[i][0] === start && dayProgram[i][1] === end) {
-            found = true;
-            dayProgram.splice(i, 1);
-            refreshUI();
-            api.setDayProgram(editingDay, dayProgram);
-            break;
-        }
-    }
-
-    if (!found) {
-        console.error('Could not find period to remove');
-    }
+    // var parent = event.target.parentElement;
+    // var start = parent.getElementsByClassName('start')[0].innerHTML;
+    // var end = parent.getElementsByClassName('end')[0].innerHTML;
+    //
+    // var found = false;
+    // for (var i = 0; i < dayProgram.length; i++) {
+    //     if (dayProgram[i][0] === start && dayProgram[i][1] === end) {
+    //         found = true;
+    //         dayProgram.splice(i, 1);
+    //         refreshUI();
+    //         api.setDayProgram(editingDay, dayProgram);
+    //         break;
+    //     }
+    // }
+    //
+    // if (!found) {
+    //     console.error('Could not find period to remove');
+    // }
 }
 
 function getEditingDay() {
@@ -144,6 +145,37 @@ function setSwitches(program) {
     Array.prototype.forEach.call(periods, function (period) {
         period.getElementsByClassName('item__remove-button')[0].addEventListener("click", onRemove);
     });
+}
+
+function setEditingMode(isOn) {
+    var items;
+    if (isOn) {
+        document.querySelector('.buttons-viewing').style.display = 'none';
+        document.querySelector('.buttons-editing').style.display = 'flex';
+        document.querySelector('#add-button').style.display = 'block';
+
+        items = document.querySelectorAll('.periods__item');
+        Array.prototype.forEach.call(items, function (item) {
+            item.querySelector('.item__remove-button').style.display = 'block';
+            item.querySelector('.time--start label').style.display = 'none';
+            item.querySelector('.time--start input').style.display = 'block';
+            item.querySelector('.time--end label').style.display = 'none';
+            item.querySelector('.time--end input').style.display = 'block';
+        });
+    } else {
+        document.querySelector('.buttons-viewing').style.display = 'flex';
+        document.querySelector('.buttons-editing').style.display = 'none';
+        document.querySelector('#add-button').style.display = 'none';
+
+        items = document.querySelectorAll('.periods__item');
+        Array.prototype.forEach.call(items, function (item) {
+            item.querySelector('.item__remove-button').style.display = 'none';
+            item.querySelector('.time--start label').style.display = 'block';
+            item.querySelector('.time--start input').style.display = 'none';
+            item.querySelector('.time--end label').style.display = 'block';
+            item.querySelector('.time--end input').style.display = 'none';
+        });
+    }
 }
 
 /*
