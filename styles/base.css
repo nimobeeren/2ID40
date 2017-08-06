@@ -214,11 +214,11 @@ input:checked + .switch__knob:before {
 }
 
 .part--day {
-    background-color: #0d47a1;
+    background-color: #bbdefb;
 }
 
 .part--night {
-    background-color: #bbdefb;
+    background-color: #0d47a1;
 }
 
 .part--disabled {
