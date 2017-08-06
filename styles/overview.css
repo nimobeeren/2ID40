@@ -7,20 +7,23 @@
     padding: 12px 0;
 }
 
-.content__labels {
+.card__title {
+    padding-bottom: 8px;
+}
+
+.card__labels {
     display: flex;
     justify-content: space-evenly;
-    position: relative;
-    margin: 12px 0;
-    background-color: #64b5f6;
-    box-shadow: #64b5f6 0 0 20px 3px;
-    transition: 1s;
+    width: 100%;
+    padding-bottom: 8px;
+    text-align: center;
 }
 
 .labels__item {
     position: relative;
-    left: -16px;
+    left: -6px;
     width: 0;
+    color: rgba(0, 0, 0, 0.54);
 }
 
 .timelines__card {
