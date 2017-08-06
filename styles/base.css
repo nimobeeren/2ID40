@@ -1,7 +1,7 @@
 html, body {
     margin: 0 auto;
     background-color: #64b5f6;
-    color: #fafafa;
+    color: white;
     font-family: 'Roboto', sans-serif;
     font-size: 14px;
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
@@ -255,4 +255,15 @@ input:checked + .switch__knob:before {
     left: -38px;
     width: auto;
     text-align: right;
+}
+
+.flat-button {
+    min-width: 36px;
+    padding: 8px;
+    border-radius: 2px;
+    color: #1976d2;
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
 }

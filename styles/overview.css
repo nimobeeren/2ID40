@@ -1,18 +1,6 @@
 .timelines {
     position: relative;
-}
-
-.timelines__background {
-    display: flex;
-    justify-content: space-evenly;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-}
-
-.background__column {
-    height: 100%;
-    border-right: 1px solid rgba(255, 255, 255, 0.7);
+    margin: 0 8px;
 }
 
 .timelines__content {
@@ -34,10 +22,30 @@
     width: 0;
 }
 
+.content__day {
+    margin: 12px 0;
+    border-radius: 2px;
+    color: rgba(0, 0, 0, 0.87);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    background-image: url(../icons/stripes.svg);
+}
+
+.day__title {
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 400;
+}
+
 .timeline {
-    padding: 12px 0;
+    padding: 0;
 }
 
 .timeline__label {
     display: none;
+}
+
+.day__actions {
+    display: flex;
+    flex-direction: row-reverse;
+    padding: 4px;
 }
