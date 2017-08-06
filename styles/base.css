@@ -267,3 +267,9 @@ input:checked + .switch__knob:before {
     text-transform: uppercase;
     text-align: center;
 }
+
+.card__title {
+    padding: 12px;
+    font-size: 18px;
+    font-weight: 400;
+}
