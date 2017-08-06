@@ -173,7 +173,7 @@ input:checked + .switch__knob:before {
     transform: translateX(26px);
 }
 
-.content__timeline {
+.timeline {
     display: flex;
     position: relative;
     width: 100%;

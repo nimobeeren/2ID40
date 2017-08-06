@@ -5,13 +5,24 @@ window.onload = function () {
 };
 
 function refreshUI() {
+    setBackground(calcBackground());
+    setLabelBackground(calcBackground());
     setTimelines();
 }
 
 function setTimelines() {
-    for (var i = 0; i < days.length; i++) {
-        var timeline = document.querySelector('#' + days[i].toLowerCase() + ' .content__timeline');
-        var program = weekProgram[days[i]];
+    Array.prototype.forEach.call(days, function(day) {
+        var timeline = document.querySelector('#' + day.toLowerCase() + ' .timeline');
+        var program = weekProgram[day];
         setTimeline(program, timeline);
-    }
+    });
+}
+
+function setLabelBackground(color) {
+    var labels = document.getElementsByClassName('content__labels');
+    Array.prototype.forEach.call(labels, function (el) {
+        var shadow = document.defaultView.getComputedStyle(el, null)['box-shadow'];
+        el.style.boxShadow = color + ' ' + shadow.split(' ').slice(3).join(' ');
+        el.style.backgroundColor = color;
+    });
 }
