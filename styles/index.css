@@ -98,11 +98,11 @@ main {
 }
 
 .line--day {
-    background-color: #bbdefb;
+    background-color: #0d47a1;
 }
 
 .line--night {
-    background-color: #0d47a1;
+    background-color: #bbdefb;
 }
 
 .line--current {
