@@ -51,7 +51,13 @@ main {
     font-size: 48px;
     text-align: center;
     vertical-align: middle;
-    margin: 10px auto;
+    margin: 8px auto;
+}
+
+.controls__temp-label {
+    height: 0;
+    position: relative;
+    font-size: 16px;
 }
 
 .controls__button {
