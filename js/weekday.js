@@ -32,9 +32,9 @@ window.onload = function () {
 function refreshUI() {
     setBackground(calcBackground());
     setEditingMode(editing);
+    setSwitches(dayProgram);
     if (!editing) {
         setTimeline(dayProgram, timeline);
-        setSwitches(dayProgram);
         setEditingDay(editingDay);
     }
 }
@@ -191,31 +191,42 @@ function setEditingDay(day) {
 }
 
 function setSwitches(program) {
-    // Remove all periods except the dummy
-    var periods = document.querySelectorAll('.periods__item:not(.dummy)');
-    Array.prototype.forEach.call(periods, function (period) {
-        period.parentNode.removeChild(period);
-    });
+    var note = document.getElementById('note-empty');
+    if (!editing) {
+        // Remove all periods except the dummy
+        var periods = document.querySelectorAll('.periods__item:not(.dummy)');
+        Array.prototype.forEach.call(periods, function (period) {
+            period.parentNode.removeChild(period);
+        });
 
-    // Add new periods
-    for (var i = 0; i < program.length; i++) {
-        var dummy = list.getElementsByClassName('dummy')[0];
-        var newPeriod = dummy.cloneNode(true);
+        if (program.length === 0) {
+            note.style.display = 'block';
+        } else {
+            note.style.display = 'none';
+        }
 
-        newPeriod.classList.remove('dummy');
-        newPeriod.getElementsByClassName('time--start')[0].getElementsByTagName('label')[0].innerHTML = program[i][0];
-        newPeriod.getElementsByClassName('time--start')[0].getElementsByTagName('input')[0].value = program[i][0];
-        newPeriod.getElementsByClassName('time--end')[0].getElementsByTagName('label')[0].innerHTML = program[i][1];
-        newPeriod.getElementsByClassName('time--end')[0].getElementsByTagName('input')[0].value = program[i][1];
+        // Add new periods
+        for (var i = 0; i < program.length; i++) {
+            var dummy = list.getElementsByClassName('dummy')[0];
+            var newPeriod = dummy.cloneNode(true);
 
-        list.appendChild(newPeriod);
+            newPeriod.classList.remove('dummy');
+            newPeriod.getElementsByClassName('time--start')[0].getElementsByTagName('label')[0].innerHTML = program[i][0];
+            newPeriod.getElementsByClassName('time--start')[0].getElementsByTagName('input')[0].value = program[i][0];
+            newPeriod.getElementsByClassName('time--end')[0].getElementsByTagName('label')[0].innerHTML = program[i][1];
+            newPeriod.getElementsByClassName('time--end')[0].getElementsByTagName('input')[0].value = program[i][1];
+
+            list.appendChild(newPeriod);
+        }
+
+        // Wire up remove buttons
+        periods = document.querySelectorAll('.periods__item:not(.dummy)');
+        Array.prototype.forEach.call(periods, function (period) {
+            period.getElementsByClassName('item__remove-button')[0].addEventListener("click", onRemove);
+        });
+    } else {
+        note.style.display = 'none';
     }
-
-    // Wire up remove buttons
-    periods = document.querySelectorAll('.periods__item:not(.dummy)');
-    Array.prototype.forEach.call(periods, function (period) {
-        period.getElementsByClassName('item__remove-button')[0].addEventListener("click", onRemove);
-    });
 }
 
 function setEditingMode(isOn) {

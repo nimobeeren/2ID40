@@ -70,6 +70,13 @@
     display: none;
 }
 
+.periods__note {
+    display: none;
+    margin: 4px 42px;
+    font-size: 18px;
+    text-align: center;
+}
+
 .periods__add-button {
     display: none;
     border-radius: 50%;
