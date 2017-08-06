@@ -224,6 +224,12 @@ function setSwitches(program) {
         Array.prototype.forEach.call(periods, function (period) {
             period.getElementsByClassName('item__remove-button')[0].addEventListener("click", onRemove);
         });
+
+        // Wire up input checking
+        var inputs = list.querySelectorAll('input[type="time"]');
+        Array.prototype.forEach.call(inputs, function (input) {
+            input.addEventListener('change', onTimeChange);
+        });
     } else {
         note.style.display = 'none';
     }
