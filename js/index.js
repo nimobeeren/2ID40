@@ -298,6 +298,9 @@ function setCurrentTemperature(temp) {
 
     var ang = temperatureToAngle(temp);
     line.style.transform = 'rotate(' + ang + 'deg) translate(0, ' + radius + 'px)';
+    setTimeout(function () {
+        line.style.transition = '1s linear';
+    }, 500);
 
     if (temp === Math.round(temp)) {
         temp = temp + '.0';
