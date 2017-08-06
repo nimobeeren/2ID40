@@ -13,8 +13,9 @@
 
 .card__labels {
     display: flex;
-    justify-content: space-evenly;
-    width: 100%;
+    justify-content: space-between;
+    margin: 0 calc(1/12 * 100%);
+    width: calc(10/12 * 100%);
     padding-bottom: 8px;
     text-align: center;
 }
