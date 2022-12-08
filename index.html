@@ -1,92 +1,103 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>Thermostat</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="styles/base.css">
-    <link rel="stylesheet" href="styles/index.css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles/base.css" />
+    <link rel="stylesheet" href="styles/index.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
-<header>
-    <a class="header__button" onclick="openNav()">
-        <img src="icons/ic_menu_white_24px.svg">
-    </a>
-    <div class="header__title">Dashboard</div>
-    <a class="header__button" href="views/settings.html">
-        <img src="icons/ic_settings_white_24px.svg">
-    </a>
-</header>
-<div class="header-filler"></div>
-<aside id="sidenav">
-    <a class="aside__item item--current" href="index.html">Dashboard</a>
-    <div class="aside__separator"></div>
-    <a class="aside__item" href="views/overview.html">Week schedule</a>
-    <a class="aside__item" href="views/weekday.html?day=Monday">Monday</a>
-    <a class="aside__item" href="views/weekday.html?day=Tuesday">Tuesday</a>
-    <a class="aside__item" href="views/weekday.html?day=Wednesday">Wednesday</a>
-    <a class="aside__item" href="views/weekday.html?day=Thursday">Thursday</a>
-    <a class="aside__item" href="views/weekday.html?day=Friday">Friday</a>
-    <a class="aside__item" href="views/weekday.html?day=Saturday">Saturday</a>
-    <a class="aside__item" href="views/weekday.html?day=Sunday">Sunday</a>
-</aside>
-<main>
-    <div class="current">
+  </head>
+  <body>
+    <header>
+      <a class="header__button" onclick="openNav()">
+        <img src="icons/ic_menu_white_24px.svg" />
+      </a>
+      <div class="header__title">Dashboard</div>
+      <a class="header__button" href="views/settings.html">
+        <img src="icons/ic_settings_white_24px.svg" />
+      </a>
+    </header>
+    <div class="header-filler"></div>
+    <aside id="sidenav">
+      <a class="aside__item item--current" href="index.html">Dashboard</a>
+      <div class="aside__separator"></div>
+      <a class="aside__item" href="views/overview.html">Week schedule</a>
+      <a class="aside__item" href="views/weekday.html?day=Monday">Monday</a>
+      <a class="aside__item" href="views/weekday.html?day=Tuesday">Tuesday</a>
+      <a class="aside__item" href="views/weekday.html?day=Wednesday"
+        >Wednesday</a
+      >
+      <a class="aside__item" href="views/weekday.html?day=Thursday">Thursday</a>
+      <a class="aside__item" href="views/weekday.html?day=Friday">Friday</a>
+      <a class="aside__item" href="views/weekday.html?day=Saturday">Saturday</a>
+      <a class="aside__item" href="views/weekday.html?day=Sunday">Sunday</a>
+    </aside>
+    <main>
+      <div class="current">
         <table>
-            <tr class="current__day">
-                <td class="current__label">Current day</td>
-                <td class="current__value" id="current-day">Loading</td>
-            </tr>
-            <tr class="current__time">
-                <td class="current__label">Current time</td>
-                <td class="current__value" id="current-time">0:00</td>
-            </tr>
-            <tr class="current__temp">
-                <td class="current__label">Current temperature</td>
-                <td class="current__value" id="current-temp">&deg;</td>
-            </tr>
+          <tr class="current__day">
+            <td class="current__label">Current day</td>
+            <td class="current__value" id="current-day">Loading</td>
+          </tr>
+          <tr class="current__time">
+            <td class="current__label">Current time</td>
+            <td class="current__value" id="current-time">0:00</td>
+          </tr>
+          <tr class="current__temp">
+            <td class="current__label">Current temperature</td>
+            <td class="current__value" id="current-temp">&deg;</td>
+          </tr>
         </table>
-    </div>
-    <div id="timeline" class="timeline">
+      </div>
+      <div id="timeline" class="timeline">
         <div class="timeline__indicator" id="time-indicator">
-            <div class="indicator__line"></div>
-            <!--<div class="indicator__label">NOW</div>-->
+          <div class="indicator__line"></div>
+          <!--<div class="indicator__label">NOW</div>-->
         </div>
         <div class="timeline__part part--disabled"></div>
-    </div>
-    <div id="slider-container" class="radial-slider__container">
+      </div>
+      <div id="slider-container" class="radial-slider__container">
         <div id="temp-slider" class="radial-slider">
-            <a id="temp-up" class="controls__button button--up"></a>
-            <div class="controls__temp-label">Target</div>
-            <div id="set-temp-value" class="controls__temp-value">5.0&deg;</div>
-            <a id="temp-down" class="controls__button button--down"></a>
-            <div id="temp-knob" class="radial-slider__knob"></div>
-            <div id="temp-line-day" class="radial-slider__line line--day">
-                <img src="icons/ic_wb_sunny_white_24px.svg">
-            </div>
-            <div id="temp-line-night" class="radial-slider__line line--night">
-                <img src="icons/moon_white.svg">
-            </div>
-            <div id="temp-line-current" class="radial-slider__line line--current"></div>
+          <a id="temp-up" class="controls__button button--up"></a>
+          <div class="controls__temp-label">Target</div>
+          <div id="set-temp-value" class="controls__temp-value">5.0&deg;</div>
+          <a id="temp-down" class="controls__button button--down"></a>
+          <div id="temp-knob" class="radial-slider__knob"></div>
+          <div id="temp-line-day" class="radial-slider__line line--day">
+            <img src="icons/ic_wb_sunny_white_24px.svg" />
+          </div>
+          <div id="temp-line-night" class="radial-slider__line line--night">
+            <img src="icons/moon_white.svg" />
+          </div>
+          <div
+            id="temp-line-current"
+            class="radial-slider__line line--current"
+          ></div>
         </div>
-    </div>
-    <div class="vacation">
-        <img class="vacation__img" src="icons/ic_lock_white_24px.svg">
+      </div>
+      <div class="vacation">
+        <img class="vacation__img" src="icons/ic_lock_white_24px.svg" />
         <div class="vacation__label">Vacation mode</div>
         <div>
-            <label class="switch">
-                <input id="vacation-switch" type="checkbox">
-                <div class="switch__knob"></div>
-            </label>
+          <label class="switch">
+            <input id="vacation-switch" type="checkbox" />
+            <div class="switch__knob"></div>
+          </label>
         </div>
-    </div>
-</main>
-<script src="js/api.js"></script>
-<script src="js/core.js"></script>
-<script src="js/index.js"></script>
-<script src="js/navigation.js"></script>
-</body>
+      </div>
+    </main>
+    <script src="js/api-mock.js"></script>
+    <script src="js/core.js"></script>
+    <script src="js/index.js"></script>
+    <script src="js/navigation.js"></script>
+  </body>
 </html>

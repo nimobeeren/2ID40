@@ -1,206 +1,214 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>Week schedule</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/base.css">
-    <link rel="stylesheet" href="../styles/overview.css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/overview.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
-<header>
-    <a class="header__button" onclick="openNav()">
-        <img src="../icons/ic_menu_white_24px.svg">
-    </a>
-    <div class="header__title" id="title">Week schedule</div>
-    <a class="header__button" href="settings.html">
-        <img src="../icons/ic_settings_white_24px.svg">
-    </a>
-</header>
-<div class="header-filler"></div>
-<aside id="sidenav">
-    <a class="aside__item" href="../index.html">Dashboard</a>
-    <div class="aside__separator"></div>
-    <a class="aside__item item--current" href="overview.html">Week schedule</a>
-    <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
-    <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
-    <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
-    <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
-    <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
-    <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
-    <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
-</aside>
-<main>
-    <div class="timelines">
+  </head>
+  <body>
+    <header>
+      <a class="header__button" onclick="openNav()">
+        <img src="../icons/ic_menu_white_24px.svg" />
+      </a>
+      <div class="header__title" id="title">Week schedule</div>
+      <a class="header__button" href="settings.html">
+        <img src="../icons/ic_settings_white_24px.svg" />
+      </a>
+    </header>
+    <div class="header-filler"></div>
+    <aside id="sidenav">
+      <a class="aside__item" href="../index.html">Dashboard</a>
+      <div class="aside__separator"></div>
+      <a class="aside__item item--current" href="overview.html"
+        >Week schedule</a
+      >
+      <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
+      <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
+      <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
+      <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
+      <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
+      <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
+      <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
+    </aside>
+    <main>
+      <div class="timelines">
         <div class="timelines__card" id="monday">
-            <div class="card__content">
-                <div class="card__title">Monday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Monday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
         <div class="timelines__card" id="tuesday">
-            <div class="card__content">
-                <div class="card__title">Tuesday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Tuesday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
         <div class="timelines__card" id="wednesday">
-            <div class="card__content">
-                <div class="card__title">Wednesday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Wednesday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
         <div class="timelines__card" id="thursday">
-            <div class="card__content">
-                <div class="card__title">Thursday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Thursday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
         <div class="timelines__card" id="friday">
-            <div class="card__content">
-                <div class="card__title">Friday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Friday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
         <div class="timelines__card" id="saturday">
-            <div class="card__content">
-                <div class="card__title">Saturday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Saturday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
         <div class="timelines__card" id="sunday">
-            <div class="card__content">
-                <div class="card__title">Sunday</div>
-                <div class="card__labels">
-                    <div class="labels__item">2</div>
-                    <div class="labels__item">4</div>
-                    <div class="labels__item">6</div>
-                    <div class="labels__item">8</div>
-                    <div class="labels__item">10</div>
-                    <div class="labels__item">12</div>
-                    <div class="labels__item">14</div>
-                    <div class="labels__item">16</div>
-                    <div class="labels__item">18</div>
-                    <div class="labels__item">20</div>
-                    <div class="labels__item">22</div>
-                </div>
-                <div class="timeline"></div>
+          <div class="card__content">
+            <div class="card__title">Sunday</div>
+            <div class="card__labels">
+              <div class="labels__item">2</div>
+              <div class="labels__item">4</div>
+              <div class="labels__item">6</div>
+              <div class="labels__item">8</div>
+              <div class="labels__item">10</div>
+              <div class="labels__item">12</div>
+              <div class="labels__item">14</div>
+              <div class="labels__item">16</div>
+              <div class="labels__item">18</div>
+              <div class="labels__item">20</div>
+              <div class="labels__item">22</div>
             </div>
-            <div class="card__actions">
-                <a class="flat-button edit-button">EDIT</a>
-                <a class="flat-button copy-button">COPY</a>
-            </div>
+            <div class="timeline"></div>
+          </div>
+          <div class="card__actions">
+            <a class="flat-button edit-button">EDIT</a>
+            <a class="flat-button copy-button">COPY</a>
+          </div>
         </div>
-    </div>
-</main>
-<script src="../js/api.js"></script>
-<script src="../js/core.js"></script>
-<script src="../js/overview.js"></script>
-<script src="../js/navigation.js"></script>
-</body>
+      </div>
+    </main>
+    <script src="../js/api-mock.js"></script>
+    <script src="../js/core.js"></script>
+    <script src="../js/overview.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
 </html>

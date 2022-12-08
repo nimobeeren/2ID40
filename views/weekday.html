@@ -1,84 +1,113 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title></title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/base.css">
-    <link rel="stylesheet" href="../styles/weekday.css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/weekday.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
-<header>
-    <a class="header__button" onclick="openNav()">
-        <img src="../icons/ic_menu_white_24px.svg">
-    </a>
-    <div class="header__title" id="title">Schedule</div>
-    <a class="header__button" href="settings.html">
-        <img src="../icons/ic_settings_white_24px.svg">
-    </a>
-</header>
-<div class="header-filler"></div>
-<aside id="sidenav">
-    <a class="aside__item" href="../index.html">Dashboard</a>
-    <div class="aside__separator"></div>
-    <a class="aside__item" href="overview.html">Week schedule</a>
-    <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
-    <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
-    <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
-    <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
-    <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
-    <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
-    <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
-</aside>
-<main>
-    <div class="timeline" id="timeline">
+  </head>
+  <body>
+    <header>
+      <a class="header__button" onclick="openNav()">
+        <img src="../icons/ic_menu_white_24px.svg" />
+      </a>
+      <div class="header__title" id="title">Schedule</div>
+      <a class="header__button" href="settings.html">
+        <img src="../icons/ic_settings_white_24px.svg" />
+      </a>
+    </header>
+    <div class="header-filler"></div>
+    <aside id="sidenav">
+      <a class="aside__item" href="../index.html">Dashboard</a>
+      <div class="aside__separator"></div>
+      <a class="aside__item" href="overview.html">Week schedule</a>
+      <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
+      <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
+      <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
+      <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
+      <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
+      <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
+      <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
+    </aside>
+    <main>
+      <div class="timeline" id="timeline">
         <div class="timeline__part part--disabled"></div>
-    </div>
-    <form class="periods" action="" onsubmit="return false">
+      </div>
+      <form class="periods" action="" onsubmit="return false">
         <div class="periods__list" id="list">
-            <div class="periods__item dummy">
-                <a class="item__remove-button">
-                    <img class="data__icon" src="../icons/ic_delete_red_24px.svg">
-                </a>
-                <div class="item__data">
-                    <img class="data__icon" src="../icons/ic_wb_sunny_white_24px.svg">
-                    <div class="data__time time--start">
-                        <label>start</label>
-                        <input type="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5"
-                               required>
-                    </div>
-                    <span>-</span>
-                    <div class="data__time time--end">
-                        <label>end</label>
-                        <input type="time" pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00" title="HH:MM" maxlength="5"
-                               required>
-                    </div>
-                    <img class="data__icon" src="../icons/moon_white.svg">
-                </div>
-                <div class="note__wrapper">
-                    <span class="item__note note--merge">Will be merged</span>
-                    <span class="item__note note--end-day">Will run to the end of the day</span>
-                    <span class="item__note note--next-day">Will run into the next day</span>
-                </div>
+          <div class="periods__item dummy">
+            <a class="item__remove-button">
+              <img class="data__icon" src="../icons/ic_delete_red_24px.svg" />
+            </a>
+            <div class="item__data">
+              <img
+                class="data__icon"
+                src="../icons/ic_wb_sunny_white_24px.svg"
+              />
+              <div class="data__time time--start">
+                <label>start</label>
+                <input
+                  type="time"
+                  pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00"
+                  title="HH:MM"
+                  maxlength="5"
+                  required
+                />
+              </div>
+              <span>-</span>
+              <div class="data__time time--end">
+                <label>end</label>
+                <input
+                  type="time"
+                  pattern="([01]?[0-9]|2[0-3]):[0-5][0-9]|24:00"
+                  title="HH:MM"
+                  maxlength="5"
+                  required
+                />
+              </div>
+              <img class="data__icon" src="../icons/moon_white.svg" />
             </div>
+            <div class="note__wrapper">
+              <span class="item__note note--merge">Will be merged</span>
+              <span class="item__note note--end-day"
+                >Will run to the end of the day</span
+              >
+              <span class="item__note note--next-day"
+                >Will run into the next day</span
+              >
+            </div>
+          </div>
         </div>
-        <div class="periods__note" id="note-empty">There are no switches yet, press the edit button to start adding</div>
+        <div class="periods__note" id="note-empty">
+          There are no switches yet, press the edit button to start adding
+        </div>
         <a class="periods__add-button" id="add-button">+</a>
         <div class="raised-buttons__wrapper buttons-viewing">
-            <a class="periods__raised-button" id="edit-button">EDIT</a>
+          <a class="periods__raised-button" id="edit-button">EDIT</a>
         </div>
         <div class="raised-buttons__wrapper buttons-editing">
-            <a class="periods__raised-button raised-button--red" id="cancel-button">CANCEL</a>
-            <a class="periods__raised-button" id="accept-button">ACCEPT</a>
+          <a
+            class="periods__raised-button raised-button--red"
+            id="cancel-button"
+            >CANCEL</a
+          >
+          <a class="periods__raised-button" id="accept-button">ACCEPT</a>
         </div>
-    </form>
-</main>
-<script src="../js/api.js"></script>
-<script src="../js/core.js"></script>
-<script src="../js/weekday.js"></script>
-<script src="../js/navigation.js"></script>
-</body>
+      </form>
+    </main>
+    <script src="../js/api-mock.js"></script>
+    <script src="../js/core.js"></script>
+    <script src="../js/weekday.js"></script>
+    <script src="../js/navigation.js"></script>
+  </body>
 </html>

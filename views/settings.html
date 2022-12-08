@@ -1,80 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <meta name="mobile-web-app-capable" content="yes">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>Settings</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link rel="stylesheet" href="../styles/base.css">
-    <link rel="stylesheet" href="../styles/settings.css">
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/base.css" />
+    <link rel="stylesheet" href="../styles/settings.css" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-</head>
-<body>
-<header>
-    <a class="header__button" onclick="openNav()">
-        <img src="../icons/ic_menu_white_24px.svg">
-    </a>
-    <div class="header__title">Settings</div>
-    <a class="header__button" href="../index.html">
-        <img src="../icons/ic_home_white_24px.svg">
-    </a>
-</header>
-<div class="header-filler"></div>
-<aside id="sidenav">
-    <a class="aside__item" href="../index.html">Dashboard</a>
-    <div class="aside__separator"></div>
-    <a class="aside__item" href="overview.html">Week schedule</a>
-    <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
-    <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
-    <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
-    <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
-    <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
-    <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
-    <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
-</aside>
-<main>
-    <div class="settings">
+  </head>
+  <body>
+    <header>
+      <a class="header__button" onclick="openNav()">
+        <img src="../icons/ic_menu_white_24px.svg" />
+      </a>
+      <div class="header__title">Settings</div>
+      <a class="header__button" href="../index.html">
+        <img src="../icons/ic_home_white_24px.svg" />
+      </a>
+    </header>
+    <div class="header-filler"></div>
+    <aside id="sidenav">
+      <a class="aside__item" href="../index.html">Dashboard</a>
+      <div class="aside__separator"></div>
+      <a class="aside__item" href="overview.html">Week schedule</a>
+      <a class="aside__item" href="weekday.html?day=Monday">Monday</a>
+      <a class="aside__item" href="weekday.html?day=Tuesday">Tuesday</a>
+      <a class="aside__item" href="weekday.html?day=Wednesday">Wednesday</a>
+      <a class="aside__item" href="weekday.html?day=Thursday">Thursday</a>
+      <a class="aside__item" href="weekday.html?day=Friday">Friday</a>
+      <a class="aside__item" href="weekday.html?day=Saturday">Saturday</a>
+      <a class="aside__item" href="weekday.html?day=Sunday">Sunday</a>
+    </aside>
+    <main>
+      <div class="settings">
         <span class="setting__label">Day Temperature</span>
         <div class="setting">
-            <div class="setting__img">
-                <img class="icon" src="../icons/ic_wb_sunny_white_24px.svg"/>
-            </div>
-            <div class="setting__controls">
-                <a id="temp-up-day" class="controls__button">
-                    <img src="../icons/ic_arrow_drop_up_white_24px.svg">
-                </a>
-                <div id="set-temp-value-day" class="controls__value">&deg;</div>
-                <a id="temp-down-day" class="controls__button">
-                    <img src="../icons/ic_arrow_drop_down_white_24px.svg">
-                </a>
-            </div>
+          <div class="setting__img">
+            <img class="icon" src="../icons/ic_wb_sunny_white_24px.svg" />
+          </div>
+          <div class="setting__controls">
+            <a id="temp-up-day" class="controls__button">
+              <img src="../icons/ic_arrow_drop_up_white_24px.svg" />
+            </a>
+            <div id="set-temp-value-day" class="controls__value">&deg;</div>
+            <a id="temp-down-day" class="controls__button">
+              <img src="../icons/ic_arrow_drop_down_white_24px.svg" />
+            </a>
+          </div>
         </div>
         <div id="day-slider" class="setting__slider">
-            <div id="day-slider-knob" class="slider__knob"></div>
+          <div id="day-slider-knob" class="slider__knob"></div>
         </div>
-        <span id="settings-border" class="setting__label">Night Temperature</span>
+        <span id="settings-border" class="setting__label"
+          >Night Temperature</span
+        >
         <div class="setting">
-            <div class="setting__img">
-                <img class="icon" src="../icons/moon_white.svg"/>
-            </div>
-            <div class="setting__controls">
-                <a id="temp-up-night" class="controls__button">
-                    <img src="../icons/ic_arrow_drop_up_white_24px.svg">
-                </a>
-                <div id="set-temp-value-night" class="controls__value">&deg;</div>
-                <a id="temp-down-night" class="controls__button">
-                    <img src="../icons/ic_arrow_drop_down_white_24px.svg">
-                </a>
-            </div>
+          <div class="setting__img">
+            <img class="icon" src="../icons/moon_white.svg" />
+          </div>
+          <div class="setting__controls">
+            <a id="temp-up-night" class="controls__button">
+              <img src="../icons/ic_arrow_drop_up_white_24px.svg" />
+            </a>
+            <div id="set-temp-value-night" class="controls__value">&deg;</div>
+            <a id="temp-down-night" class="controls__button">
+              <img src="../icons/ic_arrow_drop_down_white_24px.svg" />
+            </a>
+          </div>
         </div>
         <div id="night-slider" class="setting__slider">
-            <div id="night-slider-knob" class="slider__knob"></div>
+          <div id="night-slider-knob" class="slider__knob"></div>
         </div>
-    </div>
-</main>
-<script src="../js/api.js"></script>
-<script src="../js/navigation.js"></script>
-<script src="../js/settings.js"></script>
-</body>
+      </div>
+    </main>
+    <script src="../js/api-mock.js"></script>
+    <script src="../js/navigation.js"></script>
+    <script src="../js/settings.js"></script>
+  </body>
 </html>
